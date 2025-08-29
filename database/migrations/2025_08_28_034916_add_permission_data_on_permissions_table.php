@@ -65,6 +65,7 @@ return new class extends Migration
             ['name' => 'Reviewed Permohonan', 'guard_name' => 'web'],
             ['name' => 'Confirm Permohonan', 'guard_name' => 'web'],
             ['name' => 'Upload Rab Permohonan', 'guard_name' => 'web'],
+            ['name' => 'Download Pemberitahuan Koreksi', 'guard_name' => 'web'],
             ['name' => 'Revision Permohonan', 'guard_name' => 'web'],
             ['name' => 'Confirm Review Permohonan', 'guard_name' => 'web'],
             ['name' => 'Revised Permohonan', 'guard_name' => 'web'],

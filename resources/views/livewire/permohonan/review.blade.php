@@ -114,7 +114,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <input type="checkbox" wire:model='is_lembaga_verif' @checked($is_lembaga_verif)
+                                <input type="checkbox" wire:model.live='is_lembaga_verif' @checked($is_lembaga_verif)
                                     id="is_lembaga_verif_checkbox">
                                 <span class="text-start ms-3">Data Lembaga Telah Dilakukan Pengecekan</span>
                             </div>
@@ -288,8 +288,8 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <input type="checkbox" wire:model='is_proposal_verif' @checked($is_proposal_verif)
-                                    id="is_proposal_verif_checkbox">
+                                <input type="checkbox" wire:model.live='is_proposal_verif'
+                                    @checked($is_proposal_verif) id="is_proposal_verif_checkbox">
                                 <span class="text-start ms-3">Data Proposal Telah Dilakukan Pengecekan</span>
                             </div>
                         </div>
@@ -431,8 +431,8 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <input type="checkbox" wire:model='is_pendukung_verif' @checked($is_pendukung_verif)
-                                    id="is_pendukung_verif_checkbox">
+                                <input type="checkbox" wire:model.live='is_pendukung_verif'
+                                    @checked($is_pendukung_verif) id="is_pendukung_verif_checkbox">
                                 <span class="text-start ms-3">Data Pendukung Telah Dilakukan Pengecekan</span>
                             </div>
                         </div>

@@ -463,20 +463,6 @@
         </div>
     </div>
 
-    <div class="modal fade" id="fileModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Preview File</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body text-center" id="modalFileContent">
-                    <p>Memuat konten...</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div wire:ignore.self class="modal fade" id="update_rab_modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content p-3">
@@ -594,28 +580,6 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const fileModal = document.getElementById('fileModal');
-            const modalContent = document.getElementById('modalFileContent');
-
-            fileModal.addEventListener('show.bs.modal', function(event) {
-                const button = event.relatedTarget;
-                const fileUrl = button.getAttribute('data-file-url');
-                const extension = fileUrl.split('.').pop().toLowerCase();
-
-                // Reset isi
-                modalContent.innerHTML = '<p>Memuat konten...</p>';
-
-                if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(extension)) {
-                    modalContent.innerHTML =
-                        `<img src="${fileUrl}" alt="Gambar" class="img-fluid rounded shadow">`;
-                } else if (extension === 'pdf') {
-                    modalContent.innerHTML =
-                        `<iframe src="${fileUrl}" width="100%" height="600px" style="border:none;"></iframe>`;
-                } else {
-                    modalContent.innerHTML = `<p class="text-danger">Jenis file tidak didukung.</p>`;
-                }
-            });
-
             Livewire.on('close-modal', function() {
                 $("#update_rab_modal").modal('hide');
             })

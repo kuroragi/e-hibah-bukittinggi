@@ -16,3 +16,29 @@
 <script src="/assets/js/app.js"></script>
 
 @stack('scripts')
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fileModal = document.getElementById('fileModal');
+        const modalContent = document.getElementById('modalFileContent');
+
+        fileModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            const fileUrl = button.getAttribute('data-file-url');
+            const extension = fileUrl.split('.').pop().toLowerCase();
+
+            // Reset isi
+            modalContent.innerHTML = '<p>Memuat konten...</p>';
+
+            if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(extension)) {
+                modalContent.innerHTML =
+                    `<img src="${fileUrl}" alt="Gambar" class="img-fluid rounded shadow">`;
+            } else if (extension === 'pdf') {
+                modalContent.innerHTML =
+                    `<iframe src="${fileUrl}" width="100%" height="600px" style="border:none;"></iframe>`;
+            } else {
+                modalContent.innerHTML = `<p class="text-danger">Jenis file tidak didukung.</p>`;
+            }
+        });
+    });
+</script>

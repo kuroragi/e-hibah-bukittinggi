@@ -60,6 +60,7 @@ class DatabaseSeeder extends Seeder
             'View Rab Permohonan',
             'Check Permohonan',
             'Send Permohonan',
+            'Download Pemberitahuan Koreksi',
             'Revision Permohonan',
             'Revised Permohonan',
             'View Any Nphd',

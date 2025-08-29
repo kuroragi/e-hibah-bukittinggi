@@ -52,7 +52,7 @@ class Review extends Component
     public $catatan_rekomendasi;
     public $file_pemberitahuan;
 
-    public $listeners = ['updatethis->status_rekomendasiment' => 'veriffiedStatement'];
+    public $listeners = [];
 
     public function mount($id_permohonan = null){
         $this->permohonan = Permohonan::with(['lembaga', 'skpd', 'status', 'pendukung'])->where('id', $id_permohonan)->first();
@@ -132,6 +132,18 @@ class Review extends Component
                 'is_pendukung_verif' => $this->is_pendukung_verif,
             ]
         );
+    }
+
+    public function updatedIsLembagaVerif($value){
+        $this->veriffiedStatement();
+    }
+
+    public function updatedIsProposalVerif($value){
+        $this->veriffiedStatement();
+    }
+
+    public function updatedIsPendukungVerif($value){
+        $this->veriffiedStatement();
     }
 
     public function hasVeriffied(){

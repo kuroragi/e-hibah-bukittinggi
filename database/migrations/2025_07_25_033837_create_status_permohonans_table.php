@@ -190,8 +190,8 @@ return new class extends Migration
                         [
                             'color' => 'warning', 
                             'icon' => 'bi bi-pencil-square', 
-                            'url' => 'permohonan.revision', 
-                            'permission' => 'revision'
+                            'url' => 'permohonan.revisi', 
+                            'permission' => 'revisi'
                         ],
                         [
                             'color' => 'success', 

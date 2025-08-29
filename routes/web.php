@@ -30,6 +30,7 @@ use App\Models\Permohonan;
 use App\Models\RabPermohonan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role as ModelsRole;
 
 Route::get('/', [AuthController::class, 'login'])->name('login')->middleware('guest');

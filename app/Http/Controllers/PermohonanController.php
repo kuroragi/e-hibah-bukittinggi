@@ -56,6 +56,11 @@ class PermohonanController extends Controller
         return redirect()->route('permohonan');
     }
 
+    public function downloadPermohonan($id_permohonan){
+        $permohonan = Permohonan::findOrFail($id_permohonan);
+        dd($permohonan);
+    }
+
     public function send_review($id_permohonan){
         Permohonan::where('id', $id_permohonan)->increment('id_status');
 

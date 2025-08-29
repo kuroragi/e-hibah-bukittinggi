@@ -99,6 +99,10 @@ class PermohonanPolicy
         return $user->hasPermissionTo('Updload Rab Permohonan');
     }
 
+    public function download_pemberitahuan(User $user) : bool {
+        return $user->hasPermissionTo('Download Pemberitahuan Koreksi');
+    }
+
     public function revisi(User $user) : bool {
         return $user->hasPermissionTo('Revision Permohonan');
     }

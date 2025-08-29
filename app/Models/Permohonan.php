@@ -28,6 +28,7 @@ class Permohonan extends Model
         'keterangan',
         'file_proposal',
         'nominal_rab',
+        'nominal_anggaran',
         'id_status',
         'status_rekomendasi',
         'nominal_rekomendasi',

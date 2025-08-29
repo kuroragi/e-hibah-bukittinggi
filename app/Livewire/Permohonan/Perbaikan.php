@@ -255,6 +255,11 @@ class Perbaikan extends Component
                     ]);
                 }
             }
+
+            $this->permohonan->update([
+                'nominal_anggaran' => $this->nominal_rab
+            ]);
+            
             DB::commit();
 
             session()->flash('message', 'Kegiatan dan Semua Rincian telah berhasil di hapus');

@@ -74,8 +74,31 @@
                     @endcan
                     @can('viewAny', App\Models\Permohonan::class)
                         @if (!auth()->user()->hasRole('Admin Lembaga') || auth()->user()->id_lembaga != null)
+                            @php
+                                if (
+                                    auth()
+                                        ->user()
+                                        ->hasAnyRole(['Super Admin', 'Admin Skpd'])
+                                ) {
+                                    $badgeCount =
+                                        $permohonanCounts['review_permohonan'] +
+                                        $permohonanCounts['confirm_permohonan'];
+                                } elseif (auth()->user()->hasRole('Verifikator')) {
+                                    $badgeCount = $permohonanCounts['confirm_permohonan'];
+                                } elseif (auth()->user()->hasRole('Reviewer')) {
+                                    $badgeCount = $permohonanCounts['review_permohonan'];
+                                } else {
+                                    $badgeCount = 0;
+                                }
+                            @endphp
                             <a href="{{ route('permohonan') }}" class="list-group-item"><i
-                                    class="bi bi-chat-left-text"></i>Permohonan Hibah</a>
+                                    class="bi bi-chat-left-text"></i>Permohonan Hibah
+                                @if ($badgeCount > 0)
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">+{{ $badgeCount }}
+                                        <span class="visually-hidden">unread messages</span></span>
+                                @endif
+                            </a>
                         @endif
                     @endcan
                     @can('viewAnyNphd', App\Models\Permohonan::class)
