@@ -27,6 +27,8 @@ class Review extends Component
     public $permohonan;
     public $kegiatans;
     public $questions;
+    public $is_ada_all = [];
+    public $is_sesuai_all = [];
     public $answer = [];
     public $veriffied = false;
 
@@ -52,7 +54,7 @@ class Review extends Component
     public $catatan_rekomendasi;
     public $file_pemberitahuan;
 
-    public $listeners = [];
+    public $listeners = ['is_lembaga_verified','is_proposal_verified','is_pendukung_verified'];
 
     public function mount($id_permohonan = null){
         $this->permohonan = Permohonan::with(['lembaga', 'skpd', 'status', 'pendukung'])->where('id', $id_permohonan)->first();
@@ -70,7 +72,7 @@ class Review extends Component
             foreach($item->children as $child){
                 $this->answer[$child->id] = [
                     'is_ada' => false,
-                    'is_sesuia' => false,
+                    'is_sesuai' => false,
                     'keterangan' => ''
                 ];
             }
@@ -136,18 +138,32 @@ class Review extends Component
 
     public function updatedIsLembagaVerif($value){
         $this->veriffiedStatement();
+        if($value == true){
+            $this->dispatch('is_lembaga_verified');
+        }
     }
 
     public function updatedIsProposalVerif($value){
         $this->veriffiedStatement();
+        if($value == true){
+            $this->dispatch('is_proposal_verified');
+        }
     }
 
     public function updatedIsPendukungVerif($value){
         $this->veriffiedStatement();
+        if($value == true){
+            $this->dispatch('is_pendukung_verified');
+        }
     }
 
     public function hasVeriffied(){
         $this->veriffied = true;
+    }
+
+    public function updatedAnswer($value, $key){
+        // [$id, $field] = explode('.', $key);
+        // dd($id, $field);
     }
 
     public function store_berita_acara($VerificationBool){
