@@ -203,7 +203,7 @@ return new class extends Migration
                             'color' => 'secondary', 
                             'icon' => 'bi bi-cloud-download-fill', 
                             'url' => 'permohonan.pemberitahuan.download', 
-                            'permission' => 'Download Pemberitahuan Koreksi'
+                            'permission' => 'download_pemberitahuan'
                         ]
                     ]
                 ),

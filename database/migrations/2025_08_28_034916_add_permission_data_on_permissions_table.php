@@ -69,6 +69,7 @@ return new class extends Migration
             ['name' => 'Revision Permohonan', 'guard_name' => 'web'],
             ['name' => 'Confirm Review Permohonan', 'guard_name' => 'web'],
             ['name' => 'Revised Permohonan', 'guard_name' => 'web'],
+            ['name' => 'Review Perbaikan Permohonan', 'guard_name' => 'web'],
             ['name' => 'Confirm Perbaikan Permohonan', 'guard_name' => 'web'],
             
             //NPHD

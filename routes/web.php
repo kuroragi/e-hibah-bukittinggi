@@ -68,6 +68,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/permohonan/edit_review/{id_permohonan}', Review::class)->name('permohonan.edit_review');
     Route::get('/permohonan/send_review/{id_permohonan}', [PermohonanController::class, 'send_review'])->name('permohonan.send_review');
     Route::get('/permohonan/confirm_review/{id_permohonan}', Review::class)->name('permohonan.confirm_review');
+    Route::get('/permohonan/peberitahuan/download/{id_permohonan}', [PermohonanController::class, 'donwload_pemberitahuan'])->name('permohonan.pemberitahuan.download');
     Route::get('/permohonan/revisi/{id_permohonan}', Perbaikan::class)->name('permohonan.revisi');
     Route::get('/permohonan/send_revisi/{id_permohonan}', [PermohonanController::class, 'send_revisi'])->name('permohonan.send_revisi');
     Route::get('/permohonan/review_revisi/{id_permohonan}', ReviewPerbaikan::class)->name('permohonan.review_revisi');

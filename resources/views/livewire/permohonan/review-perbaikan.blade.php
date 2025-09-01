@@ -54,7 +54,7 @@
                         </a>
                     </li>
                 @endif
-                @if ($permohonan->id_status >= 4)
+                @if ($permohonan->id_status >= 11)
                     <li class="nav-item" role="presentation">
                         <a wire:ignore.self class="nav-link @if ($is_lembaga_verif && $is_proposal_verif && $is_pendukung_verif) show active @endif"
                             data-bs-toggle="pill" href="#berita_acara" role="tab" aria-selected="true">
@@ -64,7 +64,7 @@
                         </a>
                     </li>
                 @endif
-                @if ($permohonan->id_status > 5)
+                @if ($permohonan->id_status >= 12)
                     <li class="nav-item" role="presentation">
                         <a wire:ignore.self class="nav-link" data-bs-toggle="pill" href="#status" role="tab"
                             aria-selected="false">

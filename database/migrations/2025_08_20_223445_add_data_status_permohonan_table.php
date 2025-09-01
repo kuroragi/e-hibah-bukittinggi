@@ -36,6 +36,12 @@ return new class extends Migration
                             'url' => 'permohonan.send_revisi', 
                             'permission' => 'revised'
                         ],
+                        [
+                            'color' => 'secondary', 
+                            'icon' => 'bi bi-cloud-download-fill', 
+                            'url' => 'permohonan.pemberitahuan.download', 
+                            'permission' => 'download_pemberitahuan'
+                        ]
                     ]
                 ),
             ],

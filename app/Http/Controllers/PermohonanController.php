@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PerbaikanRab;
 use App\Models\Permohonan;
 use App\Models\RabPermohonan;
 use App\Models\Skpd;
@@ -36,8 +37,11 @@ class PermohonanController extends Controller
     }
 
     public function show($id_permohonan){
-        $permohonan = Permohonan::with(['lembaga', 'skpd', 'status', 'pendukung'])->where('id', $id_permohonan)->first();
-        $kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', $id_permohonan)->get();
+        $permohonan = Permohonan::with(['lembaga', 'skpd', 'status', 'pendukung', 'perbaikanProposal.perbaikan_rab.rincian'])->where('id', $id_permohonan)->first();
+        $kegiatans = PerbaikanRab::with(['rincian.satuan'])->where('id_permohonan', $id_permohonan)->latest()->get();
+        if(!$kegiatans->count() > 0){
+            $kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', $id_permohonan)->get();
+        }
         $skpds = Skpd::all();
         $urusans = UrusanSkpd::where('id_skpd', $permohonan->id_skpd)->get();
         return view('pages.permohonan.show', [
@@ -68,6 +72,10 @@ class PermohonanController extends Controller
     }
 
     public function confirm_review() {
+        //
+    }
+
+    public function donwload_pemberitahuan(){
         //
     }
 

@@ -11,6 +11,7 @@ use App\Models\Status_permohonan;
 use App\Models\VerifikasiPermohonan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -218,9 +219,10 @@ class Review extends Component
     public function store_pemberitahuan(){
         DB::beginTransaction();
 
+        $ext_file_pemberitahuan = $this->file_pemberitahuan->getclientOriginalExtension();
+        $file_pemberitahuan_path = $this->file_pemberitahuan->storeAs('berita_acara', 'file_pemberitahuan_'.Auth::user()->id.$this->permohonan->id.date('now').'.'.$ext_file_pemberitahuan, 'public');
+        
         try {
-            $ext_file_pemberitahuan = $this->file_pemberitahuan->getclientOriginalExtension();
-            $file_pemberitahuan_path = $this->file_pemberitahuan->storeAs('berita_acara', 'file_pemberitahuan_'.Auth::user()->id.$this->permohonan->id.date('now').'.'.$ext_file_pemberitahuan, 'public');
 
             if($this->status_rekomendasi == 1){
                 $status = Status_permohonan::where('name', 'direkomendasi')->first()->id;
@@ -244,6 +246,11 @@ class Review extends Component
             return redirect()->route('permohonan');
         } catch (\Throwable $th) {
             DB::rollBack();
+            
+            if(Storage::disk('public')->exists($file_pemberitahuan_path)){
+                Storage::disk('public')->delete($file_pemberitahuan_path);
+            }
+            
             dd($th);
             session()->flash('error', 'Gagal menyimpan data: ' . $th->getMessage());
         }

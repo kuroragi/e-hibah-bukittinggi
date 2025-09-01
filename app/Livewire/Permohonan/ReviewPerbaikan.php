@@ -13,6 +13,7 @@ use App\Models\Status_permohonan;
 use App\Models\VerifikasiPermohonan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -66,7 +67,7 @@ class ReviewPerbaikan extends Component
     public function mount($id_permohonan = null){
         $this->permohonan = Permohonan::with(['lembaga', 'skpd', 'status', 'pendukung', 'perbaikanProposal.perbaikan_rab.rincian'])->where('id', $id_permohonan)->first();
         $this->kegiatans = PerbaikanRab::with(['rincian.satuan'])->where('id_permohonan', $id_permohonan)->get();
-        dd($this->kegiatans);
+        dd($this->permohonan);
 
         $verifikasi = VerifikasiPermohonan::where('id_permohonan', $this->permohonan->id)->first();
         if($verifikasi){
@@ -220,20 +221,22 @@ class ReviewPerbaikan extends Component
     public function store_pemberitahuan_perbaikan(){
         DB::beginTransaction();
 
+        $ext_file_pemberitahuan_perbaikan = $this->file_pemberitahuan_perbaikan->getclientOriginalExtension();
+        $file_pemberitahuan_perbaikan_path = $this->file_pemberitahuan_perbaikan->storeAs('berita_acara', 'file_pemberitahuan_perbaikan_'.Auth::user()->id.$this->permohonan->id.date('now').'.'.$ext_file_pemberitahuan_perbaikan, 'public');
+        
         try {
-            $ext_file_pemberitahuan_perbaikan = $this->file_pemberitahuan_perbaikan->getclientOriginalExtension();
-            $file_pemberitahuan_perbaikan_path = $this->file_pemberitahuan_perbaikan->storeAs('berita_acara', 'file_pemberitahuan_perbaikan_'.Auth::user()->id.$this->permohonan->id.date('now').'.'.$ext_file_pemberitahuan_perbaikan, 'public');
 
             if($this->status_rekomendasi == 1){
                 $status = Status_permohonan::where('name', 'direkomendasi')->first()->id;
 
-                $perbaikan = $this->permohonan->perbaikanProposal->last()->perbaikan_rab;
-                dd($perbaikan);
+                // $perbaikan = $this->permohonan->perbaikanProposal->last()?->perbaikanRab->orderByDesc('id')?->first();
+                // dd($perbaikan);
 
                 $permohonan = $this->permohonan->update([
                     'id_status' => $status,
                     'file_pemberitahuan_perbaikan' => $file_pemberitahuan_perbaikan_path
                 ]);
+
             }else if($this->status_rekomendasi == 2){
                 $status = Status_permohonan::where('name', 'koreksi')->first()->id;
                 
@@ -259,6 +262,11 @@ class ReviewPerbaikan extends Component
             return redirect()->route('permohonan');
         } catch (\Throwable $th) {
             DB::rollBack();
+            
+            if(Storage::disk('public')->exists($file_pemberitahuan_perbaikan_path)){
+                Storage::disk('public')->delete($file_pemberitahuan_perbaikan_path);
+            }
+            
             dd($th);
             session()->flash('error', 'Gagal menyimpan data: ' . $th->getMessage());
         }
