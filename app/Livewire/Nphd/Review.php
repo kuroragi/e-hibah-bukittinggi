@@ -18,7 +18,7 @@ class Review extends Component
     
     public $nominal_anggaran;
     public $total_kegiatan = 0;
-    public $kegiatans = [];
+    public $kegiatans;
     public $kegiatan_rab = [];
 
     public $file_nphd;

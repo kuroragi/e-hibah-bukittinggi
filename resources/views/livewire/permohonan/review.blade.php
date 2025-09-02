@@ -694,6 +694,26 @@
                         <input type="file" wire:model='file_pemberitahuan' class="form-control">
                     </div>
 
+                    {{-- Progress Bar saat pilih file --}}
+                    <div wire:loading wire:target="file" class="progress mt-3">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                            style="width: 0%" x-data x-init="
+                                Livewire.on('upload:progress', p => {
+                                    $el.style.width = p+'%';
+                                    $el.textContent = p+'%';
+                                })
+                            ">
+                            0%
+                        </div>
+                    </div>
+
+
+                    <div wire:loading.remove wire:target="file_pemberitahuan" class="mt-2">
+                        @if ($file_pemberitahuan)
+                        <p>File terpilih: {{ $file_pemberitahuan->getClientOriginalName() }}</p>
+                        @endif
+                    </div>
+
                     <div wire:ignore.self class="mt-4 d-none" id="save_status_button">
                         <button wire:click='store_pemberitahuan' id="store_pemberitahuan"
                             class="btn btn-primary w-100">Simpan</button>

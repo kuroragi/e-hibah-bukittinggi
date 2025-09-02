@@ -178,6 +178,12 @@ return new class extends Migration
                             'url' => 'nphd.show', 
                             'permission' => 'viewNphd'
                         ],
+                        [
+                            'color' => 'secondary', 
+                            'icon' => 'bi bi-cloud-download-fill', 
+                            'url' => 'permohonan.pemberitahuan.download', 
+                            'permission' => 'download_pemberitahuan'
+                        ],
                     ]
                 ),
             ],

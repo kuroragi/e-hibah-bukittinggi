@@ -9,6 +9,7 @@
     <title>{{ $title ?? 'E-Hibah Bukittinggi' }}</title>
 
     @include('components.partials._head')
+    @livewireStyles
 </head>
 
 <body>
@@ -116,6 +117,7 @@
         </div>
     </div>
 
+    @livewireScripts
     @include('components.partials._foot')
 </body>
 

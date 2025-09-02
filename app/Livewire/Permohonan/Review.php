@@ -50,7 +50,8 @@ class Review extends Component
     public $berita_acara;
 
     public $status_rekomendasi;
-    public $nominal_rekomendasi;
+    public $nominal_anggaran = 0;
+    public $nominal_rekomendasi = 0;
     public $tanggal_rekomendasi;
     public $catatan_rekomendasi;
     public $file_pemberitahuan;
@@ -59,6 +60,8 @@ class Review extends Component
 
     public function mount($id_permohonan = null){
         $this->permohonan = Permohonan::with(['lembaga', 'skpd', 'status', 'pendukung'])->where('id', $id_permohonan)->first();
+        $this->nominal_anggaran = $this->permohonan->nominal_rab;
+        $this->nominal_rekomendasi = $this->permohonan->nominal_rab;
         $this->kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', $id_permohonan)->get();
 
         $verifikasi = VerifikasiPermohonan::where('id_permohonan', $this->permohonan->id)->first();
@@ -226,6 +229,10 @@ class Review extends Component
 
             if($this->status_rekomendasi == 1){
                 $status = Status_permohonan::where('name', 'direkomendasi')->first()->id;
+                if(!$this->permohonan->nominal_anggaran == null){
+                    $this->nominal_anggaran = $this->permohonan->nominal_rab;
+                    $this->nominal_rekomendasi = $this->permohonan->nominal_rab;
+                }
             }else if($this->status_rekomendasi == 2){
                 $status = Status_permohonan::where('name', 'koreksi')->first()->id;
             }else if($this->status_rekomendasi == 1){
@@ -235,6 +242,7 @@ class Review extends Component
             $permohonan = $this->permohonan->update([
                 'id_status' => $status,
                 'status_rekomendasi' => $this->status_rekomendasi,
+                'nominal_anggaran' => $this->nominal_anggaran,
                 'nominal_rekomendasi' => $this->nominal_rekomendasi,
                 'tanggal_rekomendasi' => $this->tanggal_rekomendasi,
                 'catatan_rekomendasi' => $this->catatan_rekomendasi,

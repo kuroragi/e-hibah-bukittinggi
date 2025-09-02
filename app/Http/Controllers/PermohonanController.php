@@ -75,9 +75,18 @@ class PermohonanController extends Controller
         //
     }
 
-    public function donwload_pemberitahuan(){
-        //
-    }
+    public function donwload_pemberitahuan($id_permohonan){
+        // $permohonan = Permohonan::findOrFail($id_permohonan);
+
+        // $path = storage_path('app/public/'.$permohonan->file_pemberitahuan);
+
+        // if (!file_exists($path)) {
+        //     abort(404, 'File tidak ditemukan.');
+        // }
+
+        // return response()->download($path, $permohonan->file_pemberitahuan);
+        return redirect()->route('nphd');
+;    }
 
     public function send_revisi($id_permohonan){
         Permohonan::where('id', $id_permohonan)->update([
