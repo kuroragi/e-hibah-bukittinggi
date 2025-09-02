@@ -172,6 +172,12 @@ return new class extends Migration
                             'url' => 'permohonan.upload_rab', 
                             'permission' => 'upload_rab'
                         ],
+                        [
+                            'color' => 'warning', 
+                            'icon' => 'bi bi-search', 
+                            'url' => 'nphd.show', 
+                            'permission' => 'viewNphd'
+                        ],
                     ]
                 ),
             ],

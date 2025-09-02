@@ -342,8 +342,8 @@
 
         <p class="no-indent mb-3">PIHAK PERTAMA menyerahkan Hibah Berupa Uang kepada PIHAK KEDUA dan PIHAK KEDUA menerima
             Hibah Berupa Uang dari PIHAK PERTAMA sebesar:<br>
-            Rp. {{ number_format($nominal_rab, 0, ',', '.') }},-
-            ({{ strtolower(App\Helpers\General::Terbilang($nominal_rab)) }} rupiah).</p>
+            Rp. {{ number_format($nominal_anggaran, 0, ',', '.') }},-
+            ({{ strtolower(App\Helpers\General::Terbilang($nominal_anggaran)) }} rupiah).</p>
 
         <div class="w-100 mb-3 text-center">
             <h6>Pasal 2</h6>
@@ -379,8 +379,9 @@
             <li>Sebelum bantuan hibah diserahkan kepada PIHAK KEDUA, terlebih dahulu PIHAK PERTAMA meminta Pakta Integritas
                 terkait dengan penggunaan hibah dan nomor rekening tersendiri atas nama Dana Hibah KONI Kota Bukittinggi,
                 sehingga hibah terpisah dari keuangan KONI Kota Bukittinggi lainnya.</li>
-            <li>Penyerahan hibah dilakukan secara sekaligus sebesar Rp. {{ number_format($nominal_rab, 0, ',', '.') }},-
-                ({{ strtolower(App\Helpers\General::Terbilang($nominal_rab)) }} rupiah).</li>
+            <li>Penyerahan hibah dilakukan secara sekaligus sebesar Rp.
+                {{ number_format($nominal_anggaran, 0, ',', '.') }},-
+                ({{ strtolower(App\Helpers\General::Terbilang($nominal_anggaran)) }} rupiah).</li>
             <li>Penyerahan hibah dibuktikan dengan Berita Acara Serah Terima Hibah yang ditandatangani oleh PIHAK PERTAMA
                 dan PIHAK KEDUA.</li>
             <li>Bahwa selama penempatan dana hibah pada bank yang ditunjuk, PIHAK KEDUA belum mempergunakan dana hibah

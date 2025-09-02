@@ -52,21 +52,21 @@ class General {
         } elseif ($angka < 20) {
             $hasil = self::Terbilang($angka - 10) . " belas";
         } elseif ($angka < 100) {
-            $hasil = self::Terbilang($angka / 10) . " puluh" . self::Terbilang($angka % 10);
+            $hasil = self::Terbilang($angka / 10) . " puluh " . self::Terbilang($angka % 10);
         } elseif ($angka < 200) {
             $hasil = " seratus" . self::Terbilang($angka - 100);
         } elseif ($angka < 1000) {
-            $hasil = self::Terbilang($angka / 100) . " ratus" . self::Terbilang($angka % 100);
+            $hasil = self::Terbilang($angka / 100) . " ratus " . self::Terbilang($angka % 100);
         } elseif ($angka < 2000) {
             $hasil = " seribu" . self::Terbilang($angka - 1000);
         } elseif ($angka < 1000000) {
-            $hasil = self::Terbilang($angka / 1000) . " ribu" . self::Terbilang($angka % 1000);
+            $hasil = self::Terbilang($angka / 1000) . " ribu " . self::Terbilang($angka % 1000);
         } elseif ($angka < 1000000000) {
-            $hasil = self::Terbilang($angka / 1000000) . " juta" . self::Terbilang($angka % 1000000);
+            $hasil = self::Terbilang($angka / 1000000) . " juta " . self::Terbilang($angka % 1000000);
         } elseif ($angka < 1000000000000) {
-            $hasil = self::Terbilang($angka / 1000000000) . " miliar" . self::Terbilang(fmod($angka, 1000000000));
+            $hasil = self::Terbilang($angka / 1000000000) . " miliar " . self::Terbilang(fmod($angka, 1000000000));
         } elseif ($angka < 1000000000000000) {
-            $hasil = self::Terbilang($angka / 1000000000000) . " triliun" . self::Terbilang(fmod($angka, 1000000000000));
+            $hasil = self::Terbilang($angka / 1000000000000) . " triliun " . self::Terbilang(fmod($angka, 1000000000000));
         }
 
         return trim($hasil);

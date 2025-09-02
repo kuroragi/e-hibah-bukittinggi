@@ -76,7 +76,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/nphd', [NphdContoller::class, 'index'])->name('nphd');
     Route::get('/nphd/show/{id_permohonan}', \App\Livewire\Nphd\Show::class)->name('nphd.show');
-    Route::get('/nphd/review/{id_permohonan}', \App\Livewire\Nphd\Review::class)->name('nphd.show');
+    Route::get('/nphd/review/{id_permohonan}', \App\Livewire\Nphd\Review::class)->name('nphd.review');
 
 });
 
@@ -123,21 +123,20 @@ Route::get('/testing-pdf', function(){
         'nominal_rab' => 5000000,
     ]);
 });
-// Route::get('/testing', function () {
-//     $user = auth()->user();
+Route::get('/testing', function () {
+    $user = auth()->user();
 
-//     if (!$user) {
-//         return 'Tidak ada user yang login.';
-//     }
+    if (!$user) {
+        return 'Tidak ada user yang login.';
+    }
 
-//     return [
-//         'user_id'       => $user->id,
-//         'roles'         => $user->getRoleNames(),       // daftar role
-//         'permissions'   => $user->getAllPermissions()->pluck('name'), // daftar permission
-//         'has_role_admin' => $user->hasRole('Admin Lembaga'),    // cek role admin
-//         'can_view_dukung'  => $user->can('view_dukung', App\Models\Permohonan::class),   // cek permission view users
-//     ];
-// })->middleware('auth');
+    return [
+        'user_id'       => $user->id,
+        'roles'         => $user->getRoleNames(),       // daftar role
+        'permissions'   => $user->getAllPermissions()->pluck('name'), // daftar permission
+        'can_view_nphd'  => $user->can('viewNphd', App\Models\Permohonan::class),   // cek permission view users
+    ];
+})->middleware('auth');
 
 // Route::get('/test-email', function () {
 //     \Illuminate\Support\Facades\Mail::raw('Test email SMTP Gmail', function ($message) {

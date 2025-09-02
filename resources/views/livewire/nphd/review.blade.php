@@ -5,10 +5,10 @@
                 <h3 class="font-semibold mt-6 mb-2">Rab</h3>
                 <div class="row mb-4">
                     <div class="col-md-6 mb-3">
-                        <label for="totalPengajuan" class="form-label">Total Pengajuan <span
+                        <label for="totalPengajuan" class="form-label">Nominal Anggarab <span
                                 class="text-danger">*</span></label>
-                        <input wire:model.change='nominal_rab' type="number" class="form-control" id="totalPengajuan"
-                            placeholder="Masukkan total pengajuan" readonly>
+                        <input wire:model.change='nominal_anggaran' type="number" class="form-control"
+                            id="totalPengajuan" placeholder="Masukkan total pengajuan" readonly>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="nominalRAB" class="form-label">Nominal RAB <span

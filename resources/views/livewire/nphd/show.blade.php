@@ -10,7 +10,7 @@
                         <div class="col-md-6 mb-3">
                             <label for="totalPengajuan" class="form-label">Total Pengajuan <span
                                     class="text-danger">*</span></label>
-                            <input wire:model.change='nominal_rab' type="number" class="form-control"
+                            <input wire:model.change='nominal_anggaran' type="number" class="form-control"
                                 id="totalPengajuan" placeholder="Masukkan total pengajuan" readonly>
                         </div>
                         <div class="col-md-6 mb-3">

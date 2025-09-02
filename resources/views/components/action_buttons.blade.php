@@ -10,7 +10,6 @@
         }
     }
 
-    // dd($buttonsArray);
     $model = $json[1] ?? null; // model class
     $id = $json[2];
 @endphp

@@ -56,22 +56,22 @@
                 <tr>
                     <td>Nama</td>
                     <td>:</td>
-                    <td>{{ $data->lembaga?->name }}</td>
+                    <td>{{ ucwords($data->lembaga?->name) }}</td>
                 </tr>
                 <tr>
                     <td>Alamat</td>
                     <td>:</td>
-                    <td>{{ $data->lembaga?->alamat }}</td>
+                    <td>{{ ucwords($data->lembaga?->alamat) }}</td>
                 </tr>
                 <tr>
-                    <td>Nominal Sekolah</td>
+                    <td>Nominal Sebesar</td>
                     <td>:</td>
-                    <td>Rp. {{ number_format($data->nominal_rab, 0, ',', '.') }}</td>
+                    <td>Rp. {{ number_format($data->nominal_anggaran, 0, ',', '.') }}</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td></td>
-                    <td>({{ ucwords(App\Helpers\General::Terbilang($data->nominal_rab) . ' Rupiah') }})</td>
+                    <td>({{ ucwords(App\Helpers\General::Terbilang($data->nominal_anggaran) . ' Rupiah') }})</td>
                 </tr>
             </table>
         </div>

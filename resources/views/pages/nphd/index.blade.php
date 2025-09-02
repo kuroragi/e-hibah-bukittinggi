@@ -15,6 +15,19 @@
             </nav>
         </div>
     </div>
+    @if (session()->has('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if (session()->has('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
 
     <!--end breadcrumb-->
@@ -35,7 +48,7 @@
                             <th>Nominal Anggaran Pengajuan</th>
                             <th>Nominal Rekomendasi</th>
                             <th>Nominal APBD</th>
-                            <th>Nominal Status Pengajuan</th>
+                            <th>Status Pengajuan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -54,7 +67,11 @@
                                         <span>{{ number_format($item->nominal_rab ?? 0, 0, ',', '.') }}</span>
                                     </div>
                                 </td>
-                                <td></td>
+                                <td>
+                                    <div class="d-flex justify-content-between"><span>Rp.</span>
+                                        <span>{{ number_format($item->nominal_anggaran ?? 0, 0, ',', '.') }}</span>
+                                    </div>
+                                </td>
                                 <td>
                                     <div class="d-flex justify-content-between"><span>Rp.</span>
                                         <span>{{ number_format($item->nominal_rekomendasi ?? 0, 0, ',', '.') }}</span>
@@ -70,9 +87,9 @@
                                 </td>
                                 <td class="text-center">
                                     @action_buttons([$item->status->action_buttons, App\Models\Permohonan::class, $item->id])
-                                    <a href="{{ route('nphd.show', ['id_permohonan' => $item->id]) }}"><button
+                                    {{-- <a href="{{ route('nphd.show', ['id_permohonan' => $item->id]) }}"><button
                                             class="btn btn-sm btn-warning" title="Detail NPHD"><i
-                                                class="bi bi-pencil-square"></i></button></a>
+                                                class="bi bi-pencil-square"></i></button></a> --}}
                                 </td>
                             </tr>
                         @endforeach
@@ -90,7 +107,7 @@
                             <th>Nominal Anggaran Pengajuan</th>
                             <th>Nominal Rekomendasi</th>
                             <th>Nominal APBD</th>
-                            <th>Nominal Status Pengajuan</th>
+                            <th>Status Pengajuan</th>
                             <th>Aksi</th>
                         </tr>
                     </tfoot>

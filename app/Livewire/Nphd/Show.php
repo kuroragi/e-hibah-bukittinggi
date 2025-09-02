@@ -7,6 +7,7 @@ use App\Models\PerbaikanRab;
 use App\Models\Permohonan;
 use App\Models\RabPermohonan;
 use App\Models\Satuan;
+use App\Models\Status_permohonan;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -23,9 +24,9 @@ class Show extends Component
     public $satuans;
     public $count_perbaikan = 1;
 
-    public $nominal_rab;
+    public $nominal_anggaran;
     public $total_kegiatan = 0;
-    public $kegiatans = [];
+    public $kegiatans;
     #[Validate('required')]
     public $kegiatan_rab = [];
     public $rincian = [];
@@ -36,10 +37,14 @@ class Show extends Component
 
     public function mount($id_permohonan){
         $this->permohonan = Permohonan::with(['lembaga', 'skpd', 'urusan_skpd', 'pendukung'])->where('id', $id_permohonan)->first();
-        $this->nominal_rab = $this->permohonan->nominal_rab;
+        $this->nominal_anggaran = $this->permohonan->nominal_anggaran;
         $perbaikan_rab = PerbaikanRab::where('id_permohonan', $id_permohonan)->get();
         
-        $this->kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->get();
+        
+        $this->kegiatans = PerbaikanRab::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->latest()->get();
+        if(!$this->kegiatans->count() > 0){
+            $kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->get();
+        }
             if($this->kegiatans){
                 $grand = 0;
                 foreach ($this->kegiatans as $k1 => $item) {
@@ -115,25 +120,33 @@ class Show extends Component
 
         DB::beginTransaction();
 
+        if(Storage::disk('public')->exists($path)){
+            Storage::disk('public')->delete($path);
+        }
+        
+        $ext_permintaan_nphd = $this->file_permintaan_nphd->getclientOriginalExtension();
+        $permintaan_nphd_path = $this->file_permintaan_nphd->storeAs($dir, $filename.'.'.$ext_permintaan_nphd, 'public');
+        
         try {
-            if(Storage::disk('public')->exists($path)){
-                Storage::disk('public')->delete($path);
-            }
-            
-            $ext_permintaan_nphd = $this->file_permintaan_nphd->getclientOriginalExtension();
-            $permintaan_nphd_path = $this->file_permintaan_nphd->storeAs($dir, $filename.'.'.$ext_permintaan_nphd, 'public');
+
+            $status = Status_permohonan::where('name', 'Permohonan NPHD')->first();
             
             $add_permintaan_nphd = $this->permohonan->update([
+                'id_status' => $status->id,
                 'file_permintaan_nphd' => $permintaan_nphd_path,
             ]);
 
 
             DB::commit();
 
-            return redirect()->route('nphd');
+            return redirect()->route('nphd')->with('success', 'Berhasil mengajukan permohonan NPHD');
         } catch (\Throwable $th) {
             DB::rollBack();
-            dd($th);
+            
+            if(Storage::disk('public')->exists($permintaan_nphd_path)){
+                Storage::disk('public')->delete($permintaan_nphd_path);
+            }
+            
             session()->flash('danger', 'Gagal menyimpan permintaan nphd : '.$th->message);
         }
     }

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Nphd;
 
+use App\Models\PerbaikanRab;
 use App\Models\Permohonan;
 use App\Models\RabPermohonan;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -15,7 +16,7 @@ class Review extends Component
 
     public $step = 1;
     
-    public $nominal_rab;
+    public $nominal_anggaran;
     public $total_kegiatan = 0;
     public $kegiatans = [];
     public $kegiatan_rab = [];
@@ -24,9 +25,12 @@ class Review extends Component
 
     public function mount($id_permohonan){
         $this->permohonan = Permohonan::findOrFail($id_permohonan);
-        $this->nominal_rab = $this->permohonan->nominal_rab;
-
-        $this->kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->get();
+        $this->nominal_anggaran = $this->permohonan->nominal_anggaran;
+                
+        $this->kegiatans = PerbaikanRab::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->latest()->get();
+        if(!$this->kegiatans->count() > 0){
+            $kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->get();
+        }
             if($this->kegiatans){
                 $grand = 0;
                 foreach ($this->kegiatans as $k1 => $item) {
@@ -89,7 +93,7 @@ class Review extends Component
         $pimpinan_lembaga = $this->permohonan->lembaga?->pengurus->where('jabatan', 'Pimpinan')->first();
 
         // if(!Storage::disk('public')->exists($dir.'/'.$filename)){
-            $pdf = Pdf::loadView('pdf.nphd', ['data' => $this->permohonan, 'kegiatans' => $this->kegiatans, 'nominal_rab' => $this->nominal_rab, 'pimpinan_lembaga' => $pimpinan_lembaga])
+            $pdf = Pdf::loadView('pdf.nphd', ['data' => $this->permohonan, 'kegiatans' => $this->kegiatans, 'nominal_anggaran' => $this->nominal_anggaran, 'pimpinan_lembaga' => $pimpinan_lembaga])
                 ->setPaper('A4', 'portrait');
 
             // Pastikan folder ada (di disk 'public' = storage/app/public)
