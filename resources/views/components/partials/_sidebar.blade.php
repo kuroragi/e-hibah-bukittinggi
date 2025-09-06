@@ -107,6 +107,8 @@
                                     class="bi bi-file-earmark-post"></i>Pengajuan NPHD</a>
                         @endif
                     @endcan
+
+                    <a href="{{ route('pencairan') }}" class="list-group-item"><i class="bi bi-file"></i>Pencairan</a>
                     {{-- <a href="javascript::" class="list-group-item"><i class="bi bi-file-earmark-ruled"></i>Laporan</a> --}}
                 </div>
             </div>

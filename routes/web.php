@@ -78,6 +78,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/nphd/show/{id_permohonan}', \App\Livewire\Nphd\Show::class)->name('nphd.show');
     Route::get('/nphd/review/{id_permohonan}', \App\Livewire\Nphd\Review::class)->name('nphd.review');
 
+    Route::get('/pencairan', [PermohonanController::class, 'pencairan'])->name('pencairan');
+
 });
 
 
