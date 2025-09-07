@@ -43,7 +43,7 @@ class Show extends Component
         
         $this->kegiatans = PerbaikanRab::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->latest()->get();
         if(!$this->kegiatans->count() > 0){
-            $kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->get();
+            $this->kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->get();
         }
             if($this->kegiatans){
                 $grand = 0;

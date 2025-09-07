@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Nphd;
 use App\Models\PerbaikanRab;
 use App\Models\Permohonan;
 use App\Models\RabPermohonan;
@@ -9,6 +10,8 @@ use App\Models\Skpd;
 use App\Models\UrusanSkpd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class PermohonanController extends Controller
 {
@@ -98,22 +101,56 @@ class PermohonanController extends Controller
 
     public function pencairan(){
         if(Auth::user()->hasRole('Super Admin')){
-            $permohonan = Permohonan::all();
+            $permohonan = Permohonan::with(['skpd', 'lembaga', 'nphd'])->where('id_status', 14)->get();
         }
 
         if(Auth::user()->hasRole('Admin SKPD')){
-            $permohonan = Permohonan::with(['skpd', 'lembaga'])->where('id_skpd', Auth::user()->id_skpd)->get();
+            $permohonan = Permohonan::with(['skpd', 'lembaga', 'nphd'])->where('id_skpd', Auth::user()->id_skpd)->where('id_status', 14)->get();
         }
 
         if(Auth::user()->hasRole('Reviewer') || Auth::user()->hasRole('Verifikator')){
-            $permohonan = Permohonan::with(['skpd', 'lembaga'])->where('id_skpd', Auth::user()->id_skpd)->where('urusan', Auth::user()->id_urusan)->get();
+            $permohonan = Permohonan::with(['skpd', 'lembaga', 'nphd'])->where('id_skpd', Auth::user()->id_skpd)->where('urusan', Auth::user()->id_urusan)->where('id_status', 14)->get();
         }
         
         if(Auth::user()->hasRole('Admin Lembaga')){
-            $permohonan = Permohonan::with(['skpd', 'lembaga'])->where('id_lembaga', Auth::user()->id_lembaga)->get();
+            $permohonan = Permohonan::with(['skpd', 'lembaga', 'nphd'])->where('id_lembaga', Auth::user()->id_lembaga)->where('id_status', 14)->get();
         }
         return view('pages.permohonan.pencairan',[
             'permohonan' => $permohonan,
         ]);
+    }
+
+    public function uploadNphd(Request $request){
+        $validatedData = $request->validate([
+            'file_nphd' => 'required|mimetypes:application/pdf'
+        ]);
+
+        $permohonan = Permohonan::findOrFail($request->id_permohonan);
+
+
+        DB::beginTransaction();
+        $nphd_ext = $request->file_nphd->getclientOriginalExtension();
+        $nphd_path = $request->file_nphd->storeAs('nphd', 'nphd_'.$permohonan->id.$permohonan->tahun_apbd.$nphd_ext, 'public');
+        try {
+            $nphd = Nphd::create([
+                'id_permohonan' => $permohonan->id,
+                'file_nphd' => $nphd_path,
+                'no_nphd' => $request->no_nphd,
+                'tanggal_nphd' => $request->tanggal_nphd,
+                'nilai_disetujui' => $request->nilai_disetujui,
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('pencairan')->with('success', 'Berhasil upload NPHD, menunggu pencairan!');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            
+            if(Storage::disk('public')->exists($nphd_path)){
+                Storage::disk('public')->delete($nphd_path);
+            }
+
+            return redirect()->route('pencairan')->withInput()->with('error', 'Terjadi kesalahan: '.$th->getMessage());
+        }
     }
 }

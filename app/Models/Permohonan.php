@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Blameable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Permohonan extends Model
@@ -68,5 +69,9 @@ class Permohonan extends Model
 
     public function perbaikanRab(){
         return $this->hasMany(PerbaikanRab::class, 'id_permohonan');
+    }
+
+    public function nphd(){
+        return $this->hasOne(Nphd::class, 'id_permohonan');
     }
 }

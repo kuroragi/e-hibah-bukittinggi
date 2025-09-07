@@ -168,12 +168,6 @@ return new class extends Migration
                         ],
                         [
                             'color' => 'warning', 
-                            'icon' => 'bi bi-pencil-square', 
-                            'url' => 'permohonan.upload_rab', 
-                            'permission' => 'upload_rab'
-                        ],
-                        [
-                            'color' => 'warning', 
                             'icon' => 'bi bi-search', 
                             'url' => 'nphd.show', 
                             'permission' => 'viewNphd'

@@ -5,7 +5,9 @@ namespace App\Livewire\Nphd;
 use App\Models\PerbaikanRab;
 use App\Models\Permohonan;
 use App\Models\RabPermohonan;
+use App\Models\Status_permohonan;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -29,7 +31,7 @@ class Review extends Component
                 
         $this->kegiatans = PerbaikanRab::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->latest()->get();
         if(!$this->kegiatans->count() > 0){
-            $kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->get();
+            $this->kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->get();
         }
             if($this->kegiatans){
                 $grand = 0;
@@ -116,5 +118,24 @@ class Review extends Component
         $this->dispatch('pdf-ready', [
             'url' => $url
         ]);
+    }
+
+    public function saveNphd(){
+        $status = Status_permohonan::where('name', 'NPHD Sesuai')->first();
+        DB::beginTransaction();
+
+        try {
+            $this->permohonan->update([
+                'id_status' => $status->id,
+            ]);
+            
+            DB::commit();
+
+            return redirect()->route('nphd')->with('success', 'NPHD sudah sesuai dan siap dicairkan!');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            return session()->flash('error', 'Review NPHD belum tersimpan, karena: '.$th->getMessage());
+        }
     }
 }

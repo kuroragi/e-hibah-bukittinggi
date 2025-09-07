@@ -79,6 +79,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/nphd/review/{id_permohonan}', \App\Livewire\Nphd\Review::class)->name('nphd.review');
 
     Route::get('/pencairan', [PermohonanController::class, 'pencairan'])->name('pencairan');
+    Route::post('/pencairan/upload_nphd', [PermohonanController::class, 'uploadNphd'])->name('pencairan.upload_nphd');
 
 });
 
