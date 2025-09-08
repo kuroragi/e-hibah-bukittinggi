@@ -18,6 +18,9 @@ class Nphd extends Model
         'nilai_disetujui',
         'is_Signed_pemprov',
         'is_Signed_pemko',
+        'no_permohonan',
+        'tanggal_permohonan',
+        'file_permohonan',
     ];
 
     /**

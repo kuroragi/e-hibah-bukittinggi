@@ -122,7 +122,13 @@ class PermohonanController extends Controller
 
     public function uploadNphd(Request $request){
         $validatedData = $request->validate([
-            'file_nphd' => 'required|mimetypes:application/pdf'
+            'no_nphd' => 'required',
+            'tanggal_nphd' => 'required',
+            'file_nphd' => 'required|mimetypes:application/pdf',
+            'nilai_disetujui' => 'required',
+            'no_permohonan' => 'required',
+            'tanggal_permohonan' => 'required',
+            'file_permohonan' => 'required|mimetypes:application/pdf',
         ]);
 
         $permohonan = Permohonan::findOrFail($request->id_permohonan);
@@ -131,6 +137,9 @@ class PermohonanController extends Controller
         DB::beginTransaction();
         $nphd_ext = $request->file_nphd->getclientOriginalExtension();
         $nphd_path = $request->file_nphd->storeAs('nphd', 'nphd_'.$permohonan->id.$permohonan->tahun_apbd.$nphd_ext, 'public');
+        
+        $permohonan_ext = $request->file_permohonan->getclientOriginalExtension();
+        $permohonan_path = $request->file_permohonan->storeAs('nphd', 'permohonan_pencairan_'.$permohonan->id.$permohonan->tahun_apbd.$permohonan_ext, 'public');
         try {
             $nphd = Nphd::create([
                 'id_permohonan' => $permohonan->id,
@@ -138,6 +147,9 @@ class PermohonanController extends Controller
                 'no_nphd' => $request->no_nphd,
                 'tanggal_nphd' => $request->tanggal_nphd,
                 'nilai_disetujui' => $request->nilai_disetujui,
+                'no_permohonan' => $request->no_permohonan,
+                'tanggal_permohonan' => $request->tanggal_permohonan,
+                'file_permohonan' => $permohonan_path,
             ]);
 
             DB::commit();
@@ -152,5 +164,12 @@ class PermohonanController extends Controller
 
             return redirect()->route('pencairan')->withInput()->with('error', 'Terjadi kesalahan: '.$th->getMessage());
         }
+    }
+
+    public function cekPendukung($id_permohonan){
+        $permohonan = Permohonan::with(['lembaga', 'skpd', 'status', 'pendukung'])->where('id', $id_permohonan)->first();
+        return view('pages.permohonan.cek_pencairan', [
+            'permohonan' => $permohonan,
+        ]);
     }
 }
