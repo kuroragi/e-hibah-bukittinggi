@@ -33,6 +33,9 @@
     <div class="card mb-3">
         <div class="card-body">
             <div class="row">
+                <h3>Data Lembaga</h3>
+            </div>
+            <div class="row">
                 <div class="col-4">
                     <label for="surat_domisili" class="label-form">Surat Domisili</label><br>
                     <button class="btn btn-warning w-100" data-bs-toggle="modal" data-bs-target="#fileModal"
@@ -55,15 +58,19 @@
             </div>
         </div>
     </div>
+
     <div class="card mb-3">
         <div class="card-body">
+            <div class="row">
+                <h3>Data Pendukung</h3>
+            </div>
             <div class="row">
                 <div class="col-4">
                     <div class="mb-3">
                         <label for="surat_domisili" class="label-form">Surat Pertanggung Jawaban</label><br>
                         <button type="button" class="btn btn-warning w-100" data-bs-toggle="modal"
                             data-bs-target="#fileModal"
-                            data-file-url="{{ Storage::url($permohonan->file_pernyataan_tanggung_jawab) }}">Lihat
+                            data-file-url="{{ Storage::url($permohonan->pendukung->file_pernyataan_tanggung_jawab) }}">Lihat
                             Dokumen</button>
                     </div>
                     <div class="mb-3">
@@ -106,6 +113,37 @@
                                 Dokumen</button>
                         </div>
                     </div>
+                    <div class="mb-3">
+                        <label for="surat_domisili" class="label-form">Permohonan Hibah</label><br>
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-warning w-100" data-bs-toggle="modal"
+                                data-bs-target="#fileModal"
+                                data-file-url="{{ Storage::url($permohonan->file_mohon) }}">Lihat
+                                Dokumen</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <h3>Pencairan</h3>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label for="surat_domisili" class="label-form">NPHD</label><br>
+                    <button class="btn btn-warning w-100" data-bs-toggle="modal" data-bs-target="#fileModal"
+                        data-file-url="{{ Storage::url($permohonan->nphd->file_nphd) }}">Lihat
+                        Dokumen</button>
+                </div>
+                <div class="col-6">
+                    <label for="surat_domisili" class="label-form">Permohonan Pencairan</label><br>
+                    <button class="btn btn-warning w-100" data-bs-toggle="modal" data-bs-target="#fileModal"
+                        data-file-url="{{ Storage::url($permohonan->nphd->file_permohonan) }}">Lihat
+                        Dokumen</button>
                 </div>
             </div>
         </div>

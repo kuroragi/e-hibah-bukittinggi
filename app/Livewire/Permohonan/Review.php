@@ -2,12 +2,15 @@
 
 namespace App\Livewire\Permohonan;
 
+use App\Livewire\Pages\Pertanyaan;
 use App\Models\BeritaAcara;
 use App\Models\KelengkapanBeritaAcara;
 use App\Models\Permohonan;
 use App\Models\PertanyaanKelengkapan;
 use App\Models\RabPermohonan;
+use App\Models\Skpd;
 use App\Models\Status_permohonan;
+use App\Models\UrusanSkpd;
 use App\Models\VerifikasiPermohonan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +29,10 @@ class Review extends Component
     public $is_pendukung_verif = false;
 
     public $permohonan;
+    public $skpds;
+    public $id_skpd;
+    public $urusans;
+    public $urusan;
     public $kegiatans;
     public $questions;
     public $is_ada_all = [];
@@ -60,6 +67,10 @@ class Review extends Component
 
     public function mount($id_permohonan = null){
         $this->permohonan = Permohonan::with(['lembaga', 'skpd', 'status', 'pendukung'])->where('id', $id_permohonan)->first();
+        $this->skpds = Skpd::all();
+        $this->id_skpd = $this->permohonan->id_skpd;
+        $this->urusans = UrusanSkpd::where('id_skpd', $this->id_skpd)->get();
+        $this->urusan = $this->permohonan->urusan;
         $this->nominal_anggaran = $this->permohonan->nominal_rab;
         $this->nominal_rekomendasi = $this->permohonan->nominal_rab;
         $this->kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', $id_permohonan)->get();
@@ -74,7 +85,7 @@ class Review extends Component
         $this->questions = PertanyaanKelengkapan::with(['children' => function($query) {$query->orderBy('order');}])->where('id_parent', null)->orderBy('order')->get();
         foreach($this->questions as $item){
             foreach($item->children as $child){
-                $this->answer[$child->id] = [
+                $this->answer[$item->id][$child->id] = [
                     'is_ada' => false,
                     'is_sesuai' => false,
                     'keterangan' => ''
@@ -88,7 +99,7 @@ class Review extends Component
                 foreach($question->children as $child){
                     $existing = $kelengkapan->firstWhere('id_pertanyaan', $child->id);
 
-                    $this->answer[$child->id] = [
+                    $this->answer[$question->id][$child->id] = [
                         'is_ada' => $existing?->is_ada ?? false,
                         'is_sesuai' => $existing?->is_sesuai ?? false,
                         'keterangan' => $existing?->keterangan ?? '',
@@ -115,7 +126,7 @@ class Review extends Component
             foreach ($question->children as $key => $child) {
                 $id = $child->id;
 
-                if (empty($this->answer[$id]['is_ada']) || empty($this->answer[$id]['is_sesuai'])) {
+                if (empty($this->answer[$question->id][$id]['is_ada']) || empty($this->answer[$question->id][$id]['is_sesuai'])) {
                     $rules["answer.$id.keterangan"] = 'required|string';
                 }
             }
@@ -161,6 +172,20 @@ class Review extends Component
         }
     }
 
+    public function checkAdaAll($id){
+        $questions = PertanyaanKelengkapan::where('id_parent', $id)->get();
+        foreach($questions as $item){
+            $this->answer[$id][$item->id]['is_ada'] = true;
+        }
+    }
+
+    public function checkSesuaiAll($id){
+        $questions = PertanyaanKelengkapan::where('id_parent', $id)->get();
+        foreach($questions as $item){
+            $this->answer[$id][$item->id]['is_sesuai'] = true;
+        }
+    }
+
     public function hasVeriffied(){
         $this->veriffied = true;
     }
@@ -198,9 +223,9 @@ class Review extends Component
                     KelengkapanBeritaAcara::create([
                         'id_berita_acara' => $berita_acara->id,
                         'id_pertanyaan' => $child->id,
-                        'is_ada' => $this->answer[$child->id]['is_ada'] ?? false,
-                        'is_sesuai' => $this->answer[$child->id]['is_sesuai'] ?? false,
-                        'is_keterangan' => $this->answer[$child->id]['is_keterangan'] ?? '',
+                        'is_ada' => $this->answer[$question->id][$child->id]['is_ada'] ?? false,
+                        'is_sesuai' => $this->answer[$question->id][$child->id]['is_sesuai'] ?? false,
+                        'is_keterangan' => $this->answer[$question->id][$child->id]['is_keterangan'] ?? '',
                     ]);
 
                 }

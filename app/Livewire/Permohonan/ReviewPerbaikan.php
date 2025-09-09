@@ -9,7 +9,9 @@ use App\Models\PerbaikanRab;
 use App\Models\Permohonan;
 use App\Models\PertanyaanKelengkapan;
 use App\Models\PertanyaanPerbaikan;
+use App\Models\Skpd;
 use App\Models\Status_permohonan;
+use App\Models\UrusanSkpd;
 use App\Models\VerifikasiPermohonan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +30,10 @@ class ReviewPerbaikan extends Component
     public $is_pendukung_verif = false;
 
     public $permohonan;
+    public $skpds;
+    public $id_skpd;
+    public $urusans;
+    public $urusan;
     public $kegiatans;
     public $questions;
     public $answer = [];
@@ -66,8 +72,11 @@ class ReviewPerbaikan extends Component
 
     public function mount($id_permohonan = null){
         $this->permohonan = Permohonan::with(['lembaga', 'skpd', 'status', 'pendukung', 'perbaikanProposal.perbaikan_rab.rincian'])->where('id', $id_permohonan)->first();
+        $this->skpds = Skpd::all();
+        $this->id_skpd = $this->permohonan->id_skpd;
+        $this->urusans = UrusanSkpd::where('id_skpd', $this->id_skpd)->get();
+        $this->urusan = $this->permohonan->urusan;
         $this->kegiatans = PerbaikanRab::with(['rincian.satuan'])->where('id_permohonan', $id_permohonan)->get();
-        dd($this->permohonan);
 
         $verifikasi = VerifikasiPermohonan::where('id_permohonan', $this->permohonan->id)->first();
         if($verifikasi){

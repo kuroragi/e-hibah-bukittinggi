@@ -219,20 +219,20 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">SKPD <span class="text-danger">*</span></label>
-                            <select wire:model="id_skpd" id="id_skpd" class="form-control">
+                            <select wire:model="id_skpd" id="id_skpd" class="form-control" disabled>
                                 <option value="">-- Pilih SKPD --</option>
-                                {{-- @foreach ($skpds as $key => $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach --}}
+                                @foreach ($skpds as $key => $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Urusan <span class="text-danger">*</span></label>
-                            <select wire:model="urusan" id="urusan" class="form-control">
+                            <select wire:model="urusan" id="urusan" class="form-control" disabled>
                                 <option value="">-- Pilih Urusan --</option>
-                                {{-- @foreach ($urusans as $key => $item)
-                                <option value="{{ $item->id }}">{{ $item->nama_urusan }}</option>
-                                @endforeach --}}
+                                @foreach ($urusans as $key => $item)
+                                    <option value="{{ $item->id }}">{{ $item->nama_urusan }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="row">
@@ -358,6 +358,12 @@
                                         </tr>
                                     @endforeach
                                 @endforeach
+                                <tr class="bg-warning">
+                                    <td class="text-start fw-bold" colspan="4">Total</td>
+                                    <td class="text-end fw-bold">
+                                        {{ number_format($permohonan->nominal_anggaran, 0, ',', '.') }}
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -588,7 +594,7 @@
                         </div>
                         <div class="row">
                             <button wire:click='storeReviewPerbaikan' class="btn btn-warning w-100">Submit Berita
-                                Acara Perbaikan</button>
+                                Acara Perbaikan Dan Kirim</button>
                         </div>
                     </div>
                 </div>
@@ -787,55 +793,10 @@
         </div>
     </div>
 
-
-
-    <div class="modal fade" id="fileModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Preview File</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body text-center" id="modalFileContent">
-                    <p>Memuat konten...</p>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 
 @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const fileModal = document.getElementById('fileModal');
-            const modalContent = document.getElementById('modalFileContent');
-
-            fileModal.addEventListener('show.bs.modal', function(event) {
-                const button = event.relatedTarget;
-                const fileUrl = button.getAttribute('data-file-url');
-                const extension = fileUrl.split('.').pop().toLowerCase();
-
-                // Reset isi
-                modalContent.innerHTML = '<p>Memuat konten...</p>';
-
-                if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(extension)) {
-                    modalContent.innerHTML =
-                        `<img src="${fileUrl}" alt="Gambar" class="img-fluid rounded shadow">`;
-                } else if (extension === 'pdf') {
-                    modalContent.innerHTML =
-                        `<iframe src="${fileUrl}" width="100%" height="600px" style="border:none;"></iframe>`;
-                } else {
-                    modalContent.innerHTML = `<p class="text-danger">Jenis file tidak didukung.</p>`;
-                }
-            });
-
-            $("#is_lembaga_verif_checkbox, #is_proposal_verif_checkbox, #is_pendukung_verif_checkbox").on("change",
-                function() {
-                    Livewire.dispatch("updateStatement");
-                });
-        });
-    </script>
     <script>
         $(document).ready(function() {
 

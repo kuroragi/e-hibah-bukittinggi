@@ -136,10 +136,10 @@ class PermohonanController extends Controller
 
         DB::beginTransaction();
         $nphd_ext = $request->file_nphd->getclientOriginalExtension();
-        $nphd_path = $request->file_nphd->storeAs('nphd', 'nphd_'.$permohonan->id.$permohonan->tahun_apbd.$nphd_ext, 'public');
+        $nphd_path = $request->file_nphd->storeAs('nphd', 'nphd_'.$permohonan->id.$permohonan->tahun_apbd.'.'.$nphd_ext, 'public');
         
         $permohonan_ext = $request->file_permohonan->getclientOriginalExtension();
-        $permohonan_path = $request->file_permohonan->storeAs('nphd', 'permohonan_pencairan_'.$permohonan->id.$permohonan->tahun_apbd.$permohonan_ext, 'public');
+        $permohonan_path = $request->file_permohonan->storeAs('nphd', 'permohonan_pencairan_'.$permohonan->id.$permohonan->tahun_apbd.'.'.$permohonan_ext, 'public');
         try {
             $nphd = Nphd::create([
                 'id_permohonan' => $permohonan->id,
@@ -167,7 +167,7 @@ class PermohonanController extends Controller
     }
 
     public function cekPendukung($id_permohonan){
-        $permohonan = Permohonan::with(['lembaga', 'skpd', 'status', 'pendukung'])->where('id', $id_permohonan)->first();
+        $permohonan = Permohonan::with(['lembaga', 'skpd', 'status', 'pendukung', 'nphd'])->where('id', $id_permohonan)->first();
         return view('pages.permohonan.cek_pencairan', [
             'permohonan' => $permohonan,
         ]);

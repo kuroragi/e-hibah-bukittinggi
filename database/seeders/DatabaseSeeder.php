@@ -47,6 +47,7 @@ class DatabaseSeeder extends Seeder
             'Review Permohonan',
             'Reviewed Permohonan',
             'Reviewed Permohonan',
+            'Review Perbaikan Permohonan',
             'View Any Nphd',
             'Review Nphd',
         ]);

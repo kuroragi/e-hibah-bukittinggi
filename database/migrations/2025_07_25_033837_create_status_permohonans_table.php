@@ -204,12 +204,6 @@ return new class extends Migration
                             'icon' => 'bi bi-send', 
                             'url' => 'permohonan.send', 
                             'permission' => 'send'
-                        ],
-                        [
-                            'color' => 'secondary', 
-                            'icon' => 'bi bi-cloud-download-fill', 
-                            'url' => 'permohonan.pemberitahuan.download', 
-                            'permission' => 'download_pemberitahuan'
                         ]
                     ]
                 ),
