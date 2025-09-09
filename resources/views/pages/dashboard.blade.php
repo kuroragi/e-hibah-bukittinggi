@@ -29,8 +29,8 @@
             </div>
         </div>
 
-        @if (auth()->user()->hasRole('Super Admin'))
-            <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-2 row-cols-xxl-3">
+        <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-2 row-cols-xxl-3">
+            @if (auth()->user()->hasRole('Super Admin'))
                 <div class="col">
                     <div class="card radius-10">
                         <div class="card-body">
@@ -71,28 +71,48 @@
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card radius-10">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-                                <div class="">
-                                    <p class="mb-1">Total Pencairan</p>
-                                    <h4 class="mb-0 text-pink">Rp. 0</h4>
-                                </div>
-                                <div class="ms-auto fs-2 text-pink">
-                                    <i class="bi bi-patch-check"></i>
-                                </div>
+            @endif
+            <div class="col">
+                <div class="card radius-10">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <p class="mb-1">Total Pencairan</p>
+                                <h4 class="mb-0 text-pink">Rp.
+                                    {{ number_format($permohonan->sum('nominal_anggaran'), 0, ',', '.') }}</h4>
                             </div>
-                            {{-- <div class="border-top my-2"></div>
+                            <div class="ms-auto fs-2 text-pink">
+                                Rp.
+                            </div>
+                        </div>
+                        {{-- <div class="border-top my-2"></div>
                             <small class="mb-0"><span class="text-danger">-1.8 <i class="bi bi-arrow-down"></i></span>
                                 Compared to
                                 last month</small> --}}
-                        </div>
                     </div>
                 </div>
             </div>
-            <!--end row-->
-        @endif
+            <div class="col">
+                <div class="card radius-10">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <p class="mb-1">Permohonan Dicairkan</p>
+                                <h4 class="mb-0 text-success">{{ $permohonan->where('id_status', 14)->count() }}</h4>
+                            </div>
+                            <div class="ms-auto fs-2 text-success">
+                                <i class="bi bi-patch-check"></i>
+                            </div>
+                        </div>
+                        {{-- <div class="border-top my-2"></div>
+                            <small class="mb-0"><span class="text-danger">-1.8 <i class="bi bi-arrow-down"></i></span>
+                                Compared to
+                                last month</small> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end row-->
 
         <div class="row">
             <div class="col-12 col-lg-12 col-xl-6 d-flex">
