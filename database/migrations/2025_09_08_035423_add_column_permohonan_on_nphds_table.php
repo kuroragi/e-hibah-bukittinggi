@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('nphds', function (Blueprint $table) {
-            $table->string('no_permohonan')->after('nilai_disetujui');
-            $table->date('tanggal_permohonan')->after('no_permohonan');
-            $table->string('file_permohonan')->after('tanggal_permohonan');
+            $table->string('no_permohonan')->nullable()->after('nilai_disetujui');
+            $table->date('tanggal_permohonan')->nullable()->after('no_permohonan');
+            $table->string('file_permohonan')->nullable()->after('tanggal_permohonan');
         });
     }
 
