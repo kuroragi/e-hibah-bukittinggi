@@ -29,7 +29,7 @@
             </div>
         </div>
 
-        <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-2 row-cols-xxl-3">
+        <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-2 row-cols-xxl-4">
             @if (auth()->user()->hasRole('Super Admin'))
                 <div class="col">
                     <div class="card radius-10">
@@ -77,12 +77,11 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="">
-                                <p class="mb-1">Total Pencairan</p>
-                                <h4 class="mb-0 text-pink">Rp.
-                                    {{ number_format($permohonan->sum('nominal_anggaran'), 0, ',', '.') }}</h4>
+                                <p class="mb-1">Permohonan Dicairkan</p>
+                                <h4 class="mb-0 text-success">{{ $permohonan->where('id_status', 14)->count() }}</h4>
                             </div>
-                            <div class="ms-auto fs-2 text-pink">
-                                Rp.
+                            <div class="ms-auto fs-2 text-success">
+                                <i class="bi bi-patch-check"></i>
                             </div>
                         </div>
                         {{-- <div class="border-top my-2"></div>
@@ -97,11 +96,12 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="">
-                                <p class="mb-1">Permohonan Dicairkan</p>
-                                <h4 class="mb-0 text-success">{{ $permohonan->where('id_status', 14)->count() }}</h4>
+                                <p class="mb-1">Total Pencairan</p>
+                                <h4 class="mb-0 text-pink">Rp.
+                                    {{ number_format($permohonan->sum('nominal_anggaran'), 0, ',', '.') }}</h4>
                             </div>
-                            <div class="ms-auto fs-2 text-success">
-                                <i class="bi bi-patch-check"></i>
+                            <div class="ms-auto fs-2 text-pink">
+                                Rp.
                             </div>
                         </div>
                         {{-- <div class="border-top my-2"></div>
@@ -172,7 +172,7 @@
                                             <i class="bi bi-exclamation-square-fill"></i>
                                         </div>
                                         <h3 class="mb-0">
-                                            {{ $permohonan->whereIn('id_status', [8, 10, 11, 12])->count() }}
+                                            {{ $permohonan->whereIn('id_status', [8, 10, 11, 12, 13])->count() }}
                                         </h3>
                                         <p class="mb-0">Dikoreksi</p>
                                     </div>

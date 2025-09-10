@@ -24,6 +24,7 @@ use App\Livewire\Role as LivewireRole;
 use App\Livewire\SKPD;
 use App\Livewire\User;
 use App\Livewire\User\ChangePassword;
+use App\Models\Bank;
 use App\Models\Lembaga;
 use App\Models\Permission;
 use App\Models\Permohonan;
@@ -85,62 +86,63 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-Route::get('/testing-pdf', function(){
-    $data = Permohonan::with(['lembaga' => function($query){
-        $query->with(['skpd', 'urusan', 'pengurus' => function($query){
-            $query->where('jabatan', 'Pimpinan');
-        }]);
-    }])->where('id', 3)->first();
-    $pimpinan_lembaga = $data->lembaga?->pengurus->first();
-    $kegiatan_rab = [];
-    $kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', 3)->get();
-            if($kegiatans){
-                $grand = 0;
-                foreach ($kegiatans as $k1 => $item) {
-                    foreach ($item->rincian as $k2 => $child) {
-                        $grand += $child->subtotal;
-                    }
-                }
-                $total_kegiatan = $grand;
-            }
-            foreach ($kegiatans as $k1 => $item) {
-                $kegiatan_rab[$k1] = [
-                    'id_kegiatan' => $item->id,
-                    'nama_kegiatan' => $item->nama_kegiatan,
-                    'total_kegiatan' => 0
-                ];
-                foreach($item->rincian as $k2 => $child){
-                    $kegiatan_rab[$k1]['rincian'][$k2] = [
-                        'id_rincian' => $child->id,
-                        'kegiatan' => $child->keterangan,
-                        'volume' => $child->volume,
-                        'satuan' => $child->id_satuan,
-                        'harga_satuan' => $child->harga,
-                        'subtotal' => $child->subtotal,
-                    ];
-                }
-            }
-    return view('pdf.nphd', [
-        'data' => $data,
-        'pimpinan_lembaga' => $pimpinan_lembaga,
-        'kegiatans' => $kegiatans,
-        'nominal_rab' => 5000000,
-    ]);
-});
-Route::get('/testing', function () {
-    $user = auth()->user();
+// Route::get('/testing-pdf', function(){
+//     $data = Permohonan::with(['lembaga' => function($query){
+//         $query->with(['skpd', 'urusan', 'pengurus' => function($query){
+//             $query->where('jabatan', 'Pimpinan');
+//         }]);
+//     }])->where('id', 3)->first();
+//     $pimpinan_lembaga = $data->lembaga?->pengurus->first();
+//     $kegiatan_rab = [];
+//     $kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', 3)->get();
+//             if($kegiatans){
+//                 $grand = 0;
+//                 foreach ($kegiatans as $k1 => $item) {
+//                     foreach ($item->rincian as $k2 => $child) {
+//                         $grand += $child->subtotal;
+//                     }
+//                 }
+//                 $total_kegiatan = $grand;
+//             }
+//             foreach ($kegiatans as $k1 => $item) {
+//                 $kegiatan_rab[$k1] = [
+//                     'id_kegiatan' => $item->id,
+//                     'nama_kegiatan' => $item->nama_kegiatan,
+//                     'total_kegiatan' => 0
+//                 ];
+//                 foreach($item->rincian as $k2 => $child){
+//                     $kegiatan_rab[$k1]['rincian'][$k2] = [
+//                         'id_rincian' => $child->id,
+//                         'kegiatan' => $child->keterangan,
+//                         'volume' => $child->volume,
+//                         'satuan' => $child->id_satuan,
+//                         'harga_satuan' => $child->harga,
+//                         'subtotal' => $child->subtotal,
+//                     ];
+//                 }
+//             }
+//     return view('pdf.nphd', [
+//         'data' => $data,
+//         'pimpinan_lembaga' => $pimpinan_lembaga,
+//         'kegiatans' => $kegiatans,
+//         'nominal_rab' => 5000000,
+//     ]);
+// });
 
-    if (!$user) {
-        return 'Tidak ada user yang login.';
-    }
+// Route::get('/testing', function () {
+//     $user = auth()->user();
 
-    return [
-        'user_id'       => $user->id,
-        'roles'         => $user->getRoleNames(),       // daftar role
-        'permissions'   => $user->getAllPermissions()->pluck('name'), // daftar permission
-        'can_view_nphd'  => $user->can('viewNphd', App\Models\Permohonan::class),   // cek permission view users
-    ];
-})->middleware('auth');
+//     if (!$user) {
+//         return 'Tidak ada user yang login.';
+//     }
+
+//     return [
+//         'user_id'       => $user->id,
+//         'roles'         => $user->getRoleNames(),       // daftar role
+//         'permissions'   => $user->getAllPermissions()->pluck('name'), // daftar permission
+//         'can_view_nphd'  => $user->can('viewNphd', App\Models\Permohonan::class),   // cek permission view users
+//     ];
+// })->middleware('auth');
 
 // Route::get('/test-email', function () {
 //     \Illuminate\Support\Facades\Mail::raw('Test email SMTP Gmail', function ($message) {

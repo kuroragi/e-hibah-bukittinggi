@@ -10,6 +10,7 @@ class Pengurus extends Model
 {
     use SoftDeletes, Blameable;
     protected $fillable = [
+        'id_lembaga',
         'name',
         'jabatan',
         'nik',

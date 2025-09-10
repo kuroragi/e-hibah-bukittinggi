@@ -1,9 +1,42 @@
 <div>
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3">
+            <h4>Form Pendukung Lembaga</h4>
+        </div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item"><a
+                            href="{{ route('lembaga.admin', ['id_lembaga' => $id_lembaga]) }}">Lembaga</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Pendukung Lembaga</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    @if (session()->has('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if (session()->has('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="card p-3 mb-3">
         <div class="row mb-3">
             <div class="col-md-4">
                 <label>Surat Domisili *</label>
-                <input type="text" wire:model.defer="no_domisili" class="form-control" value="{{ old('no_domisili') }}">
+                <input type="text" wire:model.defer="no_domisili" class="form-control"
+                    value="{{ old('no_domisili') }}">
             </div>
             <div class="col-md-4">
                 <label>Tanggal *</label>
@@ -50,8 +83,9 @@
                 <label>Nama Bank *</label>
                 <select wire:model.defer="id_bank" class="form-control">
                     <option value="">Pilih Bank</option>
-                    <option value="BCA">BCA</option>
-                    <option value="Mandiri">Mandiri</option>
+                    @foreach ($banks as $bank)
+                        <option value="{{ $bank->id }}">{{ $bank->acronym }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="col-md-6">
@@ -68,6 +102,16 @@
             <div class="col-md-6">
                 <label>Scan Buku Rekening *</label>
                 <input type="file" wire:model="photo_rek" class="form-control">
+                @error('photo_rek')
+                    <span class="text-danger text-sm">{{ $message }}</span>
+                @enderror
+                @if ($photo_rek)
+                    <div class="mt-3">
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                            data-bs-target="#fileModal" data-file-url="{{ Storage::url($photo_rek) }}">Lihat
+                            Photo</button>
+                    </div>
+                @endif
             </div>
         </div>
 

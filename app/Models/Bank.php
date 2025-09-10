@@ -9,6 +9,6 @@ class Bank extends Model
     protected $fillable = [
         'kode_bank',
         'name',
-        'acrconym'
+        'acronym'
     ];
 }
