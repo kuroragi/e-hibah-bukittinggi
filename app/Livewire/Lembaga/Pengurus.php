@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
 
 class Pengurus extends Component
@@ -83,54 +84,61 @@ class Pengurus extends Component
     }
 
     public function store(){
-        dd(!Storage::disk('public')->exists($this->pengurus[0]['scan_ktp']));
         DB::beginTransaction();
         
-        if(!Storage::disk('public')->exists($this->pengurus[0]['scan_ktp'])){
-            $ext_0 = $this->pengurus[0]['scan_ktp']->getclientOriginalExtension();
-            $pengurus[0]['scan_ktp'] = $this->pengurus[0]['scan_ktp']->storeAs('pengurus', 'pimpinan_'. $this->lembaga->acronym . Auth::user()->id . '_scan_ktp.' . $ext_0, 'public');
-        }else{
-            $pengurus[0]['scan_ktp'] = $this->pengurus[0]['scan_ktp'];
+        if ($this->pengurus[0]['scan_ktp'] instanceof TemporaryUploadedFile) {
+            $ext_0 = $this->pengurus[0]['scan_ktp']->getClientOriginalExtension();
+            $this->pengurus[0]['scan_ktp'] = $this->pengurus[0]['scan_ktp']->storeAs(
+                'pengurus',
+                'pimpinan_' . $this->lembaga->acronym . Auth::user()->id . '_scan_ktp.' . $ext_0,
+                'public'
+            );
         }
-        
-        if(!Storage::disk('public')->exists($this->pengurus[1]['scan_ktp'])){
-            $ext_1 = $this->pengurus[1]['scan_ktp']->getclientOriginalExtension();
-            $pengurus[1]['scan_ktp'] = $this->pengurus[1]['scan_ktp']->storeAs('pengurus', 'sekretaris_'. $this->lembaga->acronym . Auth::user()->id . '_scan_ktp.' . $ext_1, 'public');
-        }else{
-            $pengurus[1]['scan_ktp'] = $this->pengurus[1]['scan_ktp'];
+
+        if ($this->pengurus[1]['scan_ktp'] instanceof TemporaryUploadedFile) {
+            $ext_1 = $this->pengurus[1]['scan_ktp']->getClientOriginalExtension();
+            $this->pengurus[1]['scan_ktp'] = $this->pengurus[1]['scan_ktp']->storeAs(
+                'pengurus',
+                'sekretaris_' . $this->lembaga->acronym . Auth::user()->id . '_scan_ktp.' . $ext_1,
+                'public'
+            );
         }
-        
-        if(!Storage::disk('public')->exists($this->pengurus[2]['scan_ktp'])){
-            $ext_2 = $this->pengurus[2]['scan_ktp']->getclientOriginalExtension();
-            $pengurus[2]['scan_ktp'] = $this->pengurus[2]['scan_ktp']->storeAs('pengurus', 'bendahara_'. $this->lembaga->acronym . Auth::user()->id . '_scan_ktp.' . $ext_2, 'public');
-        }else{
-            $pengurus[2]['scan_ktp'] = $this->pengurus[2]['scan_ktp'];
+
+        if ($this->pengurus[2]['scan_ktp'] instanceof TemporaryUploadedFile) {
+            $ext_2 = $this->pengurus[2]['scan_ktp']->getClientOriginalExtension();
+            $this->pengurus[2]['scan_ktp'] = $this->pengurus[2]['scan_ktp']->storeAs(
+                'pengurus',
+                'bendahara_' . $this->lembaga->acronym . Auth::user()->id . '_scan_ktp.' . $ext_2,
+                'public'
+            );
         }
 
         try {
             foreach ($this->pengurus as $key => $item) {
-                ModelsPengurus::updateOrCreate(
-                    ['id' => $item['id']],
-                    [
-                        'id_lembaga' => $item['id_lembaga'],
-                        'name' => $item['name'],
-                        'jabatan' => $item['jabatan'],
-                        'nik' => $item['nik'],
-                        'no_hp' => $item['no_hp'],
-                        'email' => $item['email'],
-                        'alamat' => $item['alamat'],
-                        'scan_ktp' => $pengurus[$key]['scan_ktp'],
-                    ]
-                );
+                    ModelsPengurus::updateOrCreate(
+                        ['id' => $item['id']],
+                        [
+                            'id_lembaga' => $item['id_lembaga'],
+                            'name' => $item['name'],
+                            'jabatan' => $item['jabatan'],
+                            'nik' => $item['nik'],
+                            'no_hp' => $item['no_hp'],
+                            'email' => $item['email'],
+                            'alamat' => $item['alamat'],
+                            'scan_ktp' => $item['scan_ktp'],
+                        ]
+                    );
             }
 
-            return redirect()->route('lembaga.admin', ['id_lembaga' => $this->id_lemabag]);
+            DB::commit();
+
+            return redirect()->route('lembaga.admin', ['id_lembaga' => $this->id_lembaga]);
         } catch (\Throwable $th) {
             DB::rollBack();
 
             foreach ($this->pengurus as $key => $item) {
-                if(Storage::disk('public')->exists($pengurus[$key]['scan_ktp']) && !$item['id'] == ''){
-                    Storage::disk('public')->delete($pengurus[$key]['scan_ktp']);
+                if(Storage::disk('public')->exists($item['scan_ktp']) && !$item['id'] == ''){
+                    Storage::disk('public')->delete($item['scan_ktp']);
                 }
             }
 

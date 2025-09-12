@@ -257,15 +257,13 @@ class Perbaikan extends Component
             }
 
             $this->permohonan->update([
-                'nominal_anggaran' => $this->nominal_rab
+                'nominal_anggaran' => $this->nominal_rab,
+                'id_status' => 10,
             ]);
-            
+
             DB::commit();
 
             session()->flash('message', 'Kegiatan dan Semua Rincian telah berhasil di hapus');
-            $this->permohonan->update([
-                'id_status' => 10,
-            ]);
 
             return redirect()->route('permohonan');
         } catch (\Throwable $th) {
