@@ -13,11 +13,6 @@
                 </ol>
             </nav>
         </div>
-        <div class="ms-auto">
-            <a href="{{ route('permohonan.create') }}">
-                <button type="button" class="btn btn-primary"><i class="bi bi-plus-lg"></i>Buat Pengajuan</button>
-            </a>
-        </div>
     </div>
     <div>
         {{ auth()->user()->can('view_dukung', App\Models\Status_permohonan::class) }}
@@ -54,8 +49,13 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>{{ $item->skpd->name }}</td>
+                                <td>
+                                    <a href="{{ route('lembaga.show', ['id_lembaga' => $item->id]) }}">
+                                        <button class="btn btn-sm btn-info" title="Detail Lembaga"><i
+                                                class="bi bi-eye"></i></button>
+                                    </a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

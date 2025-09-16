@@ -54,10 +54,11 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('/lembaga/create', [LembagaController::class, 'create'])->name('lembaga.create');
     Route::get('/lembaga/create', App\Livewire\Lembaga\Create::class)->name('lembaga.create');
     Route::get('/lembaga/admin/{id_lembaga}', [LembagaController::class, 'admin'])->name('lembaga.admin');
+    Route::post('/lembaga/store', [LembagaController::class, 'store'])->name('lembaga.store');
     Route::get('/lembaga/update/profile/{id_lembaga}', Profile::class)->name('lembaga.update.profile');
     Route::get('/lembaga/update/pendukung/{id_lembaga}', Pendukung::class)->name('lembaga.update.pendukung');
     Route::get('/lembaga/update/pengurus/{id_lembaga}', Pengurus::class)->name('lembaga.update.pengurus');
-    Route::post('/lembaga/store', [LembagaController::class, 'store'])->name('lembaga.store');
+    Route::get('/lembaga/show/{id_lembaga}', [LembagaController::class, 'show'])->name('lembaga.show');
     Route::get('/permohonan', [PermohonanController::class, 'index'])->name('permohonan');
     Route::get('/permohonan/create', CreateOrUpdate::class)->name('permohonan.create');
     Route::get('/permohonan/edit/{id_permohonan}', EditPermohonan::class)->name('permohonan.edit');

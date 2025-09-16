@@ -18,9 +18,9 @@ class LembagaController extends Controller
     {
         // Logic to retrieve and display lembaga information
         if(Auth::user()->hasRole("Super Admin")){
-            $lembaga = Lembaga::orderBy('created_at')->get();
+            $lembaga = Lembaga::with(['skpd'])->orderBy('created_at')->get();
         }else if(!Auth::user()->hasRole('Admin Lembaga')){
-            $lembaga = Lembaga::where('id_skpd', Auth::user()->id_skpd)->orderBy('created_at')->get();
+            $lembaga = Lembaga::with(['skpd'])->where('id_skpd', Auth::user()->id_skpd)->orderBy('created_at')->get();
         }
         return view('pages.lembaga.index', [
             'lembaga' => $lembaga
@@ -113,9 +113,8 @@ class LembagaController extends Controller
         }
     }
 
-    public function show()
+    public function show($id_lembaga)
     {
-        $id_lembaga = Auth::user()->id_lembaga;
         // Logic to retrieve a specific lembaga by ID
         $lembaga = Lembaga::with(['pengurus'])->findOrFail($id_lembaga);
         return view('pages.lembaga.show', [

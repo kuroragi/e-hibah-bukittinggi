@@ -18,19 +18,19 @@ class PermohonanController extends Controller
     public function index()
     {
         if(Auth::user()->hasRole('Super Admin')){
-            $permohonan = Permohonan::all();
+            $permohonan = Permohonan::whereBetween('id_status', [1,12])->get();
         }
 
         if(Auth::user()->hasRole('Admin SKPD')){
-            $permohonan = Permohonan::with(['skpd', 'lembaga'])->where('id_skpd', Auth::user()->id_skpd)->get();
+            $permohonan = Permohonan::with(['skpd', 'lembaga'])->where('id_skpd', Auth::user()->id_skpd)->whereBetween('id_status', [1,12])->get();
         }
 
         if(Auth::user()->hasRole('Reviewer') || Auth::user()->hasRole('Verifikator')){
-            $permohonan = Permohonan::with(['skpd', 'lembaga'])->where('id_skpd', Auth::user()->id_skpd)->where('urusan', Auth::user()->id_urusan)->get();
+            $permohonan = Permohonan::with(['skpd', 'lembaga'])->where('id_skpd', Auth::user()->id_skpd)->where('urusan', Auth::user()->id_urusan)->whereBetween('id_status', [1,12])->get();
         }
         
         if(Auth::user()->hasRole('Admin Lembaga')){
-            $permohonan = Permohonan::with(['skpd', 'lembaga'])->where('id_lembaga', Auth::user()->id_lembaga)->get();
+            $permohonan = Permohonan::with(['skpd', 'lembaga'])->where('id_lembaga', Auth::user()->id_lembaga)->whereBetween('id_status', [1,12])->get();
         }
 
         // Logic to retrieve and display permohonan information

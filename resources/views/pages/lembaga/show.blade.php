@@ -1,4 +1,4 @@
-@extends('components.layouts.app')
+{{-- @extends('components.layouts.app')
 
 @section('content')
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -95,9 +95,9 @@
             </div>
         </div>
     </div>
-@endsection
+@endsection --}}
 
-{{-- @extends('components.layouts.app')
+@extends('components.layouts.app')
 
 @section('content')
     <!--breadcrumb-->
@@ -171,8 +171,8 @@
                                                 <label for="filter" class="form-label">No. Telp</label>
                                                 <div class="input-group flex-nowrap">
                                                     <span class="input-group-text">+62</span>
-                                                    <input type="text" class="form-control"
-                                                        value="{{ $lembaga->phone }}" disabled>
+                                                    <input type="text" class="form-control" value="{{ $lembaga->phone }}"
+                                                        disabled>
                                                 </div>
                                             </div>
                                         </div>
@@ -189,8 +189,9 @@
                         <div class="card bg-primary text-white">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <img src="{{ asset('assets/images/avatars/avatar-1.png') }}" alt="Avatar"
-                                        class="rounded-circle img-fluid mb-3" style="width: 100px; height: 100px;">
+                                    <img src="{{ optional($lembaga)->photo ? Storage::url($lembaga->photo) : asset('assets/images/logo/lembaga.jpg') }}"
+                                        alt="Avatar" class="rounded-circle img-fluid mb-3"
+                                        style="width: 100px; height: 100px;">
                                     <h5 class="mb-0">{{ $lembaga->name }}</h5>
                                     <h5 class="mb-0">{{ $lembaga->pengurus[0]->name }}</h5>
                                 </div>
@@ -208,7 +209,7 @@
                                     <label for="npwp" class="form-label">No. NPWP <span
                                             class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="npwp" id="npwp"
-                                        value="{{ $lembaga->npwp }}" required>
+                                        value="{{ $lembaga->npwp }}" disabled required>
                                     @error('npwp')
                                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                                     @enderror
@@ -220,7 +221,7 @@
                                         <label class="form-label">Akta Kumham/ SK Lembaga <span
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="no_akta_kumham"
-                                            value="{{ $lembaga->no_akta_kumham }}" required>
+                                            value="{{ $lembaga->no_akta_kumham }}" disabled required>
                                         @error('no_akta_kumham')
                                             <div class="alert alert-danger mt-2">{{ $message }}</div>
                                         @enderror
@@ -228,7 +229,7 @@
                                     <div class="col-md-3">
                                         <label class="form-label">Tanggal <span class="text-danger">*</span></label>
                                         <input type="date" class="form-control" name="date_akta_kumham"
-                                            value="{{ $lembaga->date_akta_kumham }}" required>
+                                            value="{{ $lembaga->date_akta_kumham }}" disabled required>
                                         @error('date_akta_kumham')
                                             <div class="alert alert-danger mt-2">{{ $message }}</div>
                                         @enderror
@@ -236,19 +237,14 @@
                                     <div class="col-md-5">
                                         <label class="form-label">Scan Dokumen <span class="text-danger">*</span></label>
                                         <input class="form-control" type="file" name="file_akta_kumham"
-                                            value="{{ old('file_akta_kumham') }}" required>
+                                            value="{{ old('file_akta_kumham') }}" disabled required>
                                         @error('file_akta_kumham')
                                             <div class="alert alert-danger mt-2">{{ $message }}</div>
                                         @enderror
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-md-4">
-                                        <button type="button" class="btn btn-primary view-file"
-                                            data-path="{{ asset('storage/' . $lembaga->file_akta_kumham) }}">
-                                            Lihat Dokumen Akta Kumham / SK
-                                        </button>
+                                        <button type="button" class="btn btn-warning mt-3" data-bs-toggle="modal"
+                                            data-bs-target="#fileModal"
+                                            data-file-url="{{ asset('storage/' . $lembaga->file_akta_kumham) }}">
+                                            Lihat Dokumen Akta Kumham / SK</button>
                                     </div>
                                 </div>
 
@@ -258,7 +254,7 @@
                                         <label class="form-label">Surat Domisili <span
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="no_domisili"
-                                            value="{{ $lembaga->no_domisili }}" required>
+                                            value="{{ $lembaga->no_domisili }}" disabled required>
                                         @error('no_domisili')
                                             <div class="alert alert-danger mt-2">{{ $message }}</div>
                                         @enderror
@@ -266,7 +262,7 @@
                                     <div class="col-md-3">
                                         <label class="form-label">Tanggal <span class="text-danger">*</span></label>
                                         <input type="date" class="form-control" name="date_domisili"
-                                            value="{{ $lembaga->date_domisili }}" required>
+                                            value="{{ $lembaga->date_domisili }}" disabled required>
                                         @error('date_domisili')
                                             <div class="alert alert-danger mt-2">{{ $message }}</div>
                                         @enderror
@@ -274,19 +270,14 @@
                                     <div class="col-md-5">
                                         <label class="form-label">Scan Dokumen <span class="text-danger">*</span></label>
                                         <input class="form-control" type="file" name="file_domisili"
-                                            value="{{ old('file_domisili') }}" required>
+                                            value="{{ old('file_domisili') }}" disabled required>
                                         @error('file_domisili')
                                             <div class="alert alert-danger mt-2">{{ $message }}</div>
                                         @enderror
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-md-4">
-                                        <button type="button" class="btn btn-primary view-file"
-                                            data-path="{{ asset('storage/' . $lembaga->file_domisili) }}">
-                                            Lihat Dokumen Domisili
-                                        </button>
+                                        <button type="button" class="btn btn-warning mt-3" data-bs-toggle="modal"
+                                            data-bs-target="#fileModal"
+                                            data-file-url="{{ asset('storage/' . $lembaga->file_domisili) }}">
+                                            Lihat Dokumen Domisili</button>
                                     </div>
                                 </div>
 
@@ -296,7 +287,7 @@
                                         <label class="form-label">Izin Operasional/ Tanda Daftar Lembaga <span
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="no_operasional"
-                                            value="{{ $lembaga->no_operasional }}" required>
+                                            value="{{ $lembaga->no_operasional }}" disabled required>
                                         @error('no_operasional')
                                             <div class="alert alert-danger mt-2">{{ $message }}</div>
                                         @enderror
@@ -304,7 +295,7 @@
                                     <div class="col-md-3">
                                         <label class="form-label">Tanggal <span class="text-danger">*</span></label>
                                         <input type="date" class="form-control" name="date_operasional"
-                                            value="{{ $lembaga->date_operasional }}" required>
+                                            value="{{ $lembaga->date_operasional }}" disabled required>
                                         @error('date_operasional')
                                             <div class="alert alert-danger mt-2">{{ $message }}</div>
                                         @enderror
@@ -312,19 +303,14 @@
                                     <div class="col-md-5">
                                         <label class="form-label">Scan Dokumen <span class="text-danger">*</span></label>
                                         <input class="form-control" type="file" name="file_operasional"
-                                            value="{{ old('file_operasional') }}" required>
+                                            value="{{ old('file_operasional') }}" disabled required>
                                         @error('file_operasional')
                                             <div class="alert alert-danger mt-2">{{ $message }}</div>
                                         @enderror
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-md-4">
-                                        <button type="button" class="btn btn-primary view-file"
-                                            data-path="{{ asset('storage/' . $lembaga->file_operasional) }}">
-                                            Lihat Dokumen Operasion
-                                        </button>
+                                        <button type="button" class="btn btn-warning mt-3" data-bs-toggle="modal"
+                                            data-bs-target="#fileModal"
+                                            data-file-url="{{ asset('storage/' . $lembaga->file_operasional) }}">
+                                            Lihat Dokumen Operasion</button>
                                     </div>
                                 </div>
 
@@ -334,7 +320,7 @@
                                         <label class="form-label">Surat Pernyataan Tidak Tumpang Tindih <span
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="no_pernyataan"
-                                            value="{{ $lembaga->no_pernyataan }}" required>
+                                            value="{{ $lembaga->no_pernyataan }}" disabled required>
                                         @error('no_pernyataan')
                                             <div class="alert alert-danger mt-2">{{ $message }}</div>
                                         @enderror
@@ -342,7 +328,7 @@
                                     <div class="col-md-3">
                                         <label class="form-label">Tanggal <span class="text-danger">*</span></label>
                                         <input type="date" class="form-control" name="date_pernyataan"
-                                            value="{{ $lembaga->date_pernyataan }}" required>
+                                            value="{{ $lembaga->date_pernyataan }}" disabled required>
                                         @error('date_pernyataan')
                                             <div class="alert alert-danger mt-2">{{ $message }}</div>
                                         @enderror
@@ -350,20 +336,14 @@
                                     <div class="col-md-5">
                                         <label class="form-label">Scan Dokumen <span class="text-danger">*</span></label>
                                         <input class="form-control" type="file" name="file_pernyataan"
-                                            value="{{ old('file_pernyataan') }}" required>
+                                            value="{{ old('file_pernyataan') }}" disabled required>
                                         @error('file_pernyataan')
                                             <div class="alert alert-danger mt-2">{{ $message }}</div>
                                         @enderror
-                                    </div>
-                                </div>
-
-
-                                <div class="row mb-3">
-                                    <div class="col-md-4">
-                                        <button type="button" class="btn btn-primary view-file"
-                                            data-path="{{ asset('storage/' . $lembaga->file_pernyataan) }}">
-                                            Lihat Dokumen Tidak Tumpang Tindih
-                                        </button>
+                                        <button type="button" class="btn btn-warning mt-3" data-bs-toggle="modal"
+                                            data-bs-target="#fileModal"
+                                            data-file-url="{{ asset('storage/' . $lembaga->file_pernyataan) }}">
+                                            Lihat Dokumen Tidak Tumpang Tindih</button>
                                     </div>
                                 </div>
 
@@ -376,7 +356,8 @@
                                         <div class="col-8">
                                             <label for="search" class="form-label">Nama Bank <small
                                                     class="text-danger">*</small></label>
-                                            <input type="text" class="form-control" value="{{ $lembaga->id_bank }}">
+                                            <input type="text" class="form-control" value="{{ $lembaga->id_bank }}"
+                                                disabled>
                                             @error('nama_bank')
                                                 <div class="alert alert-danger mt-2">{{ $message }}</div>
                                             @enderror
@@ -385,7 +366,7 @@
                                             <label for="filter" class="form-label">Atas Nama <small
                                                     class="text-danger">*</small></label>
                                             <input type="text" class="form-control"
-                                                value="{{ $lembaga->no_rekening }}">
+                                                value="{{ $lembaga->no_rekening }}" disabled>
                                             @error('atas_nama')
                                                 <div class="alert alert-danger mt-2">{{ $message }}</div>
                                             @enderror
@@ -398,7 +379,7 @@
                                             <label for="search" class="form-label">No. Rekening <small
                                                     class="text-danger">*</small></label>
                                             <input type="text" class="form-control"
-                                                value="{{ $lembaga->no_rekening }}">
+                                                value="{{ $lembaga->no_rekening }}" disabled>
                                             @error('no_rekening')
                                                 <div class="alert alert-danger mt-2">{{ $message }}</div>
                                             @enderror
@@ -407,10 +388,14 @@
                                             <label for="filter" class="form-label">Scan Rekening <small
                                                     class="text-danger">*</small></label>
                                             <input type="file" class="form-control"
-                                                value="{{ old('scan_rekening') }}">
+                                                value="{{ old('scan_rekening') }}" disabled>
                                             @error('scan_rekening')
                                                 <div class="alert alert-danger mt-2">{{ $message }}</div>
                                             @enderror
+                                            <button type="button" class="btn btn-warning mt-3" data-bs-toggle="modal"
+                                                data-bs-target="#fileModal"
+                                                data-file-url="{{ Storage::url($lembaga->photo_rek) }}">Lihat
+                                                Photo</button>
                                         </div>
                                     </div>
                                 </div>
@@ -429,7 +414,7 @@
                             <div class="col-md-6">
                                 <label class="form-label">Nama <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="name_pimpinan"
-                                    value="{{ $lembaga->pengurus[0]->name }}" required>
+                                    value="{{ $lembaga->pengurus[0]->name }}" disabled required>
                                 @error('name_pimpinan')
                                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                                 @enderror
@@ -437,7 +422,7 @@
                             <div class="col-md-6">
                                 <label class="form-label">Email <span class="text-danger">*</span></label>
                                 <input type="email" class="form-control" name="email_pimpinan"
-                                    value="{{ $lembaga->pengurus[0]->email }}" required>
+                                    value="{{ $lembaga->pengurus[0]->email }}" disabled required>
                                 @error('email_pimpinan')
                                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                                 @enderror
@@ -448,7 +433,7 @@
                             <div class="col-md-4">
                                 <label class="form-label">NIK <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="nik"
-                                    value="{{ $lembaga->pengurus[0]->nik }}" required>
+                                    value="{{ $lembaga->pengurus[0]->nik }}" disabled required>
                                 @error('nik')
                                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                                 @enderror
@@ -456,7 +441,7 @@
                             <div class="col-md-4">
                                 <label class="form-label">No. Telp/HP <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="no_hp"
-                                    value="{{ $lembaga->pengurus[0]->no_hp }}" required>
+                                    value="{{ $lembaga->pengurus[0]->no_hp }}" disabled required>
                                 @error('no_hp')
                                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                                 @enderror
@@ -464,7 +449,7 @@
                             <div class="col-md-4">
                                 <label class="form-label">Scan KTP <span class="text-danger">*</span></label>
                                 <input type="file" class="form-control" name="scan_ktp"
-                                    value="{{ $lembaga->pengurus[0]->scan_ktp }}" required>
+                                    value="{{ $lembaga->pengurus[0]->scan_ktp }}" disabled required>
                                 @error('scan_ktp')
                                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                                 @enderror
@@ -473,7 +458,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Alamat <span class="text-danger">*</span></label>
-                            <textarea class="form-control" rows="2" name="alamat_pimpinan" required>{{ $lembaga->pengurus[0]->alamat }}</textarea>
+                            <textarea class="form-control" rows="2" name="alamat_pimpinan" disabled required>{{ $lembaga->pengurus[0]->alamat }}</textarea>
                             @error('alamat_pimpinan')
                                 <div class="alert alert-danger mt-2">{{ $message }}</div>
                             @enderror
@@ -489,7 +474,7 @@
                             <div class="col-md-6">
                                 <label class="form-label">Nama <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="name_pimpinan"
-                                    value="{{ old('name_pimpinan') }}" required>
+                                    value="{{ $lembaga->pengurus[1]->name }}" disabled required>
                                 @error('name_pimpinan')
                                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                                 @enderror
@@ -497,7 +482,7 @@
                             <div class="col-md-6">
                                 <label class="form-label">Email <span class="text-danger">*</span></label>
                                 <input type="email" class="form-control" name="email_pimpinan"
-                                    value="{{ old('email_pimpinan') }}" required>
+                                    value="{{ $lembaga->pengurus[1]->email }}" disabled required>
                                 @error('email_pimpinan')
                                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                                 @enderror
@@ -507,16 +492,16 @@
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <label class="form-label">NIK <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="nik" value="{{ old('nik') }}"
-                                    required>
+                                <input type="text" class="form-control" name="nik"
+                                    value="{{ $lembaga->pengurus[1]->nik }}" disabled required>
                                 @error('nik')
                                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">No. Telp/HP <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="no_hp" value="{{ old('no_hp') }}"
-                                    required>
+                                <input type="text" class="form-control" name="no_hp"
+                                    value="{{ $lembaga->pengurus[1]->no_hp }}" disabled required>
                                 @error('no_hp')
                                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                                 @enderror
@@ -524,7 +509,7 @@
                             <div class="col-md-4">
                                 <label class="form-label">Scan KTP <span class="text-danger">*</span></label>
                                 <input type="file" class="form-control" name="scan_ktp"
-                                    value="{{ old('scan_ktp') }}" required>
+                                    value="{{ $lembaga->pengurus[1]->scan_ktp }}" disabled required>
                                 @error('scan_ktp')
                                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                                 @enderror
@@ -533,7 +518,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Alamat <span class="text-danger">*</span></label>
-                            <textarea class="form-control" rows="2" name="alamat_pimpinan" required>{{ old('alamat_pimpinan') }}</textarea>
+                            <textarea class="form-control" rows="2" name="alamat_pimpinan" disabled required>{{ $lembaga->pengurus[1]->alamat }}</textarea>
                             @error('alamat_pimpinan')
                                 <div class="alert alert-danger mt-2">{{ $message }}</div>
                             @enderror
@@ -549,7 +534,7 @@
                             <div class="col-md-6">
                                 <label class="form-label">Nama <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="name_pimpinan"
-                                    value="{{ old('name_pimpinan') }}" required>
+                                    value="{{ $lembaga->pengurus[2]->name }}" disabled required>
                                 @error('name_pimpinan')
                                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                                 @enderror
@@ -557,7 +542,7 @@
                             <div class="col-md-6">
                                 <label class="form-label">Email <span class="text-danger">*</span></label>
                                 <input type="email" class="form-control" name="email_pimpinan"
-                                    value="{{ old('email_pimpinan') }}" required>
+                                    value="{{ $lembaga->pengurus[2]->email }}" disabled required>
                                 @error('email_pimpinan')
                                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                                 @enderror
@@ -567,16 +552,16 @@
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <label class="form-label">NIK <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="nik" value="{{ old('nik') }}"
-                                    required>
+                                <input type="text" class="form-control" name="nik"
+                                    value="{{ $lembaga->pengurus[2]->nik }}" disabled required>
                                 @error('nik')
                                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">No. Telp/HP <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="no_hp" value="{{ old('no_hp') }}"
-                                    required>
+                                <input type="text" class="form-control" name="no_hp"
+                                    value="{{ $lembaga->pengurus[2]->no_hp }}" disabled required>
                                 @error('no_hp')
                                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                                 @enderror
@@ -584,7 +569,7 @@
                             <div class="col-md-4">
                                 <label class="form-label">Scan KTP <span class="text-danger">*</span></label>
                                 <input type="file" class="form-control" name="scan_ktp"
-                                    value="{{ old('scan_ktp') }}" required>
+                                    value="{{ $lembaga->pengurus[2]->scan_ktp }}" disabled required>
                                 @error('scan_ktp')
                                     <div class="alert alert-danger mt-2">{{ $message }}</div>
                                 @enderror
@@ -593,7 +578,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Alamat <span class="text-danger">*</span></label>
-                            <textarea class="form-control" rows="2" name="alamat_pimpinan" required>{{ old('alamat_pimpinan') }}</textarea>
+                            <textarea class="form-control" rows="2" name="alamat_pimpinan" disabled required>{{ $lembaga->pengurus[2]->alamat }}</textarea>
                             @error('alamat_pimpinan')
                                 <div class="alert alert-danger mt-2">{{ $message }}</div>
                             @enderror
@@ -603,7 +588,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="fileModal" tabindex="-1" aria-labelledby="fileModalLabel" aria-hidden="true">
+        {{-- <div class="modal fade" id="fileModal" tabindex="-1" aria-labelledby="fileModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-fullscreen modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -615,31 +600,31 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 @endsection
 
 @push('scripts')
     <script>
-        $(document).ready(function() {
-            $('.view-file').on('click', function() {
-                var filePath = $(this).data('path');
-                var extension = filePath.split('.').pop().toLowerCase();
-                var previewHtml = '';
+        // $(document).ready(function() {
+        //     $('.view-file').on('click', function() {
+        //         var filePath = $(this).data('path');
+        //         var extension = filePath.split('.').pop().toLowerCase();
+        //         var previewHtml = '';
 
-                if (['jpg', 'jpeg', 'png', 'gif'].includes(extension)) {
-                    previewHtml = '<img src="' + filePath + '" class="img-fluid" alt="File Image">';
-                } else if (extension === 'pdf') {
-                    previewHtml = '<embed src="' + filePath +
-                        '" type="application/pdf" width="100%" height="750px">';
-                } else {
-                    previewHtml = '<p>File tidak dapat dipreview. <a href="' + filePath +
-                        '" target="_blank">Download di sini</a>.</p>';
-                }
+        //         if (['jpg', 'jpeg', 'png', 'gif'].includes(extension)) {
+        //             previewHtml = '<img src="' + filePath + '" class="img-fluid" alt="File Image">';
+        //         } else if (extension === 'pdf') {
+        //             previewHtml = '<embed src="' + filePath +
+        //                 '" type="application/pdf" width="100%" height="750px">';
+        //         } else {
+        //             previewHtml = '<p>File tidak dapat dipreview. <a href="' + filePath +
+        //                 '" target="_blank">Download di sini</a>.</p>';
+        //         }
 
-                $('#file-preview').html(previewHtml);
-                $('#fileModal').modal('show');
-            });
-        });
+        //         $('#file-preview').html(previewHtml);
+        //         $('#fileModal').modal('show');
+        //     });
+        // });
     </script>
-@endpush --}}
+@endpush
