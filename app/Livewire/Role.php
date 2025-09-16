@@ -4,12 +4,14 @@ namespace App\Livewire;
 
 use App\Models\Permission;
 use App\Models\Role as ModelsRole;
+use App\Traits\WithAuthorization;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Role extends Component
 {
+    use WithAuthorization;
     public $roles;
     public $permissions = [];
     public $selectedPermissions = [];
@@ -27,6 +29,7 @@ class Role extends Component
 
     public function mount()
     {
+        return $this->authorizeAction('viewAny', Role::class) ?? null;
         $this->permissions = Permission::orderBy('name', 'ASC')->get(); // Assuming you have a Permission model
     }
 

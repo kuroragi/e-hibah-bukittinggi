@@ -214,9 +214,43 @@
         </div>
     </div>
     <!--end row-->
+
+    <div class="modal fade" id="noAccessModal" tabindex="-1" aria-labelledby="noAccessModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-danger">
+                <div class="modal-header bg-danger text-light text-center">
+                    <h1 class="modal-title" id="noAccessModalLabel">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Akses Ditolak
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body text-center my-3">
+                    <h3>
+                        {{ session('no_access') ?? 'Kamu tidak memiliki hak akses ke halaman Tersebut.' }}
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
+    @if (session('no_access'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Kalau pakai Bootstrap Modal
+                let modalContent = `{{ session('no_access') }}`;
+
+                // Contoh simple popup
+                // alert(modalContent);
+
+                // Atau kalau kamu punya modal custom, bisa trigger disini
+                $('#noAccessModal').modal('show');
+            });
+        </script>
+    @endif
+
     <script>
         let labels = @json($pencairan->keys());
         let chartData = @json($pencairan->values());

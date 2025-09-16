@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -14,5 +15,17 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // dd($exceptions->render(function(AuthorizationException $e, $request) {}));
+        $exceptions->render(function (AuthorizationException $e, $request) {
+            if ($request->expectsJson()) {
+                // Kalau request dari Livewire/Ajax
+                return response()->json([
+                    'redirect' => route('dashboard'),
+                    'message' => 'Kamu tidak memiliki hak akses ke halaman tersebut.'
+                ], 403);
+            }
+
+            return redirect()->route('dashboard')
+                ->with('no_access', 'Kamu tidak memiliki hak akses ke halaman tersebut.');
+        });
     })->create();

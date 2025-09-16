@@ -4,12 +4,14 @@ namespace App\Livewire;
 
 use App\Models\Skpd as ModelsSkpd;
 use App\Models\UrusanSkpd;
+use App\Traits\WithAuthorization;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class SKPD extends Component
 {
+    use WithAuthorization;
     public $skpds;
     public $skpd;
 
@@ -19,6 +21,11 @@ class SKPD extends Component
     public $count_urusan = 0;
 
     protected $listeners = ['createModal', 'editModal', 'closeModal', 'verifyingDelete'];
+
+    public function mount(){
+        
+        return $this->authorizeAction('viewAny', ModelsSkpd::class) ?? null;
+    }
 
     public function addUrusan()
     {

@@ -5,7 +5,8 @@
     "scripts": {
         "build": "vite build",
         "dev": "vite",
-        "push": "sh deploy.sh"
+        "push": "sh deploy.sh",
+        "push-branch": "sh deploy-branch.sh"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

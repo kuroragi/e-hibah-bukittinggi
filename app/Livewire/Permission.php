@@ -3,19 +3,24 @@
 namespace App\Livewire;
 
 use App\Models\Permission as ModelsPermission;
+use App\Traits\WithAuthorization;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Auth\Access\Authorizable;
 use Livewire\Component;
 
 class Permission extends Component
 {
+    use WithAuthorization;
+
     public $name;
     public $guard_name;
     public $permissions;
 
     protected $listeners = ['editmore', 'editPermission', 'closeModal'];
-    // public function mount()
-    // {
-    //     $this->permissions = ModelsPermission::all();
-    // }
+    public function mount()
+    {
+        return $this->authorizeAction('viewAny', ModelsPermission::class) ?? null;
+    }
 
     public function render()
     {

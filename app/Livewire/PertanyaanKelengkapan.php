@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Imports\QuestionsImport;
 use App\Models\PertanyaanKelengkapan as ModelsPertanyaanKelengkapan;
+use App\Traits\WithAuthorization;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -14,7 +15,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class PertanyaanKelengkapan extends Component
 {
-    use WithFileUploads;
+    use WithFileUploads, WithAuthorization;
 
     public $file_import;
     
@@ -31,6 +32,10 @@ class PertanyaanKelengkapan extends Component
     public $order = 1;
 
     public $listeners = ['import-start', 'import-finish', 'showImportResult', 'updateModal', 'updateOrder', 'closeModal'];
+
+    public function mount(){
+        return $this->authorizeAction('viewAny', pertanyaan::class) ?? null;
+    }
 
     public function render()
     {
