@@ -13,6 +13,6 @@
     </div>
     <div class="card">
         <div class="card-body">
-            <iframe src="{{ Storage::url($userGuide) }}" width="100%" height="720px" style="border:none;"></iframe>
+            <iframe src="{{ $userGuide }}" width="100%" height="720px" style="border:none;"></iframe>
         </div>
     </div>
