@@ -12,6 +12,7 @@ use App\Livewire\Lembaga\Pengurus;
 use App\Livewire\Lembaga\Profile;
 use App\Livewire\Permohonan\CreateOrUpdate;
 use App\Livewire\Lembagas\IndexLembaga;
+use App\Livewire\Pages\UserGuide;
 use App\Livewire\Permission;
 use App\Livewire\Permohonan\EditPermohonan;
 use App\Livewire\Permohonan\IsiPendukung;
@@ -48,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user-create', [UserController::class, 'create'])->name('user.create');
     Route::get('/user_reset_password/{id_user}', [UserController::class, 'reset_password'])->name('user.reset_password');
     Route::get('/pertanyaan', PertanyaanKelengkapan::class)->name('pertanyaan');
+    Route::get('/user_guide', UserGuide::class)->name('user_guide');
     Route::get('/lembaga', [LembagaController::class, 'index'])->name('lembaga');
     // Route::get('/lembaga/create', [LembagaController::class, 'create'])->name('lembaga.create');
     Route::get('/lembaga/create', App\Livewire\Lembaga\Create::class)->name('lembaga.create');

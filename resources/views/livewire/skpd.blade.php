@@ -34,13 +34,14 @@
                                         <div class="mb-3">
                                             <label for="skpd-urusan" class="form-label">Urusan SKPD</label>
                                             @foreach ($urusan_skpd as $key => $urusan)
-                                            <div class="input-group mb-3">
-                                                <input wire:model='urusan_skpd.{{ $key }}.nama_urusan' type="text"
-                                                    class="form-control" placeholder="Masukkan nama urusan">
-                                                <button wire:click.prevent='removeUrusan({{ $key }})'
-                                                    class="btn btn-danger" type="button"><i
-                                                        class="bi bi-trash"></i></button>
-                                            </div>
+                                                <div class="input-group mb-3">
+                                                    <input wire:model='urusan_skpd.{{ $key }}.nama_urusan'
+                                                        type="text" class="form-control"
+                                                        placeholder="Masukkan nama urusan">
+                                                    <button wire:click.prevent='removeUrusan({{ $key }})'
+                                                        class="btn btn-danger" type="button"><i
+                                                            class="bi bi-trash"></i></button>
+                                                </div>
                                             @endforeach
                                             <button type="button" wire:click='addUrusan'
                                                 class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i>
@@ -73,42 +74,42 @@
                     </thead>
                     <tbody>
                         @foreach ($skpds as $key => $skpd)
-                        <tr>
-                            <td>{{ $skpd->name }}</td>
-                            <td>
-                                <button class="btn btn-sm btn-info" data-bs-toggle="collapse"
-                                    data-bs-target="#collapse{{ $skpd->id }}" aria-expanded="false"
-                                    aria-controls="collapse{{ $skpd->id }}"><i class="bi bi-eye"></i>
-                                    Urusan</button>
-                                {{-- <button class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"></i> Tambah
+                            <tr>
+                                <td>{{ $skpd->name }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-info" data-bs-toggle="collapse"
+                                        data-bs-target="#collapse{{ $skpd->id }}" aria-expanded="false"
+                                        aria-controls="collapse{{ $skpd->id }}"><i class="bi bi-eye"></i>
+                                        Urusan</button>
+                                    {{-- <button class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"></i> Tambah
                                     Urusan</button> --}}
-                                <button wire:click='edit({{ $skpd->id }})' class="btn btn-sm btn-warning"><i
-                                        class="bi bi-pencil-square"></i>
-                                    Edit</button>
-                                <button wire:click='verifyDelete({{ $skpd->id }})' class="btn btn-sm btn-danger"><i
-                                        class="bi bi-trash"></i> Hapus</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="hiddenRow">
-                                <div class="collapse" id="collapse{{ $skpd->id }}">
-                                    <div class="card card-body">
-                                        <h5>Urusan SKPD</h5>
-                                        <table class="table">
-                                            @if ($skpd->has_urusan->count() > 0)
-                                            @foreach ($skpd->has_urusan as $urusan)
-                                            <tr>
-                                                <td>{{ $urusan->nama_urusan }}</td>
-                                            </tr>
-                                            @endforeach
-                                            @else
-                                            <p>Tidak ada urusan yang ditambahkan.</p>
-                                            @endif
-                                        </table>
+                                    <button wire:click='edit({{ $skpd->id }})' class="btn btn-sm btn-warning"><i
+                                            class="bi bi-pencil-square"></i>
+                                        Edit</button>
+                                    <button wire:click='verifyDelete({{ $skpd->id }})'
+                                        class="btn btn-sm btn-danger"><i class="bi bi-trash"></i> Hapus</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="hiddenRow">
+                                    <div class="collapse" id="collapse{{ $skpd->id }}">
+                                        <div class="card card-body">
+                                            <h5>Urusan SKPD</h5>
+                                            <table class="table">
+                                                @if ($skpd->has_urusan->count() > 0)
+                                                    @foreach ($skpd->has_urusan as $urusan)
+                                                        <tr>
+                                                            <td>{{ $urusan->nama_urusan }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                @else
+                                                    <p>Tidak ada urusan yang ditambahkan.</p>
+                                                @endif
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                     <tfoot>
@@ -141,15 +142,16 @@
                             <div class="mb-3">
                                 <label for="skpd-urusan" class="form-label">Urusan SKPD</label>
                                 @foreach ($urusan_skpd as $key => $urusan)
-                                <div class="input-group mb-3">
-                                    <input wire:model='urusan_skpd.{{ $key }}.nama_urusan' type="text"
-                                        class="form-control" placeholder="Masukkan nama urusan">
-                                    <button wire:click.prevent='removeUrusan({{ $key }})' class="btn btn-danger"
-                                        type="button"><i class="bi bi-trash"></i></button>
-                                </div>
+                                    <div class="input-group mb-3">
+                                        <input wire:model='urusan_skpd.{{ $key }}.nama_urusan' type="text"
+                                            class="form-control" placeholder="Masukkan nama urusan">
+                                        <button wire:click.prevent='removeUrusan({{ $key }})'
+                                            class="btn btn-danger" type="button"><i
+                                                class="bi bi-trash"></i></button>
+                                    </div>
                                 @endforeach
-                                <button type="button" wire:click='addUrusan' class="btn btn-outline-primary btn-sm"><i
-                                        class="bi bi-plus-lg"></i>
+                                <button type="button" wire:click='addUrusan'
+                                    class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i>
                                     Tambah Urusan</button>
                             </div>
                         </div>
@@ -165,11 +167,11 @@
     </div>
 
 
-    {{-- <div wire:ignore.self class="modal fade" id="delete-modal" tabindex="-1" aria-hidden="true">
+    <div wire:ignore.self class="modal fade" id="delete-modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-light">
-                    <h5 class="modal-title">Hapus Data Pengguna</h5>
+                    <h5 class="modal-title">Hapus Data SKPD</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -179,22 +181,16 @@
                                 <tr>
                                     <td>Nama Pengguna</td>
                                     <td>:</td>
-                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $skpd->name }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Email</td>
+                                    <td>Urusan</td>
                                     <td>:</td>
-                                    <td>{{ $user->email }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Role</td>
-                                    <td>:</td>
-                                    <td>{{ $user->has_role->name }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Instansi</td>
-                                    <td>:</td>
-                                    <td>{{ $user->skpd->name ?? ($user->lembaga->name ?? '') }}</td>
+                                    <td>
+                                        @foreach ($skpd->has_urusan as $item)
+                                            {{ $loop->iteration }}. {{ $item->nama_urusan }} <br>
+                                        @endforeach
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -203,22 +199,26 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button wire:click.prevent='delete' type="button" class="btn btn-danger">Hapus
-                        Pengguna</button>
+                        Role</button>
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
 </div>
 
 @push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
             Livewire.on('createModal', () => {
                 $('#create-modal').modal('show');
             });
 
             Livewire.on('editModal', () => {
                 $('#edit-modal').modal('show');
+            });
+
+            Livewire.on('deleteModal', () => {
+                $('#delete-modal').modal('show');
             });
 
             Livewire.on('closeModal', () => {
@@ -232,5 +232,5 @@
                 }
             });
         });
-</script>
+    </script>
 @endpush

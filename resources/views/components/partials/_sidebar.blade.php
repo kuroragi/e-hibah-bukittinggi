@@ -52,7 +52,9 @@
                         <a href="{{ route('pertanyaan') }}" class="list-group-item"><i class="bi bi-question-square"></i>
                             Pertanyaan</a>
                     @endcan
-
+                    <a href="{{ route('user_guide') }}" class="list-group-item"><i
+                            class="bi bi-question text-success"></i>
+                        Panduan Penggunaan</a>
                 </div>
             </div>
             <div class="tab-pane fade" id="pills-menu">

@@ -20,7 +20,7 @@ class SKPD extends Component
     public $urusan_skpd = [];
     public $count_urusan = 0;
 
-    protected $listeners = ['createModal', 'editModal', 'closeModal', 'verifyingDelete'];
+    protected $listeners = ['createModal', 'editModal', 'deleteModal', 'closeModal', 'verifyingDelete'];
 
     public function mount(){
         
@@ -122,6 +122,11 @@ class SKPD extends Component
 
         session()->flash('message', 'SKPD updated successfully.');
         $this->dispatch('closeModal');
+    }
+
+    public function verifyDelete($id){
+        $this->skpd = ModelsSkpd::with(['has_urusan'])->where('id', $id)->first();
+        $this->dispatch('deleteModal');
     }
 
     public function delete()
