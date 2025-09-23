@@ -9,6 +9,8 @@ use App\Models\Lembaga;
 use App\Models\Propinsi;
 use App\Models\Skpd;
 use App\Models\UrusanSkpd;
+use App\Services\UserLogService;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -107,16 +109,28 @@ class Profile extends Component
     public function update(){
         $this->validate();
 
-        $profil = Lembaga::findOrFail($this->id_lembaga)->update([
-            'name' => $this->name,
-            'id_skpd' => $this->id_skpd,
-            'id_urusan' => $this->id_urusan,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'id_kelurahan' => $this->kelurahan,
-            'alamat' => $this->alamat,
-        ]);
+        DB::beginTransaction();
+        try {
+            $profil = Lembaga::findOrFail($this->id_lembaga)->update([
+                'name' => $this->name,
+                'id_skpd' => $this->id_skpd,
+                'id_urusan' => $this->id_urusan,
+                'email' => $this->email,
+                'phone' => $this->phone,
+                'id_kelurahan' => $this->kelurahan,
+                'alamat' => $this->alamat,
+            ]);
 
-        return redirect()->route('lembaga.admin', ['id_lembaga' => $this->id_lembaga])->with('success', 'Profil lembaga berhasil diperbarui.');
+            new UserLogService('update', 'Pembaruan data profil lembaga '.$this->name);
+
+            DB::commit();
+            
+            return redirect()->route('lembaga.admin', ['id_lembaga' => $this->id_lembaga])->with('success', 'Profil lembaga berhasil diperbarui.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            return session()->flash('error', 'gagal update profil, karena: '.$th->getMessage());
+        }
+
     }
 }

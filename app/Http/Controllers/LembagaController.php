@@ -8,6 +8,7 @@ use App\Models\Kelurahan;
 use App\Models\Lembaga;
 use App\Models\Propinsi;
 use App\Models\User;
+use App\Services\UserLogService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -100,11 +101,14 @@ class LembagaController extends Controller
 
             $lembaga->pengurus()->create($data_pimpinan);
 
-            DB::commit();
-
+            
             User::where('id', Auth::user()->id)->update([
                 'id_lembaga' => $lembaga->id,
             ]);
+
+            new UserLogService('create', 'Membuat lembaga '.$validatedLembaga['name']);
+
+            DB::commit();
             
             return redirect()->route('lembaga.admin', ['id_lembaga' => $lembaga->id])->with('success', 'Lembaga created successfully.');
         } catch (\Throwable $th) {

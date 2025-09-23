@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\Skpd;
 use App\Models\UrusanSkpd;
 use App\Models\User as ModelsUser;
+use App\Services\UserLogService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -106,6 +107,8 @@ class User extends Component
             
             Mail::to($this->email)->queue(new SendUserPassword($new_password));
 
+            new UserLogService('create', 'tambah pengguna '.$this->name);
+
             DB::commit();
 
             $this->reset(['name', 'email', 'role', 'skpd', 'urusans', 'urusan']);
@@ -149,6 +152,8 @@ class User extends Component
 
             $user->assignRole([$role->name]);
 
+            new UserLogService('update', 'pembaruan pengguna '.$this->name);
+
             DB::commit();
 
             $this->reset(['role','name', 'email', 'role']);
@@ -170,6 +175,8 @@ class User extends Component
     public function delete()
     {
         $this->user->delete();
+
+        new UserLogService('delete', 'hapus pengguna '.$this->name);
 
         $this->reset(['user']);
         session()->flash('message', 'User deleted successfully.');

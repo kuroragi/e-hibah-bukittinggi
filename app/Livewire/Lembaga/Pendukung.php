@@ -4,6 +4,7 @@ namespace App\Livewire\Lembaga;
 
 use App\Models\Bank;
 use App\Models\Lembaga;
+use App\Services\UserLogService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -17,6 +18,7 @@ class Pendukung extends Component
     use WithFileUploads;
 
     public $banks;
+    public $lembaga;
 
     public $id_lembaga;
     public $no_domisili;
@@ -33,6 +35,7 @@ class Pendukung extends Component
     public function mount($id_lembaga = null) {
         $lembaga = Lembaga::findOrFail($id_lembaga);
         if($lembaga){
+            $this->lembaga = $lembaga;
             $this->id_lembaga = $lembaga->id;
             $this->no_domisili = $lembaga->no_domisili;
             $this->date_domisili = $lembaga->date_domisili;
@@ -88,6 +91,8 @@ class Pendukung extends Component
                 'no_rekening' => $this->no_rek,
                 'photo_rek' => $photo_rek_path,
             ]);
+
+            new UserLogService('update', 'Pembaruan data pendukung lembaga '.$this->lembaga->name);
 
             DB::commit();
 

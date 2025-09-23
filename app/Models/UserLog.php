@@ -24,4 +24,14 @@ class UserLog extends Model
     {
         return $this->belongsTo(User::class, 'id_user');
     }
+
+    public function getRowClassAttribute()
+    {
+        return match ($this->action) {
+            'create' => 'table-success',
+            'update' => 'table-warning',
+            'delete' => 'table-danger',
+            default  => 'table-secondary',
+        };
+    }
 }

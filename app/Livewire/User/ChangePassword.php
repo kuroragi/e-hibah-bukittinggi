@@ -2,9 +2,13 @@
 
 namespace App\Livewire\User;
 
+use App\Mail\SendPasswordUpdateAlert;
 use App\Models\User;
+use App\Services\UserLogService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -75,11 +79,26 @@ class ChangePassword extends Component
             return session()->flash('error', 'Password lama salah.');
         }
 
-        auth()->user()->update([
-            'password' => Hash::make($this->password),
-        ]);
+        DB::beginTransaction();
+        try {
+            auth()->user()->update([
+                'password' => Hash::make($this->password),
+            ]);
+                
+            Mail::to(Auth::user()->email)->queue(new SendPasswordUpdateAlert(now(), request()->ip(), request()->userAgent()));
 
-        session()->flash('success', 'Password berhasil diperbarui.');
-        $this->reset(['current_password', 'password', 'password_confirmation']);
+            new UserLogService('update', 'pembaruan password '.Auth::user()->name);
+
+            DB::commit();
+            
+            session()->flash('success', 'Password berhasil diperbarui.');
+            $this->reset(['current_password', 'password', 'password_confirmation']);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            session()->flash('error', 'Password berhasil diperbarui.\nError: '.$th->getMessage());
+            
+        }
+
+
     }
 }

@@ -10,14 +10,12 @@ class UserLogService
     /**
      * Create a new class instance.
      */
-    public function __construct()
-    {
-        //
-    }
-
-    public function log(string $action, ?string $description = null): void {
+    public function __construct(
+        string $action,
+        ?string $description = null
+    ) {
         UserLog::create([
-            'user_id'    => Auth::id(),
+            'id_user'    => Auth::user()->id,
             'action'     => $action,
             'description'=> $description,
             'ip_address' => request()->ip(),

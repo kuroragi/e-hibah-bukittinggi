@@ -30,10 +30,6 @@ class User extends Authenticatable
         'id_skpd',
         'id_urusan',
         'id_lembaga',
-        'deleted_at',
-        'created_by',
-        'updated_by',
-        'deleted_by',
     ];
 
     /**

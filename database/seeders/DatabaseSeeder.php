@@ -20,7 +20,20 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         $permission_for_super_admin = Permission::all()->except(
-            Permission::where('name', 'View Admin Lembaga')->first()->id
+            Permission::whereIn('name', [
+                'View Admin Lembaga',
+                'View Any Permohonan',
+                'View Permohonan',
+                'Restore Permohonan',
+                'Check Permohonan',
+                'Review Permohonan',
+                'Reviewed Permohonan',
+                'Confirm Permohonan',
+                'Download Pemberitahuan Koreksi',
+                'Confirm Review Permohonan',
+                'Review Perbaikan Permohonan',
+                'Confirm Perbaikan Permohonan',
+            ])->first()->id
         );
 
         tap(Role::create(['name' => 'Super Admin', 'guard_name' => 'web']))->syncPermissions($permission_for_super_admin);
@@ -72,7 +85,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Admin Utama',
             'email' => 'admin@example.com',
-            'password' => Hash::make('@zaq123qwerty'),
+            'password' => bcrypt('@zaq123qwerty'),
             'id_role' => 1,
         ])->assignRole('Super Admin');
     

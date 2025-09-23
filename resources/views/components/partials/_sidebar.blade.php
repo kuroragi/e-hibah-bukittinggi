@@ -47,6 +47,9 @@
                     @can('viewAny', App\Models\User::class)
                         <a href="{{ route('user.index') }}" class="list-group-item"><i class="bi bi-people"></i>
                             Pengguna</a>
+                        <a href="{{ route('user.log') }}" class="list-group-item"><i
+                                class="bi bi-file-earmark-person"></i>Log
+                            Pengguna</a>
                     @endcan
                     @can('View Any Pertanyaan', App\Models\PertanyaanKelengkapan::class)
                         <a href="{{ route('pertanyaan') }}" class="list-group-item"><i class="bi bi-question-square"></i>

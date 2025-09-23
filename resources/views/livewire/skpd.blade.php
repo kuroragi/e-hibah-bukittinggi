@@ -73,31 +73,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($skpds as $key => $skpd)
+                        @foreach ($skpds as $key => $item)
                             <tr>
-                                <td>{{ $skpd->name }}</td>
+                                <td>{{ $item->name }}</td>
                                 <td>
                                     <button class="btn btn-sm btn-info" data-bs-toggle="collapse"
-                                        data-bs-target="#collapse{{ $skpd->id }}" aria-expanded="false"
-                                        aria-controls="collapse{{ $skpd->id }}"><i class="bi bi-eye"></i>
+                                        data-bs-target="#collapse{{ $item->id }}" aria-expanded="false"
+                                        aria-controls="collapse{{ $item->id }}"><i class="bi bi-eye"></i>
                                         Urusan</button>
                                     {{-- <button class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"></i> Tambah
                                     Urusan</button> --}}
-                                    <button wire:click='edit({{ $skpd->id }})' class="btn btn-sm btn-warning"><i
+                                    <button wire:click='edit({{ $item->id }})' class="btn btn-sm btn-warning"><i
                                             class="bi bi-pencil-square"></i>
                                         Edit</button>
-                                    <button wire:click='verifyDelete({{ $skpd->id }})'
+                                    <button wire:click='verifyDelete({{ $item->id }})'
                                         class="btn btn-sm btn-danger"><i class="bi bi-trash"></i> Hapus</button>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2" class="hiddenRow">
-                                    <div class="collapse" id="collapse{{ $skpd->id }}">
+                                    <div class="collapse" id="collapse{{ $item->id }}">
                                         <div class="card card-body">
                                             <h5>Urusan SKPD</h5>
                                             <table class="table">
-                                                @if ($skpd->has_urusan->count() > 0)
-                                                    @foreach ($skpd->has_urusan as $urusan)
+                                                @if ($item->has_urusan->count() > 0)
+                                                    @foreach ($item->has_urusan as $urusan)
                                                         <tr>
                                                             <td>{{ $urusan->nama_urusan }}</td>
                                                         </tr>
@@ -181,13 +181,13 @@
                                 <tr>
                                     <td>Nama Pengguna</td>
                                     <td>:</td>
-                                    <td>{{ $skpd->name }}</td>
+                                    <td>{{ optional($skpd)->name }}</td>
                                 </tr>
                                 <tr>
                                     <td>Urusan</td>
                                     <td>:</td>
                                     <td>
-                                        @foreach ($skpd->has_urusan as $item)
+                                        @foreach (optional($skpd)->has_urusan ?? [] as $item)
                                             {{ $loop->iteration }}. {{ $item->nama_urusan }} <br>
                                         @endforeach
                                     </td>

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Permission;
 use App\Models\Role as ModelsRole;
+use App\Services\UserLogService;
 use App\Traits\WithAuthorization;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
@@ -57,6 +58,8 @@ class Role extends Component
             'guard_name' => $this->guard_name,
         ])->syncPermissions($this->selectedPermissions);
 
+        new UserLogService('create', 'tambah role '.$this->name);
+
         session()->flash('message', 'Role created successfully.');
         $this->reset(['name', 'guard_name', 'selectedPermissions']);
     }
@@ -90,6 +93,8 @@ class Role extends Component
 
         $role->syncPermissions($this->selectedPermissions);
 
+        new UserLogService('update', 'pembaruan role '.$this->name);
+
         $this->reset(['roleId', 'name', 'guard_name', 'selectedPermissions']);
         session()->flash('message', 'Role berhasil diperbarui.');
         $this->dispatch('closeModal');
@@ -117,6 +122,8 @@ class Role extends Component
                 $role->permissions()->detach();
 
                 $role->delete();
+
+                new UserLogService('delete', 'hapus role '.$role->name);
 
                 DB::commit();
 

@@ -36,7 +36,7 @@
                                             <select class="multiple-select" id="selectedPermissions"
                                                 data-placeholder="Choose anything" multiple="multiple">
                                                 @foreach ($permissions as $item)
-                                                <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -79,16 +79,18 @@
                     </thead>
                     <tbody>
                         @foreach ($roles as $item)
-                        <tr wire:key="{{ $item->id }}">
-                            <td>{{ $item->name }}</td>
-                            <td>{{ $item->guard_name }}</td>
-                            <td>
-                                <button wire:click='edit({{ $item->id }})' class="btn btn-sm btn-warning"><i
-                                        class="bi bi-pencil-square"></i> Edit</button>
-                                <button wire:click='delete_warning({{ $item->id }})' class="btn btn-sm btn-danger ms-2
-                                "><i class="bi bi-trash"></i> Hapus</button>
-                            </td>
-                        </tr>
+                            <tr wire:key="{{ $item->id }}">
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->guard_name }}</td>
+                                <td>
+                                    <button wire:click='edit({{ $item->id }})' class="btn btn-sm btn-warning"><i
+                                            class="bi bi-pencil-square"></i> Edit</button>
+                                    <button wire:click='delete_warning({{ $item->id }})'
+                                        class="btn btn-sm btn-danger ms-2
+                                "><i
+                                            class="bi bi-trash"></i> Hapus</button>
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                     <tfoot>
@@ -123,9 +125,9 @@
                                 <select class="multiple-select" id="editSelectedPermissions"
                                     data-placeholder="Choose anything" multiple="multiple">
                                     @foreach ($permissions as $item)
-                                    <option value="{{ $item->name }}" @if (in_array($item->name, $selectedPermissions))
-                                        selected @endif>{{ $item->name }}
-                                    </option>
+                                        <option value="{{ $item->name }}"
+                                            @if (in_array($item->name, $selectedPermissions)) selected @endif>{{ $item->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -152,7 +154,7 @@
     <div wire:ignore.self class="modal fade" id="delete_modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-warning">
+                <div class="modal-header bg-danger text-light">
                     <h5 class="modal-title">Hapus Data Role</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -184,8 +186,8 @@
 
 </div>
 @push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
             // Bisa langsung inisialisasi Select2 juga di sini
             $('#createRole').on('shown.bs.modal', function() {
                 $('#selectedPermissions').select2({
@@ -227,7 +229,7 @@
 
             });
 
-            Livewire.on("deleteModal", function(){
+            Livewire.on("deleteModal", function() {
                 $("#delete_modal").modal("show");
             })
 
@@ -238,5 +240,5 @@
             });
 
         });
-</script>
+    </script>
 @endpush

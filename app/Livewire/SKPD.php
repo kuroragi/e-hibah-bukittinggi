@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Skpd as ModelsSkpd;
 use App\Models\UrusanSkpd;
+use App\Services\UserLogService;
 use App\Traits\WithAuthorization;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
@@ -67,6 +68,8 @@ class SKPD extends Component
                     ]);
                 }
             }
+
+            new UserLogService('create', 'tambah skpd '.$this->name.' dan urusan terkait');
         });
 
         $this->reset(['name', 'urusan_skpd']);
@@ -120,6 +123,8 @@ class SKPD extends Component
         }
         });
 
+        new UserLogService('update', 'pembaruan skpd '.$this->name.' dan urusan terkait');
+
         session()->flash('message', 'SKPD updated successfully.');
         $this->dispatch('closeModal');
     }
@@ -136,6 +141,8 @@ class SKPD extends Component
             UrusanSkpd::where('id', $urusan)->delete();
         }
         $this->skpd->delete();
+
+        new UserLogService('delete', 'hapus skpd '.$this->name.' dan urusan terkait');
 
         $this->reset(['skpd']);
         session()->flash('message', 'SKPD deleted successfully.');

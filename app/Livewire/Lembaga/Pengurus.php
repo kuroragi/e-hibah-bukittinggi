@@ -4,6 +4,7 @@ namespace App\Livewire\Lembaga;
 
 use App\Models\Lembaga;
 use App\Models\Pengurus as ModelsPengurus;
+use App\Services\UserLogService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -129,6 +130,8 @@ class Pengurus extends Component
                         ]
                     );
             }
+
+            new UserLogService('update', 'Pembaruan data pengurus lembaga '.$this->lembaga->name);
 
             DB::commit();
 

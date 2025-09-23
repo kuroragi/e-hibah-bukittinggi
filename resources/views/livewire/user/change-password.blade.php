@@ -16,10 +16,10 @@
     <div class="card">
         <div class="card-body">
             <h3>Ubah Password</h3>
-            @if(session()->has('success'))
-            <div class="alert alert-success" role="alert">
-                {{ session('success') }}
-            </div>
+            @if (session()->has('success'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('success') }}
+                </div>
             @endif
             <div class="row">
                 <div class="col-12">
@@ -28,15 +28,14 @@
                         <input type="password" wire:model='current_password' type="text" class="form-control"
                             id="user-name" placeholder="Masukkan Password Saat Ini">
                         @error('current_password')
-                        <span>{{ $message }}</span>
+                            <span>{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password Baru</label>
-                        <input type="password" wire:model.live='password' type="text" class="form-control" id="password"
-                            placeholder="Masukkan Password Baru">
+                        <input type="password" wire:model.live='password' type="text" class="form-control"
+                            id="password" placeholder="Masukkan Password Baru">
                         @error('current_password')
-                        <span>{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="mb-3">
@@ -64,10 +63,9 @@
                     </div>
                     <div class="mb-3">
                         <label for="password_confirmation" class="form-label">Konfirmasi Password Baru</label>
-                        <input type="password" wire:model.live='password_confirmation' type="text" class="form-control"
-                            id="password_confirmation" placeholder="Masukan Ulang Password Baru">
+                        <input type="password" wire:model.live='password_confirmation' type="text"
+                            class="form-control" id="password_confirmation" placeholder="Masukan Ulang Password Baru">
                         @error('current_password')
-                        <span>{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="mb-3">
@@ -83,11 +81,11 @@
 </div>
 
 @push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
             $("#confirm_new_password, #new_password").on('change', function() {
                 Livewire.dispatch('confirm_passowrd')
             })
         });
-</script>
+    </script>
 @endpush
