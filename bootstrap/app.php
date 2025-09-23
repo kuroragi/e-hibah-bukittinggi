@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\ActivityLog;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -12,6 +13,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // daftar route middleware
+        $middleware->alias([
+            'activity.log' => ActivityLog::class,
+        ]);
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
