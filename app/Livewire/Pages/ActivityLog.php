@@ -2,33 +2,61 @@
 
 namespace App\Livewire\Pages;
 
-use App\Services\ActivityLogService;
+use Illuminate\Support\Facades\File;
 use Livewire\Component;
 
 class ActivityLog extends Component
 {
-    public $week;
+    public $search = '';
+    public $dateFilter = null;
     public $logs = [];
-    public $userId;
-
-
-    protected $queryString = ['week', 'userId'];
-
 
     public function mount()
     {
-        $this->week = $this->week ?? now()->format('o-\WW');
         $this->loadLogs();
     }
 
-    public function loadLogs()
+    public function updatedSearch()
     {
-        $service = app(ActivityLogService::class);
-        $logs = $service->read($this->week);
-        if ($this->userId) {
-        $logs = array_filter($logs, fn($log) => $log['user_id'] == $this->userId);
+        $this->loadLogs();
+    }
+
+    public function updatedDateFilter()
+    {
+        $this->loadLogs();
+    }
+
+    private function loadLogs()
+    {
+        $logPath = storage_path('logs/activity');
+        $files   = collect(File::files($logPath))
+            ->sortByDesc(fn($f) => $f->getCTime());
+
+        $logs = [];
+        foreach ($files as $file) {
+            $filename = $file->getFilename();
+            $date     = str_replace(['activity-', '.log', '.gz'], '', $filename);
+
+            // filter tanggal
+            if ($this->dateFilter && $this->dateFilter !== $date) continue;
+
+            $content = str_ends_with($filename, '.gz')
+                ? gzdecode(File::get($file))
+                : File::get($file);
+
+            foreach (explode("\n", $content) as $line) {
+                if (trim($line)) {
+                    $data = json_decode($line, true);
+                    if ($this->search) {
+                        if (!str_contains(strtolower(json_encode($data)), strtolower($this->search))) continue;
+                    }
+                    $logs[] = $data;
+                }
+            }
+            if (count($logs) >= 50) break;
         }
-        $this->logs = $logs;
+
+        $this->logs = array_slice($logs, 0, 50);
     }
 
     public function render()

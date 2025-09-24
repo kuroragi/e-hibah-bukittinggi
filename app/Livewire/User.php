@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\Skpd;
 use App\Models\UrusanSkpd;
 use App\Models\User as ModelsUser;
+use App\Services\ActivityLogService;
 use App\Services\UserLogService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
@@ -105,10 +106,13 @@ class User extends Component
                 'id_urusan' => $this->urusan ? $this->urusan : null,
             ])->assignRole([$role->name]);
             
+            
+            // new UserLogService('create', 'tambah pengguna '.$this->name);
+            
+            $logStore = ActivityLogService::log('user.create', 'create', 'penambahan pengguna '.$this->name);
+
             Mail::to($this->email)->queue(new SendUserPassword($new_password));
-
-            new UserLogService('create', 'tambah pengguna '.$this->name);
-
+            
             DB::commit();
 
             $this->reset(['name', 'email', 'role', 'skpd', 'urusans', 'urusan']);
@@ -151,8 +155,8 @@ class User extends Component
             ]);
 
             $user->assignRole([$role->name]);
-
-            new UserLogService('update', 'pembaruan pengguna '.$this->name);
+            
+            ActivityLogService::log('user.update', 'warning', 'perubahan data pengguna '.$this->name);
 
             DB::commit();
 

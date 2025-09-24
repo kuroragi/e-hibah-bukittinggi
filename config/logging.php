@@ -126,6 +126,12 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+        'activity' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/activity/activity-' . date('Y-m-d') . '.log'),
+            'level' => 'debug',
+            'tap' => [App\Logging\CustomizeFormatter::class],
+        ],
 
     ],
 

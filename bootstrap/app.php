@@ -14,9 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         // daftar route middleware
-        $middleware->alias([
-            'activity.log' => ActivityLog::class,
-        ]);
+        // $middleware->alias([
+        //     'activity.log' => ActivityLog::class,
+        // ]);
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
