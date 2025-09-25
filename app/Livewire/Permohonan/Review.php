@@ -12,6 +12,7 @@ use App\Models\Skpd;
 use App\Models\Status_permohonan;
 use App\Models\UrusanSkpd;
 use App\Models\VerifikasiPermohonan;
+use App\Services\ActivityLogService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -230,6 +231,8 @@ class Review extends Component
 
                 }
             }
+
+            ActivityLogService::log('permohonan.review', 'info', 'review permohonan');
             
             DB::commit();
             
@@ -273,6 +276,8 @@ class Review extends Component
                 'catatan_rekomendasi' => $this->catatan_rekomendasi,
                 'file_pemberitahuan' => $file_pemberitahuan_path
             ]);
+
+            ActivityLogService::log('permohonan.verification', 'warning', 'penentuan status permohonan');
 
             DB::commit();
 

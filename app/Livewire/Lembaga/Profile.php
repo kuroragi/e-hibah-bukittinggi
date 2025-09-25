@@ -9,6 +9,7 @@ use App\Models\Lembaga;
 use App\Models\Propinsi;
 use App\Models\Skpd;
 use App\Models\UrusanSkpd;
+use App\Services\ActivityLogService;
 use App\Services\UserLogService;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
@@ -121,7 +122,7 @@ class Profile extends Component
                 'alamat' => $this->alamat,
             ]);
 
-            new UserLogService('update', 'Pembaruan data profil lembaga '.$this->name);
+            ActivityLogService::log('lembaga.update-profil', 'warning', 'Pembaruan data profil lembaga '.$this->name);
 
             DB::commit();
             

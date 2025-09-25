@@ -8,6 +8,7 @@ use App\Models\Permohonan;
 use App\Models\RabPermohonan;
 use App\Models\Satuan;
 use App\Models\Status_permohonan;
+use App\Services\ActivityLogService;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -110,6 +111,8 @@ class Show extends Component
             'url' => $url
         ]);
 
+        ActivityLogService::log('nphd.generate-permintaan-nphd', 'warning', 'mengenerate permintaan nphd untuk permohonan perihal '.$this->permohonan->perihal_mohon);
+
         $this->permohonan->refresh();
     }
 
@@ -136,6 +139,7 @@ class Show extends Component
                 'file_permintaan_nphd' => $permintaan_nphd_path,
             ]);
 
+            ActivityLogService::log('permohonan.upload-permohonan-nphd', 'info', 'upload file permintaan nphd untuk permohonan perihal '.$this->permohonan->perihal_mohon);
 
             DB::commit();
 

@@ -5,6 +5,7 @@ namespace App\Livewire\Permohonan;
 use App\Models\PendukungPermohonan;
 use App\Models\Permohonan;
 use App\Models\Status_permohonan;
+use App\Services\ActivityLogService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -79,6 +80,8 @@ class IsiPendukung extends Component
             Permohonan::findOrFail($this->id_permohonan)->update([
                 'id_status' => $this->id_status_didukung
             ]);
+
+            ActivityLogService::log('permohonan.create-pendukung', 'success', 'penambahan data pendukung permohonan');
             
             DB::commit();
 

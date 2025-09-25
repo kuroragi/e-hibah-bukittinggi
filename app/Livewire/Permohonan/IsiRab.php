@@ -7,6 +7,7 @@ use App\Models\RabPermohonan;
 use App\Models\RincianRab;
 use App\Models\Satuan;
 use App\Models\Status_permohonan;
+use App\Services\ActivityLogService;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
@@ -169,6 +170,8 @@ class IsiRab extends Component
                     ]);
                 }
             }
+
+            ActivityLogService::log('permohonan.create-rab', 'success', 'penambahan data RAB '.$this->permohonan->perihal_mohon);
             DB::commit();
             $this->reset(['kegiatan_rab']);
             $this->dispatch('close-modal');

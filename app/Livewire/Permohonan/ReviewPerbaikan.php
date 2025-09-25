@@ -13,6 +13,7 @@ use App\Models\Skpd;
 use App\Models\Status_permohonan;
 use App\Models\UrusanSkpd;
 use App\Models\VerifikasiPermohonan;
+use App\Services\ActivityLogService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -213,6 +214,8 @@ class ReviewPerbaikan extends Component
 
                 }
             }
+
+            ActivityLogService::log('permohonan.review-perbaikan-permohonan', 'info', 'review permohonan yang telah diperbaiki');
             
             DB::commit();
             
@@ -246,6 +249,12 @@ class ReviewPerbaikan extends Component
                     'file_pemberitahuan_perbaikan' => $file_pemberitahuan_perbaikan_path
                 ]);
 
+                $status = [
+                    'event' => 'permohonan.approved',
+                    'type' => 'warning',
+                    'message' => 'Permohonan diterima dan direkomendasikan'
+                ];
+                
             }else if($this->status_rekomendasi == 2){
                 $status = Status_permohonan::where('name', 'koreksi')->first()->id;
                 
@@ -257,6 +266,12 @@ class ReviewPerbaikan extends Component
                     'catatan_rekomendasi' => $this->catatan_rekomendasi,
                     'file_pemberitahuan_perbaikan' => $file_pemberitahuan_perbaikan_path
                 ]);
+
+                $status = [
+                    'event' => 'permohonan.need-correction',
+                    'type' => 'warning',
+                    'message' => 'Permohonan diterima namun butuh perbaikan'
+                ];
             }else if($this->status_rekomendasi == 3){
                 $status = Status_permohonan::where('name', 'ditolak')->first()->id;
                 
@@ -264,8 +279,16 @@ class ReviewPerbaikan extends Component
                     'id_status' => $status,
                     'catatan_rekomendasi' => $this->catatan_rekomendasi,
                 ]);
+
+                $status = [
+                    'event' => 'permohonan.denied',
+                    'type' => 'warning',
+                    'message' => 'Permohonan ditolak'
+                ];
             }
 
+            ActivityLogService::log($status['event'], $status['type'], $status['message']);
+            
             DB::commit();
 
             return redirect()->route('permohonan');
@@ -305,6 +328,8 @@ class ReviewPerbaikan extends Component
                     'is_sesuai' => $this->list_kelengkapan_perbaikan[$key]['is_sesuai']
                 ]);
             };
+
+            ActivityLogService::log('permohonan.review-perbaikan-permohonan', 'info', 'review permohonan yang telah diperbaiki');
 
             DB::commit();
 

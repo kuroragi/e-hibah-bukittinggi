@@ -9,6 +9,7 @@ use App\Models\Permohonan;
 use App\Models\RabPermohonan;
 use App\Models\RincianRab;
 use App\Models\Satuan;
+use App\Services\ActivityLogService;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -203,6 +204,8 @@ class Perbaikan extends Component
             $kegiatan->rincian()->delete();
     
             $kegiatan->delete();
+
+            ActivityLogService::log('permohonan.rab.delete', 'danger', 'menghapus data kegiatan dan rincian pada RAB permohonan '.$this->permohonan->perihal_mohon);
 
             DB::commit();
 

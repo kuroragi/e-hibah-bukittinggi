@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Permission as ModelsPermission;
+use App\Services\ActivityLogService;
 use App\Services\UserLogService;
 use App\Traits\WithAuthorization;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -40,7 +41,7 @@ class Permission extends Component
             'guard_name' => $this->guard_name,
         ]);
 
-        new UserLogService('create', 'create permission '.$this->name);
+        ActivityLogService::log('permission.create', 'success', 'penambahan data permission '.$this->name);
 
         $this->reset(['name', 'guard_name']);
         session()->flash('success', 'Permission created successfully.');
@@ -58,7 +59,8 @@ class Permission extends Component
             'guard_name' => $this->guard_name,
         ]);
 
-        new UserLogService('create', 'tambah permission '.$this->name);
+        ActivityLogService::log('permission.update', 'warning', 'Pembaruan data permission '.$this->name);
+
 
         $this->reset(['name', 'guard_name']);
     }
@@ -83,7 +85,8 @@ class Permission extends Component
             'guard_name' => $this->guard_name,
         ]);
 
-        new UserLogService('update', 'pembaruan permission '.$this->name);
+        ActivityLogService::log('permission.delete', 'danger', 'penghapusan data permission '.$this->name);
+
 
         $this->reset(['name', 'guard_name']);
         $this->dispatch('closeModal');

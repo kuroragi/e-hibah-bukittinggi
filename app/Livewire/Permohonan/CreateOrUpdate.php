@@ -6,6 +6,7 @@ use App\Models\Permohonan;
 use App\Models\Skpd;
 use App\Models\UrusanSkpd;
 use App\Models\User;
+use App\Services\ActivityLogService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -165,6 +166,9 @@ class CreateOrUpdate extends Component
                 'catatan_rekomendasi' => $this->catatan_rekomendasi,
                 'file_pemberitahuan' => $this->file_pemberitahuan,
             ]);
+
+            ActivityLogService::log('permohonan.create', 'success', 'penambahan permohonan baru '.$this->perihal_mohon);
+
             DB::commit();
             return redirect()->route('permohonan.isi_pendukung', ['id_permohonan' => $permohonan->id])->with('success', 'Berhasil menambahkan permohonan hibah, lanjutkan dengan Isi Data Pendukung');
         } catch (\Throwable $th) {

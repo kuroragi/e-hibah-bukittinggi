@@ -4,6 +4,7 @@ namespace App\Livewire\User;
 
 use App\Mail\SendPasswordUpdateAlert;
 use App\Models\User;
+use App\Services\ActivityLogService;
 use App\Services\UserLogService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -85,9 +86,9 @@ class ChangePassword extends Component
                 'password' => Hash::make($this->password),
             ]);
                 
-            Mail::to(Auth::user()->email)->queue(new SendPasswordUpdateAlert(now(), request()->ip(), request()->userAgent()));
+            ActivityLogService::log('user.update-password', 'warning', Auth()::user()->name.' melakukan perubahan password');
 
-            new UserLogService('update', 'pembaruan password '.Auth::user()->name);
+            Mail::to(Auth::user()->email)->queue(new SendPasswordUpdateAlert(now(), request()->ip(), request()->userAgent()));
 
             DB::commit();
             

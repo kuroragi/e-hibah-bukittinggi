@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Skpd as ModelsSkpd;
 use App\Models\UrusanSkpd;
+use App\Services\ActivityLogService;
 use App\Services\UserLogService;
 use App\Traits\WithAuthorization;
 use Illuminate\Support\Facades\DB;
@@ -69,7 +70,7 @@ class SKPD extends Component
                 }
             }
 
-            new UserLogService('create', 'tambah skpd '.$this->name.' dan urusan terkait');
+            ActivityLogService::log('skpd.create', 'success', 'penambahan data skpd '.$this->name.' dan urusan terkait');
         });
 
         $this->reset(['name', 'urusan_skpd']);
@@ -123,7 +124,7 @@ class SKPD extends Component
         }
         });
 
-        new UserLogService('update', 'pembaruan skpd '.$this->name.' dan urusan terkait');
+        ActivityLogService::log('skpd.update', 'warning', 'pembaruan data skpd '.$this->name.' dan urusan terkait');
 
         session()->flash('message', 'SKPD updated successfully.');
         $this->dispatch('closeModal');
@@ -142,7 +143,7 @@ class SKPD extends Component
         }
         $this->skpd->delete();
 
-        new UserLogService('delete', 'hapus skpd '.$this->name.' dan urusan terkait');
+            ActivityLogService::log('skpd.delete', 'danger', 'penghapusan data skpd '.$this->name.' dan urusan terkait');
 
         $this->reset(['skpd']);
         session()->flash('message', 'SKPD deleted successfully.');

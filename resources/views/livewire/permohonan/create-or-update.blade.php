@@ -16,13 +16,13 @@
         </div>
     </div>
 
-    @if (session()->has('error')){
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{ session('error') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    }
-
+    @if (session()->has('error'))
+        {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        }
     @endif
 
     <div class="row">
@@ -33,9 +33,10 @@
                     <div class="card">
                         <div class="card-body">
                             <label class="form-label">Usulan APBD</label>
-                            <input type="text" wire:model="usulan_apbd" class="form-control" placeholder="2025">
+                            <input type="text" wire:model="usulan_apbd" class="form-control"
+                                placeholder="{{ date('Y') + 1 }}">
                             @error('usulan_apbd')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -54,7 +55,7 @@
                                                     class="text-danger">*</span></label>
                                             <input type="text" wire:model="no_mohon" class="form-control">
                                             @error('no_mohon')
-                                            <span class="text-danger text-sm">{{ $message }}</span>
+                                                <span class="text-danger text-sm">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="mb-3">
@@ -62,7 +63,7 @@
                                                     class="text-danger">*</span></label>
                                             <input type="text" wire:model="perihal_mohon" class="form-control">
                                             @error('perihal_mohon')
-                                            <span class="text-danger text-sm">{{ $message }}</span>
+                                                <span class="text-danger text-sm">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
@@ -75,7 +76,7 @@
                                                         class="bi bi-calendar"></i></span>
                                                 <input type="date" wire:model="tanggal_mohon" class="form-control">
                                                 @error('tanggal_mohon')
-                                                <span class="text-danger text-sm">{{ $message }}</span>
+                                                    <span class="text-danger text-sm">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                         </div>
@@ -84,7 +85,7 @@
                                                     class="text-danger">*</span></label>
                                             <input type="file" wire:model="file_mohon" class="form-control">
                                             @error('file_mohon')
-                                            <span class="text-danger text-sm">{{ $message }}</span>
+                                                <span class="text-danger text-sm">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
@@ -107,7 +108,7 @@
                                         <label class="form-label">No Proposal <span class="text-danger">*</span></label>
                                         <input type="text" wire:model="no_proposal" class="form-control">
                                         @error('no_proposal')
-                                        <span class="text-danger text-sm">{{ $message }}</span>
+                                            <span class="text-danger text-sm">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
@@ -119,7 +120,7 @@
                                             <span class="input-group-text"><i class="bi bi-calendar"></i></span>
                                             <input type="date" wire:model="tanggal_proposal" class="form-control">
                                             @error('tanggal_proposal')
-                                            <span class="text-danger text-sm">{{ $message }}</span>
+                                                <span class="text-danger text-sm">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
@@ -129,7 +130,7 @@
                                 <label class="form-label">Judul Proposal <span class="text-danger">*</span></label>
                                 <input type="text" wire:model="title" class="form-control">
                                 @error('title')
-                                <span class="text-danger text-sm">{{ $message }}</span>
+                                    <span class="text-danger text-sm">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="mb-3">
@@ -137,11 +138,11 @@
                                 <select wire:model="id_skpd" id="id_skpd" class="form-control" disabled>
                                     <option value="">-- Pilih SKPD --</option>
                                     @foreach ($skpds as $key => $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('id_skpd')
-                                <span class="text-danger text-sm">{{ $message }}</span>
+                                    <span class="text-danger text-sm">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="mb-3">
@@ -149,11 +150,11 @@
                                 <select wire:model="urusan" id="urusan" class="form-control" disabled>
                                     <option value="">-- Pilih Urusan --</option>
                                     @foreach ($urusans as $key => $item)
-                                    <option value="{{ $item->id }}">{{ $item->nama_urusan }}</option>
+                                        <option value="{{ $item->id }}">{{ $item->nama_urusan }}</option>
                                     @endforeach
                                 </select>
                                 @error('urusan')
-                                <span class="text-danger text-sm">{{ $message }}</span>
+                                    <span class="text-danger text-sm">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="row">
@@ -164,7 +165,7 @@
                                             <span class="input-group-text"><i class="bi bi-calendar"></i></span>
                                             <input type="date" wire:model="awal_laksana" class="form-control">
                                             @error('awal_laksana')
-                                            <span class="text-danger text-sm">{{ $message }}</span>
+                                                <span class="text-danger text-sm">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
@@ -176,7 +177,7 @@
                                             <span class="input-group-text"><i class="bi bi-calendar"></i></span>
                                             <input type="date" wire:model="akhir_laksana" class="form-control">
                                             @error('akhir_laksana')
-                                            <span class="text-danger text-sm">{{ $message }}</span>
+                                                <span class="text-danger text-sm">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
@@ -186,7 +187,7 @@
                                 <label class="form-label">Scan Proposal <span class="text-danger">*</span></label>
                                 <input type="file" wire:model="file_proposal" class="form-control">
                                 @error('file_proposal')
-                                <span class="text-danger text-sm">{{ $message }}</span>
+                                    <span class="text-danger text-sm">{{ $message }}</span>
                                 @enderror
                             </div>
 
@@ -203,21 +204,21 @@
                                 <label class="form-label">Latar Belakang</label>
                                 <textarea wire:model="latar_belakang" class="form-control" rows="3"></textarea>
                                 @error('latar_belakang')
-                                <span class="text-danger text-sm">{{ $message }}</span>
+                                    <span class="text-danger text-sm">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Maksud Tujuan</label>
                                 <textarea wire:model="maksud_tujuan" class="form-control" rows="3"></textarea>
                                 @error('maksud_tujuan')
-                                <span class="text-danger text-sm">{{ $message }}</span>
+                                    <span class="text-danger text-sm">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Keterangan</label>
                                 <textarea wire:model="keterangan" class="form-control" rows="3"></textarea>
                                 @error('keterangan')
-                                <span class="text-danger text-sm">{{ $message }}</span>
+                                    <span class="text-danger text-sm">{{ $message }}</span>
                                 @enderror
                             </div>
 
@@ -235,11 +236,11 @@
 </div>
 
 @push('scripts')
-<script>
-    $("#id_skpd").on("change", function() {
+    <script>
+        $("#id_skpd").on("change", function() {
             Livewire.dispatch("id_skpd_updated", {
                 data: $(this).val()
             });
         })
-</script>
+    </script>
 @endpush

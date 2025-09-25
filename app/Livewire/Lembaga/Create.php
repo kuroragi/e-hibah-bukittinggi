@@ -10,6 +10,7 @@ use App\Models\Propinsi;
 use App\Models\Skpd;
 use App\Models\UrusanSkpd;
 use App\Models\User;
+use App\Services\ActivityLogService;
 use App\Services\UserLogService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -212,7 +213,7 @@ class Create extends Component
                 'id_lembaga' => $lembaga->id,
             ]);
 
-            new UserLogService('create', 'Membuat lembaga '.$this->name_lembaga);
+            ActivityLogService::log('lembaga.create', 'success', Auth::user()->name.' membuat dan menambahkan data lembaga '.$this->name_lembaga);
 
             DB::commit();
 

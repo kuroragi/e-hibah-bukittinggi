@@ -6,6 +6,7 @@ use App\Models\PerbaikanRab;
 use App\Models\Permohonan;
 use App\Models\RabPermohonan;
 use App\Models\Status_permohonan;
+use App\Services\ActivityLogService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -128,6 +129,8 @@ class Review extends Component
             $this->permohonan->update([
                 'id_status' => $status->id,
             ]);
+
+            ActivityLogService::log('nphd.permintaan-review', 'info', 'menyetujui permintaan nphd permohonan perihal '.$this->permohonan->perihal_mohon);
             
             DB::commit();
 

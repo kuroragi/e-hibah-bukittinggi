@@ -4,6 +4,7 @@ namespace App\Livewire\Lembaga;
 
 use App\Models\Bank;
 use App\Models\Lembaga;
+use App\Services\ActivityLogService;
 use App\Services\UserLogService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -92,7 +93,7 @@ class Pendukung extends Component
                 'photo_rek' => $photo_rek_path,
             ]);
 
-            new UserLogService('update', 'Pembaruan data pendukung lembaga '.$this->lembaga->name);
+            ActivityLogService::log('lembaga.update-pendukung', 'warning', 'pembaruan data pendukung lembaga '.$this->lembaga->name);
 
             DB::commit();
 

@@ -9,6 +9,7 @@ use App\Models\RincianRab;
 use App\Models\Satuan;
 use App\Models\Skpd;
 use App\Models\UrusanSkpd;
+use App\Services\ActivityLogService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -223,6 +224,8 @@ class EditPermohonan extends Component
                 'catatan_rekomendasi' => $this->catatan_rekomendasi,
                 'file_pemberitahuan' => $this->file_pemberitahuan,
             ]);
+
+            ActivityLogService::log('permohonan.update', 'warning', 'pembaruan data permohonan');
 
             DB::commit();
         } catch (\Throwable $th) {

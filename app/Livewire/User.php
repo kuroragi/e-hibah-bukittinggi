@@ -109,7 +109,7 @@ class User extends Component
             
             // new UserLogService('create', 'tambah pengguna '.$this->name);
             
-            $logStore = ActivityLogService::log('user.create', 'create', 'penambahan pengguna '.$this->name);
+            $logStore = ActivityLogService::log('user.create', 'success', 'penambahan pengguna '.$this->name);
 
             Mail::to($this->email)->queue(new SendUserPassword($new_password));
             
@@ -180,7 +180,7 @@ class User extends Component
     {
         $this->user->delete();
 
-        new UserLogService('delete', 'hapus pengguna '.$this->name);
+        ActivityLogService::log('user.delete', 'danger', 'penghapusan data pengguna '.$this->name);
 
         $this->reset(['user']);
         session()->flash('message', 'User deleted successfully.');
