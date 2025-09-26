@@ -8,6 +8,7 @@ use App\Models\Kelurahan;
 use App\Models\Lembaga;
 use App\Models\Propinsi;
 use App\Models\User;
+use App\Services\ActivityLogService;
 use App\Services\UserLogService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -106,7 +107,7 @@ class LembagaController extends Controller
                 'id_lembaga' => $lembaga->id,
             ]);
 
-            new UserLogService('create', 'Membuat lembaga '.$validatedLembaga['name']);
+            ActivityLogService::log('lembaga.create', 'success', 'membuat dan menambahkan data lembaga '.$validatedLembaga['name'], json_encode($lembaga->toArray()));
 
             DB::commit();
             

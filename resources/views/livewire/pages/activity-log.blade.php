@@ -42,7 +42,8 @@
                                 '{{ $log['user']['name'] ?? 'unknown' }}', role:
                                 '{{ $log['user']['role'] ?? 'unknown' }}' }
                             </td>
-                            <td>{{ $log['context']['description'] ?? '-' }}</td>
+                            <td>{ description: '{{ $log['context']['description'] ?? '-' }}', data:
+                                {{ $log['context']['data'] ?? '{}' }} }</td>
                             <td>
                                 <span class="badge bg-{{ $log['level'] ?? 'light' }}">
                                     {{ $log['level'] ?? '' }}

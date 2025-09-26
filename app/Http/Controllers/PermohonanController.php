@@ -8,6 +8,7 @@ use App\Models\Permohonan;
 use App\Models\RabPermohonan;
 use App\Models\Skpd;
 use App\Models\UrusanSkpd;
+use App\Services\ActivityLogService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -65,7 +66,6 @@ class PermohonanController extends Controller
 
     public function downloadPermohonan($id_permohonan){
         $permohonan = Permohonan::findOrFail($id_permohonan);
-        dd($permohonan);
     }
 
     public function send_review($id_permohonan){
@@ -151,6 +151,8 @@ class PermohonanController extends Controller
                 'tanggal_permohonan' => $request->tanggal_permohonan,
                 'file_permohonan' => $permohonan_path,
             ]);
+
+            ActivityLogService::log('nphd.upload', 'warning', 'upload data dan file NPHD '.$permohonan->perihal_mohon, json_encode($nphd->toArray()));
 
             DB::commit();
 

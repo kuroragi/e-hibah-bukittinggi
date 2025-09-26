@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 class ActivityLogService
 {
 
-    public static function log(string $event, string $level = 'info', $description): void
+    public static function log(string $event, string $level = 'info', $description, $data = null): void
     {
         $user = Auth::user();
 
@@ -21,7 +21,7 @@ class ActivityLogService
                 'name'  => $user->name ?? $user->username ?? null,
                 'role' => $user->roles->pluck('name')[0] ?? null,
             ],
-            'context'   => ['description' => $description],
+            'context'   => ['description' => $description, 'data' => $data],
             'meta'      => [
                 'ip_address' => request()->ip(),
                 'user_agent' => request()->header('User-Agent'),

@@ -70,7 +70,7 @@ class SKPD extends Component
                 }
             }
 
-            ActivityLogService::log('skpd.create', 'success', 'penambahan data skpd '.$this->name.' dan urusan terkait');
+            ActivityLogService::log('skpd.create', 'success', 'penambahan data skpd '.$this->name.' dan urusan terkait', json_encode($this->skpd->toArray()));
         });
 
         $this->reset(['name', 'urusan_skpd']);
@@ -83,6 +83,7 @@ class SKPD extends Component
         $this->name = $this->skpd->name;
         $this->urusan_skpd = $this->skpd->has_urusan->toArray();
         $this->count_urusan = count($this->urusan_skpd);
+        ActivityLogService::log('skpd.edit', 'info', 'edit data skpd '.$this->name.' dan urusan terkait', json_encode($this->skpd->toArray()));
         $this->dispatch('editModal');
     }
 
@@ -124,7 +125,7 @@ class SKPD extends Component
         }
         });
 
-        ActivityLogService::log('skpd.update', 'warning', 'pembaruan data skpd '.$this->name.' dan urusan terkait');
+        ActivityLogService::log('skpd.update', 'warning', 'pembaruan data skpd '.$this->name.' dan urusan terkait', json_encode($this->skpd->toArray()));
 
         session()->flash('message', 'SKPD updated successfully.');
         $this->dispatch('closeModal');
@@ -138,15 +139,25 @@ class SKPD extends Component
     public function delete()
     {
         $urusans = $this->skpd->has_urusan()->pluck('id')->toArray();
-        foreach ($urusans as $key => $urusan) {
-            UrusanSkpd::where('id', $urusan)->delete();
+        DB::beginTransaction();
+
+        try {
+            foreach ($urusans as $key => $urusan) {
+                UrusanSkpd::where('id', $urusan)->delete();
+            }
+            $this->skpd->delete();
+    
+            ActivityLogService::log('skpd.delete', 'danger', 'penghapusan data skpd '.$this->name.' dan urusan terkait', json_encode($this->skpd->toArray()));
+
+            DB::commit();
+
+            $this->reset(['skpd']);
+            session()->flash('message', 'SKPD deleted successfully.');
+            $this->dispatch('closeModal');
+        } catch (\Throwable $th) {
+            DB::rollBackk();
+            session()->flash('error', 'SKPD gagal di hapus, karena: '.$th->getMessage());
         }
-        $this->skpd->delete();
 
-            ActivityLogService::log('skpd.delete', 'danger', 'penghapusan data skpd '.$this->name.' dan urusan terkait');
-
-        $this->reset(['skpd']);
-        session()->flash('message', 'SKPD deleted successfully.');
-        $this->dispatch('closeModal');
     }
 }

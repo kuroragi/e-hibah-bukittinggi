@@ -139,7 +139,7 @@ class Show extends Component
                 'file_permintaan_nphd' => $permintaan_nphd_path,
             ]);
 
-            ActivityLogService::log('permohonan.upload-permohonan-nphd', 'info', 'upload file permintaan nphd untuk permohonan perihal '.$this->permohonan->perihal_mohon);
+            ActivityLogService::log('permohonan.upload-permohonan-nphd', 'info', 'upload file permintaan nphd untuk permohonan perihal '.$this->permohonan->perihal_mohon, json_encode($add_permintaan_nphd));
 
             DB::commit();
 

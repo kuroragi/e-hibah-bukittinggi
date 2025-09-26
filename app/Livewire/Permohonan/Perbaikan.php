@@ -205,7 +205,7 @@ class Perbaikan extends Component
     
             $kegiatan->delete();
 
-            ActivityLogService::log('permohonan.rab.delete', 'danger', 'menghapus data kegiatan dan rincian pada RAB permohonan '.$this->permohonan->perihal_mohon);
+            ActivityLogService::log('permohonan.rab.delete', 'danger', 'menghapus data kegiatan dan rincian pada RAB permohonan '.$this->permohonan->perihal_mohon, json_encode($kegiatan->toArray()));
 
             DB::commit();
 
@@ -263,6 +263,13 @@ class Perbaikan extends Component
                 'nominal_anggaran' => $this->nominal_rab,
                 'id_status' => 10,
             ]);
+
+            $data = [
+                'perbaikan_proposal' => json_encode($perbaikanProposal),
+                'perbaikan_rab' => json_encode(PerbaikanRab::with(['rincian'])->where('id_permohonan', $this->permohonan->id)->get()->toArray()),
+            ];
+            
+            ActivityLogService::log('permohonan.rab.delete', 'danger', 'menghapus data kegiatan dan rincian pada RAB permohonan '.$this->permohonan->perihal_mohon, json_encode($data));
 
             DB::commit();
 

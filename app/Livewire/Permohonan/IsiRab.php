@@ -171,7 +171,8 @@ class IsiRab extends Component
                 }
             }
 
-            ActivityLogService::log('permohonan.create-rab', 'success', 'penambahan data RAB '.$this->permohonan->perihal_mohon);
+            ActivityLogService::log('permohonan.create-rab', 'success', 'penambahan data RAB '.$this->permohonan->perihal_mohon, json_encode($this->kegiatan_rab));
+
             DB::commit();
             $this->reset(['kegiatan_rab']);
             $this->dispatch('close-modal');
@@ -193,6 +194,8 @@ class IsiRab extends Component
             $kegiatan->rincian()->delete();
     
             $kegiatan->delete();
+
+            ActivityLogService::log('permohonan.create-rab', 'success', 'penambahan data RAB '.$this->permohonan->perihal_mohon, json_encode($this->kegiatan_rab));
 
             DB::commit();
 

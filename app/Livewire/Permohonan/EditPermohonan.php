@@ -225,7 +225,7 @@ class EditPermohonan extends Component
                 'file_pemberitahuan' => $this->file_pemberitahuan,
             ]);
 
-            ActivityLogService::log('permohonan.update', 'warning', 'pembaruan data permohonan');
+            ActivityLogService::log('permohonan.update', 'warning', 'pembaruan data permohonan', json_encode($this->permohonan->toArray()));
 
             DB::commit();
         } catch (\Throwable $th) {

@@ -142,7 +142,7 @@ class Review extends Component
     }
 
     public function veriffiedStatement(){
-        VerifikasiPermohonan::updateOrCreate(
+        $verification = VerifikasiPermohonan::updateOrCreate(
             ['id_permohonan' => $this->permohonan->id],
             [
                 'is_lembaga_verif' => $this->is_lembaga_verif,
@@ -150,6 +150,7 @@ class Review extends Component
                 'is_pendukung_verif' => $this->is_pendukung_verif,
             ]
         );
+        ActivityLogService::log('permohonan.veriffied-data', 'warning', 'verifikasi pendukung permohonan', json_encode($verification->toArray()));
     }
 
     public function updatedIsLembagaVerif($value){
@@ -232,7 +233,7 @@ class Review extends Component
                 }
             }
 
-            ActivityLogService::log('permohonan.review', 'info', 'review permohonan');
+            ActivityLogService::log('permohonan.review', 'info', 'review permohonan', json_encode($berita_acara->toArray()));
             
             DB::commit();
             
@@ -277,7 +278,7 @@ class Review extends Component
                 'file_pemberitahuan' => $file_pemberitahuan_path
             ]);
 
-            ActivityLogService::log('permohonan.verification', 'warning', 'penentuan status permohonan');
+            ActivityLogService::log('permohonan.verification', 'warning', 'penentuan status permohonan', json_encode($permohonan->toArray()));
 
             DB::commit();
 

@@ -54,12 +54,12 @@ class Role extends Component
             'selectedPermissions' => 'array',
         ]);
 
-        ModelsRole::create([
+        $role = ModelsRole::create([
             'name' => $this->name,
             'guard_name' => $this->guard_name,
         ])->syncPermissions($this->selectedPermissions);
 
-        ActivityLogService::log('role.create', 'success', 'penambahan data role pengguna '.$this->name);
+        ActivityLogService::log('role.create', 'success', 'penambahan data role pengguna '.$this->name, json_encode($role->toArray()));
 
 
         session()->flash('message', 'Role created successfully.');
@@ -74,6 +74,8 @@ class Role extends Component
         $this->name = $role->name;
         $this->guard_name = $role->guard_name;
         $this->selectedPermissions = $role->permissions->pluck('name')->toArray();
+
+        ActivityLogService::log('role.edit', 'info', 'penambahan edit role pengguna '.$this->name, json_encode($role->toArray()));
 
         // buka modal setelah data siap
         $this->dispatch('editRole');
@@ -95,7 +97,7 @@ class Role extends Component
 
         $role->syncPermissions($this->selectedPermissions);
 
-        ActivityLogService::log('role.update', 'warning', 'pembaruan data role pengguna '.$this->name);
+        ActivityLogService::log('role.update', 'warning', 'pembaruan data role pengguna '.$this->name, json_encode($role->toArray()));
 
         $this->reset(['roleId', 'name', 'guard_name', 'selectedPermissions']);
         session()->flash('message', 'Role berhasil diperbarui.');
@@ -125,7 +127,7 @@ class Role extends Component
 
                 $role->delete();
 
-                ActivityLogService::log('role.delete', 'danger', 'penghapusan data role pengguna '.$role->name);
+                ActivityLogService::log('role.delete', 'danger', 'penghapusan data role pengguna '.$role->name, json_encode($role->toArray()));
 
                 DB::commit();
 

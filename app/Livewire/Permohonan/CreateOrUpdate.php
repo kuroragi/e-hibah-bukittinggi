@@ -167,7 +167,7 @@ class CreateOrUpdate extends Component
                 'file_pemberitahuan' => $this->file_pemberitahuan,
             ]);
 
-            ActivityLogService::log('permohonan.create', 'success', 'penambahan permohonan baru '.$this->perihal_mohon);
+            ActivityLogService::log('permohonan.create', 'success', 'penambahan permohonan baru '.$this->perihal_mohon, json_encode($permohonan->toArray()));
 
             DB::commit();
             return redirect()->route('permohonan.isi_pendukung', ['id_permohonan' => $permohonan->id])->with('success', 'Berhasil menambahkan permohonan hibah, lanjutkan dengan Isi Data Pendukung');

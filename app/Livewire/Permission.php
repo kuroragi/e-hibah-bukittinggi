@@ -36,12 +36,12 @@ class Permission extends Component
             'guard_name' => 'required|string|max:255',
         ]);
 
-        ModelsPermission::create([
+        $permission = ModelsPermission::create([
             'name' => ucwords($this->name),
             'guard_name' => $this->guard_name,
         ]);
 
-        ActivityLogService::log('permission.create', 'success', 'penambahan data permission '.$this->name);
+        ActivityLogService::log('permission.create', 'success', 'penambahan data permission '.$this->name, json_encode($permission->toArray()));
 
         $this->reset(['name', 'guard_name']);
         session()->flash('success', 'Permission created successfully.');
@@ -54,12 +54,12 @@ class Permission extends Component
             'guard_name' => 'required|string|max:255',
         ]);
 
-        ModelsPermission::create([
+        $permission = ModelsPermission::create([
             'name' => ucwords($this->name),
             'guard_name' => $this->guard_name,
         ]);
 
-        ActivityLogService::log('permission.update', 'warning', 'Pembaruan data permission '.$this->name);
+        ActivityLogService::log('permission.update', 'warning', 'Pembaruan data permission '.$this->name, json_encode($permission->toArray()));
 
 
         $this->reset(['name', 'guard_name']);
@@ -69,6 +69,8 @@ class Permission extends Component
         $permission = ModelsPermission::findOrFail($id);
         $this->name = $permission->name;
         $this->guard_name = $permission->guard_name;
+
+        ActivityLogService::log('permission.edit', 'info', 'edit data permission '.$this->name, json_encode($permission->toArray()));
 
         $this->dispatch('editPermission');
     }
@@ -85,7 +87,7 @@ class Permission extends Component
             'guard_name' => $this->guard_name,
         ]);
 
-        ActivityLogService::log('permission.delete', 'danger', 'penghapusan data permission '.$this->name);
+        ActivityLogService::log('permission.delete', 'danger', 'penghapusan data permission '.$this->name, json_encode($permission->toArray()));
 
 
         $this->reset(['name', 'guard_name']);

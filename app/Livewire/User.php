@@ -97,7 +97,7 @@ class User extends Component
         DB::beginTransaction();
 
         try {
-            ModelsUser::create([
+            $user = ModelsUser::create([
                 'name' => $this->name,
                 'email' => $this->email,
                 'id_role' => $this->role,
@@ -107,9 +107,8 @@ class User extends Component
             ])->assignRole([$role->name]);
             
             
-            // new UserLogService('create', 'tambah pengguna '.$this->name);
-            
-            $logStore = ActivityLogService::log('user.create', 'success', 'penambahan pengguna '.$this->name);
+            // new UserLogService('create', 'tambah pengguna '.$this->name);            
+            ActivityLogService::log('user.create', 'success', 'penambahan pengguna '.$this->name, json_encode($user->toArray()));
 
             Mail::to($this->email)->queue(new SendUserPassword($new_password));
             
@@ -135,6 +134,7 @@ class User extends Component
         $this->role = $user->id_role;
         $this->skpd = $user->id_skpd;
 
+        ActivityLogService::log('user.edit', 'info', 'edit data '.$this->name, json_encode($user->toArray()));
         // Open the modal for editing
         $this->dispatch('editModal');
     }
@@ -156,7 +156,7 @@ class User extends Component
 
             $user->assignRole([$role->name]);
             
-            ActivityLogService::log('user.update', 'warning', 'perubahan data pengguna '.$this->name);
+            ActivityLogService::log('user.update', 'warning', 'perubahan data pengguna '.$this->name, json_encode($user->toArray()));
 
             DB::commit();
 
@@ -180,7 +180,7 @@ class User extends Component
     {
         $this->user->delete();
 
-        ActivityLogService::log('user.delete', 'danger', 'penghapusan data pengguna '.$this->name);
+        ActivityLogService::log('user.delete', 'danger', 'penghapusan data pengguna '.$this->name, json_encode($this->user->toArray()));
 
         $this->reset(['user']);
         session()->flash('message', 'User deleted successfully.');

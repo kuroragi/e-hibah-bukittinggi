@@ -81,7 +81,7 @@ class IsiPendukung extends Component
                 'id_status' => $this->id_status_didukung
             ]);
 
-            ActivityLogService::log('permohonan.create-pendukung', 'success', 'penambahan data pendukung permohonan');
+            ActivityLogService::log('permohonan.create-pendukung', 'success', 'penambahan data pendukung permohonan', json_encode($create_pendukung_permohonan->toArray()));
             
             DB::commit();
 

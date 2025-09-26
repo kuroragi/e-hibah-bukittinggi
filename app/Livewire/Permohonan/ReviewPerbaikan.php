@@ -215,7 +215,7 @@ class ReviewPerbaikan extends Component
                 }
             }
 
-            ActivityLogService::log('permohonan.review-perbaikan-permohonan', 'info', 'review permohonan yang telah diperbaiki');
+            ActivityLogService::log('permohonan.review-perbaikan-permohonan', 'info', 'review permohonan yang telah diperbaiki', json_encode($berita_acara));
             
             DB::commit();
             
@@ -287,7 +287,8 @@ class ReviewPerbaikan extends Component
                 ];
             }
 
-            ActivityLogService::log($status['event'], $status['type'], $status['message']);
+            ActivityLogService::log($status['event'], $status['type'], $status['message'], json_encode($permohonan->toArray()));
+            
             
             DB::commit();
 
@@ -329,7 +330,7 @@ class ReviewPerbaikan extends Component
                 ]);
             };
 
-            ActivityLogService::log('permohonan.review-perbaikan-permohonan', 'info', 'review permohonan yang telah diperbaiki');
+            ActivityLogService::log('permohonan.review-perbaikan-permohonan', 'info', 'review permohonan yang telah diperbaiki', json_encode($this->list_kelengkapan_perbaikan));
 
             DB::commit();
 
