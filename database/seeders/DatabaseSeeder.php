@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
                 'Confirm Review Permohonan',
                 'Review Perbaikan Permohonan',
                 'Confirm Perbaikan Permohonan',
-            ])->first()->id
+            ])->get()->pluck('id')->toArray()
         );
 
         tap(Role::create(['name' => 'Super Admin', 'guard_name' => 'web']))->syncPermissions($permission_for_super_admin);
@@ -84,7 +84,7 @@ class DatabaseSeeder extends Seeder
         // contoh user superadmin
         User::create([
             'name' => 'Admin Utama',
-            'email' => 'admin@example.com',
+            'email' => 'admin@bukittinggikota.go.id',
             'password' => bcrypt('@zaq123qwerty'),
             'id_role' => 1,
         ])->assignRole('Super Admin');
