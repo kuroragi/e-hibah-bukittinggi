@@ -31,10 +31,10 @@ class Role extends Component
 
     public function mount()
     {
-        return $this->authorizeAction('viewAny', Role::class) ?? null;
+        $this->authorizeAction('viewAny', Role::class) ?? null;
         $this->permissions = Permission::orderBy('name', 'ASC')->get(); // Assuming you have a Permission model
     }
-
+    
     public function render()
     {
         $this->roles = ModelsRole::orderBy('id', 'ASC')->get(); // Assuming you have a Role model

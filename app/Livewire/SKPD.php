@@ -26,7 +26,7 @@ class SKPD extends Component
 
     public function mount(){
         
-        return $this->authorizeAction('viewAny', ModelsSkpd::class) ?? null;
+        $this->authorizeAction('viewAny', ModelsSkpd::class) ?? null;
     }
 
     public function addUrusan()

@@ -21,7 +21,7 @@ class Permission extends Component
     protected $listeners = ['editmore', 'editPermission', 'closeModal'];
     public function mount()
     {
-        return $this->authorizeAction('viewAny', ModelsPermission::class) ?? null;
+        $this->authorizeAction('viewAny', ModelsPermission::class) ?? null;
     }
 
     public function render()
