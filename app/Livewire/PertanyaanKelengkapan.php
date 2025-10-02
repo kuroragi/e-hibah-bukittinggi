@@ -34,7 +34,7 @@ class PertanyaanKelengkapan extends Component
     public $listeners = ['import-start', 'import-finish', 'showImportResult', 'updateModal', 'updateOrder', 'closeModal'];
 
     public function mount(){
-        $this->authorizeAction('viewAny', pertanyaan::class) ?? null;
+        //
     }
 
     public function render()
