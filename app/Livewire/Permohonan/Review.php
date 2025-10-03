@@ -278,8 +278,6 @@ class Review extends Component
                 'file_pemberitahuan' => $file_pemberitahuan_path
             ]);
 
-            ActivityLogService::log('permohonan.verification', 'warning', 'penentuan status permohonan', json_encode($permohonan->toArray()));
-
             DB::commit();
 
             return redirect()->route('permohonan');

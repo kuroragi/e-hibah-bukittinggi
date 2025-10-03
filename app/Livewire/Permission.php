@@ -8,6 +8,7 @@ use App\Services\UserLogService;
 use App\Traits\WithAuthorization;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Auth\Access\Authorizable;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Permission extends Component
@@ -36,16 +37,25 @@ class Permission extends Component
             'guard_name' => 'required|string|max:255',
         ]);
 
-        $permission = ModelsPermission::create([
-            'name' => ucwords($this->name),
-            'guard_name' => $this->guard_name,
-        ]);
+        DB::beginTransaction();
+        try {
+            $permission = ModelsPermission::create([
+                'name' => ucwords($this->name),
+                'guard_name' => $this->guard_name,
+            ]);
 
-        ActivityLogService::log('permission.create', 'success', 'penambahan data permission '.$this->name, json_encode($permission->toArray()));
+            DB::commit();
+    
+            ActivityLogService::log('permission.create', 'success', 'penambahan data permission '.$this->name, json_encode($permission->toArray()));
+    
+            $this->reset(['name', 'guard_name']);
+            session()->flash('success', 'Permission created successfully.');
+            $this->dispatch('closeModal');
+        } catch (\Throwable $th) {
+            DB::rollBack();
 
-        $this->reset(['name', 'guard_name']);
-        session()->flash('success', 'Permission created successfully.');
-        $this->dispatch('closeModal');
+            session()->flash('error', 'gagal menambahkan permission, karena: '.$th->getMessage());
+        }
     }
 
     public function saveAndMore(){
@@ -54,15 +64,25 @@ class Permission extends Component
             'guard_name' => 'required|string|max:255',
         ]);
 
-        $permission = ModelsPermission::create([
-            'name' => ucwords($this->name),
-            'guard_name' => $this->guard_name,
-        ]);
+        DB::beginTransaction();
 
-        ActivityLogService::log('permission.update', 'warning', 'Pembaruan data permission '.$this->name, json_encode($permission->toArray()));
+        try{
 
+            $permission = ModelsPermission::create([
+                'name' => ucwords($this->name),
+                'guard_name' => $this->guard_name,
+            ]);
 
-        $this->reset(['name', 'guard_name']);
+            DB::commit();
+
+            ActivityLogService::log('permission.update', 'success', 'penambahan data permission '.$this->name, json_encode($permission->toArray()));
+
+            $this->reset(['name', 'guard_name']);
+        }catch(\Throwable $th){
+            DB::rollBack();
+
+            session()->flash('error', 'gagal menambahkan permission, karena: '.$th->getMessage());
+        }
     }
 
     public function edit($id){
@@ -87,7 +107,7 @@ class Permission extends Component
             'guard_name' => $this->guard_name,
         ]);
 
-        ActivityLogService::log('permission.delete', 'danger', 'penghapusan data permission '.$this->name, json_encode($permission->toArray()));
+        ActivityLogService::log('permission.update', 'warning', 'perubahan data permission '.$this->name, json_encode($permission->toArray()));
 
 
         $this->reset(['name', 'guard_name']);

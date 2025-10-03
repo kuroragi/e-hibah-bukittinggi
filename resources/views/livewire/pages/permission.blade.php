@@ -59,6 +59,8 @@
     </div>
     <!--end breadcrumb-->
 
+    @include('components.partials._page_notification')
+
     <div class="card">
         <div class="card-body">
             <div wire:ignore class="table-responsive">
@@ -106,6 +108,9 @@
                                 <label for="permissionName" class="form-label">Nama Permission</label>
                                 <input wire:model='name' type="text" class="form-control" id="permissionName"
                                     placeholder="Masukkan nama permission">
+                                @error('name')
+                                    <span class="text-danger text-sm">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="guard_name" class="form-label">Guard Name</label>
@@ -115,6 +120,9 @@
                                     <option value="api">API</option>
                                     <option value="admin">Admin</option>
                                 </select>
+                                @error('guard_name')
+                                    <span class="text-danger text-sm">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     </div>

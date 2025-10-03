@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped w-100">
                 <thead class="table-dark">
                     <tr class="text-center">
                         <th>Waktu</th>
@@ -42,7 +42,9 @@
                                 '{{ $log['user']['name'] ?? 'unknown' }}', role:
                                 '{{ $log['user']['role'] ?? 'unknown' }}' }
                             </td>
-                            <td>{ description: '{{ $log['context']['description'] ?? '-' }}', data:
+                            <td style="max-width: 50rem !important;">{ description:
+                                '{{ $log['context']['description'] ?? '-' }}',
+                                data:
                                 {{ $log['context']['data'] ?? '{}' }} }</td>
                             <td>
                                 <span class="badge bg-{{ $log['level'] ?? 'light' }}">
