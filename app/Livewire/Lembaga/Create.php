@@ -198,7 +198,7 @@ class Create extends Component
                 'file_pernyataan' => $pernyataan_path,
             ]);
             
-            $lembaga->pengurus()->create([
+            $pengurus = $lembaga->pengurus()->create([
                 'name' => $this->name_pimpinan,
                 'email' => $this->email_pimpinan,
                 'nik' => $this->nik,
@@ -213,7 +213,9 @@ class Create extends Component
                 'id_lembaga' => $lembaga->id,
             ]);
 
-            ActivityLogService::log('lembaga.create', 'success', Auth::user()->name.' membuat dan menambahkan data lembaga '.$this->name_lembaga);
+            $data_lembaga = ['lembaga' => $lembaga->toArray(), 'pengurus' => $pengurus->toArray()];
+
+            ActivityLogService::log('lembaga.create', 'success', 'tambah data lembaga dan pengurus', json_encode($data_lembaga));
 
             DB::commit();
 

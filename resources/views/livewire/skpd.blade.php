@@ -171,7 +171,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-light">
-                    <h5 class="modal-title">Hapus Data SKPD</h5>
+                    <h5 class="modal-title">Hapus Data SKPD dan Urusannya?</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -179,7 +179,7 @@
                         <div class="col-12">
                             <table class="table w-100">
                                 <tr>
-                                    <td>Nama Pengguna</td>
+                                    <td>Nama SKPD</td>
                                     <td>:</td>
                                     <td>{{ optional($skpd)->name }}</td>
                                 </tr>
@@ -199,7 +199,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button wire:click.prevent='delete' type="button" class="btn btn-danger">Hapus
-                        Role</button>
+                        SKPD</button>
                 </div>
             </div>
         </div>

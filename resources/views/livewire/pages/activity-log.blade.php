@@ -42,10 +42,15 @@
                                 '{{ $log['user']['name'] ?? 'unknown' }}', role:
                                 '{{ $log['user']['role'] ?? 'unknown' }}' }
                             </td>
-                            <td style="max-width: 50rem !important;">{ description:
-                                '{{ $log['context']['description'] ?? '-' }}',
-                                data:
-                                {{ $log['context']['data'] ?? '{}' }} }</td>
+                            <td style="max-width: 50rem !important;">description:
+                                '{{ $log['context']['description'] ?? '-' }}'
+                                <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="popover"
+                                    data-bs-trigger="focus" data-bs-placement="bottom" title="Detail Data"
+                                    data-bs-custom-class="wide-popover"
+                                    data-bs-content="<pre style='white-space:pre-wrap;font-family:monospace;font-size:0.8rem;'>{{ e($log['context']['data']) }}</pre>">
+                                    Data <i class="bi bi-caret-down"></i>
+                                </button>
+                            </td>
                             <td>
                                 <span class="badge bg-{{ $log['level'] ?? 'light' }}">
                                     {{ $log['level'] ?? '' }}
@@ -66,3 +71,15 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const popovers = document.querySelectorAll('[data-bs-toggle="popover"]');
+            popovers.forEach(el => new bootstrap.Popover(el, {
+                html: true,
+                sanitize: false
+            }));
+        });
+    </script>
+@endpush

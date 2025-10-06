@@ -22,4 +22,11 @@
 <link href="/assets/css/semi-dark.css" rel="stylesheet" />
 <link href="/assets/css/header-colors.css" rel="stylesheet" />
 
+<style>
+    .wide-popover {
+        max-width: 600px;
+        ;
+    }
+</style>
+
 @stack('styles')

@@ -14,6 +14,7 @@
 <script src="/assets/js/form-select2.js"></script>
 <!--app-->
 <script src="/assets/js/app.js"></script>
+<script src="/assets/js/component-popovers-tooltips.js"></script>
 
 @stack('scripts')
 

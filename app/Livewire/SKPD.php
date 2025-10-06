@@ -62,15 +62,19 @@ class SKPD extends Component
                 'name' => $this->name,
             ]);
 
-            foreach ($this->urusan_skpd as $urusan) {
+            $skpdArray = ['name' => $this->name];
+
+            foreach ($this->urusan_skpd as $key => $urusan) {
                 if (!empty($urusan['nama_urusan'])) {
                     $skpd->has_urusan()->create([
                         'nama_urusan' => $urusan['nama_urusan'],
                     ]);
                 }
+
+                $skpdArray['urusan'][$key] = $urusan['nama_urusan'];
             }
 
-            ActivityLogService::log('skpd.create', 'success', 'penambahan data skpd '.$this->name.' dan urusan terkait', json_encode($this->skpd->toArray()));
+            ActivityLogService::log('skpd.create', 'success', 'penambahan data skpd '.$this->name.' dan urusan terkait', json_encode($skpdArray));
         });
 
         $this->reset(['name', 'urusan_skpd']);
@@ -83,7 +87,6 @@ class SKPD extends Component
         $this->name = $this->skpd->name;
         $this->urusan_skpd = $this->skpd->has_urusan->toArray();
         $this->count_urusan = count($this->urusan_skpd);
-        ActivityLogService::log('skpd.edit', 'info', 'edit data skpd '.$this->name.' dan urusan terkait', json_encode($this->skpd->toArray()));
         $this->dispatch('editModal');
     }
 
@@ -100,14 +103,11 @@ class SKPD extends Component
         $existingIds = $this->skpd->has_urusan()->pluck('id')->toArray();
 
         // Ambil semua ID dari input
-        $inputIds = collect($this->urusan_skpd)
-            ->pluck('id')
-            ->filter() // buang yang null (data baru)
-            ->toArray();
-
-        // 1. Hapus urusan yang ada di DB tapi tidak ada di input
-        $idsToDelete = array_diff($existingIds, $inputIds);
-        UrusanSkpd::whereIn('id', $idsToDelete)->delete();
+        $idsToDelete = $this->skpd->has_urusan()
+            ->whereNotIn('id', collect($this->urusan_skpd)->pluck('id')->filter())
+            ->pluck('id')->toArray();
+            
+        $this->deleteUrusanByIds($idsToDelete);
 
         // 2. Update urusan lama & buat yang baru
         foreach ($this->urusan_skpd as $urusan) {
@@ -142,9 +142,8 @@ class SKPD extends Component
         DB::beginTransaction();
 
         try {
-            foreach ($urusans as $key => $urusan) {
-                UrusanSkpd::where('id', $urusan)->delete();
-            }
+            $this->deleteUrusanByIds($urusans);
+
             $this->skpd->delete();
     
             ActivityLogService::log('skpd.delete', 'danger', 'penghapusan data skpd '.$this->name.' dan urusan terkait', json_encode($this->skpd->toArray()));
@@ -159,5 +158,12 @@ class SKPD extends Component
             session()->flash('error', 'SKPD gagal di hapus, karena: '.$th->getMessage());
         }
 
+    }
+
+    public function deleteUrusanByIds(array $ids){
+        $deleteable_urusan = UrusanSkpd::whereIn('id', $ids)->get();
+        UrusanSkpd::whereIn('id', $ids)->delete();
+
+        ActivityLogService::log('urusan_skpd.delete', 'danger', 'hapus data urusan skpd '.$this->name, json_encode($deleteable_urusan->toArray()));
     }
 }
