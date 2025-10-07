@@ -34,37 +34,38 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {{-- {{ dd($logs) }} --}}
                     @forelse ($logs as $log)
-                        <tr>
-                            <td>{{ $log['timestamp'] ?? '' }}</td>
-                            <td>{{ $log['event'] ?? '' }}</td>
-                            <td>{ user_id: '{{ $log['user']['id'] ?? 'unknown' }}', user_name:
-                                '{{ $log['user']['name'] ?? 'unknown' }}', role:
-                                '{{ $log['user']['role'] ?? 'unknown' }}' }
-                            </td>
-                            <td style="max-width: 50rem !important;">description:
-                                '{{ $log['context']['description'] ?? '-' }}'
-                                <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="popover"
-                                    data-bs-trigger="focus" data-bs-placement="bottom" title="Detail Data"
-                                    data-bs-custom-class="wide-popover"
-                                    data-bs-content="<pre style='white-space:pre-wrap;font-family:monospace;font-size:0.8rem;'>{{ e($log['context']['data']) }}</pre>">
-                                    Data <i class="bi bi-caret-down"></i>
-                                </button>
-                            </td>
-                            <td>
-                                <span class="badge bg-{{ $log['level'] ?? 'light' }}">
-                                    {{ $log['level'] ?? '' }}
-                                </span>
-                            </td>
-                            <td>
-                                { ip_address: '{{ $log['meta']['ip_address'] ?? '0.0.0.0' }}', user_agent:
-                                '{{ $log['meta']['user_agent'] ?? 'unknown' }}' }
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>{{ $log['timestamp'] ?? '' }}</td>
+                        <td>{{ $log['event'] ?? '' }}</td>
+                        <td>{ user_id: '{{ $log['user']['id'] ?? 'unknown' }}', user_name:
+                            '{{ $log['user']['name'] ?? 'unknown' }}', role:
+                            '{{ $log['user']['role'] ?? 'unknown' }}' }
+                        </td>
+                        <td style="max-width: 50rem !important;">description:
+                            '{{ $log['context']['description'] ?? '-' }}'
+                            <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="popover"
+                                data-bs-trigger="focus" data-bs-placement="bottom" title="Detail Data"
+                                data-bs-custom-class="wide-popover"
+                                data-bs-content="<pre style='white-space:pre-wrap;font-family:monospace;font-size:0.8rem;'><code>{{ e($log['context']['data']) }}</code></pre>">
+                                Data <i class="bi bi-caret-down"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <span class="badge bg-{{ $log['level'] ?? 'light' }}">
+                                {{ $log['level'] ?? '' }}
+                            </span>
+                        </td>
+                        <td>
+                            { ip_address: '{{ $log['meta']['ip_address'] ?? '0.0.0.0' }}', user_agent:
+                            '{{ $log['meta']['user_agent'] ?? 'unknown' }}' }
+                        </td>
+                    </tr>
                     @empty
-                        <tr>
-                            <td colspan="5" class="text-center">Tidak ada log aktivitas</td>
-                        </tr>
+                    <tr>
+                        <td colspan="6" class="text-center">Tidak ada log aktivitas</td>
+                    </tr>
                     @endforelse
                 </tbody>
             </table>
@@ -73,13 +74,13 @@
 </div>
 
 @push('scripts')
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
             const popovers = document.querySelectorAll('[data-bs-toggle="popover"]');
             popovers.forEach(el => new bootstrap.Popover(el, {
                 html: true,
                 sanitize: false
             }));
         });
-    </script>
+</script>
 @endpush

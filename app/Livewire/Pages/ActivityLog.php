@@ -172,7 +172,8 @@ class ActivityLog extends Component
         if (is_scalar($data)) return (string) $data;
 
         $out = '';
-        array_walk_recursive((array) $data, function ($v) use (&$out) {
+        $array = (array) $data;
+        array_walk_recursive($array, function ($v) use (&$out) {
             if (is_scalar($v)) $out .= ' ' . $v;
         });
 

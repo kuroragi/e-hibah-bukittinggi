@@ -73,7 +73,7 @@ class Pendukung extends Component
         DB::beginTransaction();
 
         if($this->file_domisili instanceof TemporaryUploadedFile){
-            if(Storage::disk('public')->exists($this->lembaga->file_domisili)){
+            if(!empty($this->lembaga->file_domisili) && Storage::disk('public')->exists($this->lembaga->file_domisili)){
                 Storage::disk('public')->delete($this->lembaga->file_domisili);
             }
             $ext_file_domisili = $this->file_domisili->getclientOriginalExtension();
@@ -81,7 +81,7 @@ class Pendukung extends Component
         }
 
         if($this->file_operasional instanceof TemporaryUploadedFile){
-            if(Storage::disk('public')->exists($this->lembaga->file_operasional)){
+            if(!empty($this->lembaga->file_operasional) && Storage::disk('public')->exists($this->lembaga->file_operasional)){
                 Storage::disk('public')->delete($this->lembaga->file_operasional);
             }
             $ext_file_operasional = $this->file_operasional->getclientOriginalExtension();
@@ -89,7 +89,7 @@ class Pendukung extends Component
         }
 
         if($this->photo_rek instanceof TemporaryUploadedFile){
-            if(Storage::disk('public')->exists($this->lembaga->photo_rek)){
+            if(!empty($this->lembaga->photo_rek) && Storage::disk('public')->exists($this->lembaga->photo_rek)){
                 Storage::disk('public')->delete($this->lembaga->photo_rek);
             }
             $ext_photo_rek = $this->photo_rek->getclientOriginalExtension();
@@ -97,7 +97,8 @@ class Pendukung extends Component
         }
 
         try {
-            $pendukung = Lembaga::findOrFail($this->id_lembaga)->update([
+            $pendukung = Lembaga::findOrFail($this->id_lembaga);
+            $pendukung->update([
                 'no_domisili' => $this->no_domisili,
                 'date_domisili' => $this->date_domisili,
                 'file_domisili' => $this->file_domisili,
