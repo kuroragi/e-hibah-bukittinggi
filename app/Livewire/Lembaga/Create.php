@@ -180,7 +180,7 @@ class Create extends Component
                 'phone' => $this->phone,
                 'id_skpd' => $this->id_skpd,
                 'id_urusan' => $this->id_urusan,
-                'kelurahan' => $this->kelurahan,
+                'id_kelurahan' => $this->kelurahan,
                 'alamat' => $this->alamat,
                 'photo' => $photo_path,
                 'npwp' => $this->npwp,

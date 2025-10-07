@@ -72,11 +72,28 @@ class Pendukung extends Component
         
         DB::beginTransaction();
 
-        if(!Storage::disk('public')->exists($this->photo_rek)){
+        if($this->file_domisili instanceof TemporaryUploadedFile){
+            if(Storage::disk('public')->exists($this->lembaga->file_domisili)){
+                Storage::disk('public')->delete($this->lembaga->file_domisili);
+            }
+            $ext_file_domisili = $this->file_domisili->getclientOriginalExtension();
+            $this->file_domisili = $this->file_domisili->storeAs('data_lembaga', 'lembaga_' . Auth::user()->id . '_file_domisili.' . $ext_file_domisili, 'public');
+        }
+
+        if($this->file_operasional instanceof TemporaryUploadedFile){
+            if(Storage::disk('public')->exists($this->lembaga->file_operasional)){
+                Storage::disk('public')->delete($this->lembaga->file_operasional);
+            }
+            $ext_file_operasional = $this->file_operasional->getclientOriginalExtension();
+            $this->file_operasional = $this->file_operasional->storeAs('data_lembaga', 'lembaga_' . Auth::user()->id . '_file_operasional.' . $ext_file_operasional, 'public');
+        }
+
+        if($this->photo_rek instanceof TemporaryUploadedFile){
+            if(Storage::disk('public')->exists($this->lembaga->photo_rek)){
+                Storage::disk('public')->delete($this->lembaga->photo_rek);
+            }
             $ext_photo_rek = $this->photo_rek->getclientOriginalExtension();
-            $photo_rek_path = $this->photo_rek->storeAs('data_lembaga', 'lembaga_' . Auth::user()->id . '_photo_rek.' . $ext_photo_rek, 'public');
-        }else{
-            $photo_rek_path = $this->photo_rek;
+            $this->photo_rek = $this->photo_rek->storeAs('data_lembaga', 'lembaga_' . Auth::user()->id . '_photo_rek.' . $ext_photo_rek, 'public');
         }
 
         try {
@@ -90,10 +107,10 @@ class Pendukung extends Component
                 'id_bank' => $this->id_bank,
                 'atas_nama' => $this->atas_nama,
                 'no_rekening' => $this->no_rek,
-                'photo_rek' => $photo_rek_path,
+                'photo_rek' => $this->photo_rek,
             ]);
 
-            ActivityLogService::log('lembaga.update-pendukung', 'warning', 'pembaruan data pendukung lembaga '.$this->lembaga->name);
+            ActivityLogService::log('lembaga.update-pendukung', 'warning', 'pembaruan data pendukung lembaga '.$this->lembaga->name, json_encode($pendukung->toArray()));
 
             DB::commit();
 
@@ -101,8 +118,8 @@ class Pendukung extends Component
         } catch (\Throwable $th) {
             DB::rollBack();
 
-            if(Storage::disk('public')->exists($photo_rek_path)){
-                Storage::disk('public')->delete($photo_rek_path);
+            if(Storage::disk('public')->exists($this->photo_rek)){
+                Storage::disk('public')->delete($this->photo_rek);
             }
 
             return session()->flash('error', 'Gagal mengupdate data pendukung, karena: '.$th->getMessage());

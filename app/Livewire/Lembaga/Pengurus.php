@@ -132,7 +132,7 @@ class Pengurus extends Component
                     );
             }
 
-            ActivityLogService::log('lembaga.update-pengurus', 'warning', 'pembaruan data pengurus lembaga '.$this->lembaga->name);
+            ActivityLogService::log('lembaga.update-pengurus', 'warning', 'pembaruan data pengurus lembaga '.$this->lembaga->name, json_encode($this->pengurus->toArray()));
 
             DB::commit();
 

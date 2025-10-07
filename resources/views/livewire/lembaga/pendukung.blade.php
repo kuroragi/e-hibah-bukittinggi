@@ -46,6 +46,8 @@
             <div class="col-md-4">
                 <label>Scan Dokumen *</label>
                 <input type="file" wire:model="file_domisili" class="form-control">
+                <button type="button" class="btn btn-warning mt-3" data-bs-toggle="modal" data-bs-target="#fileModal"
+                    data-file-url="{{ Storage::url($file_domisili) }}">Lihat Dokumen Surat Domisili</button>
             </div>
         </div>
 
@@ -63,15 +65,9 @@
             <div class="col-md-4">
                 <label>Scan Dokumen *</label>
                 <input type="file" wire:model="file_operasional" class="form-control">
+                <button type="button" class="btn btn-warning mt-3" data-bs-toggle="modal" data-bs-target="#fileModal"
+                    data-file-url="{{ Storage::url($file_operasional) }}">Lihat Dokumen Surat Operasional</button>
             </div>
-        </div>
-    </div>
-
-    {{-- Card Lihat Dokumen --}}
-    <div class="card p-3 mb-3">
-        <div class="d-flex gap-2">
-            <button class="btn btn-warning">Lihat Dokumen Surat Domisili</button>
-            <button class="btn btn-warning">Lihat Dokumen Izin Operasional</button>
         </div>
     </div>
 

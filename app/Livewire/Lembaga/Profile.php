@@ -122,7 +122,7 @@ class Profile extends Component
                 'alamat' => $this->alamat,
             ]);
 
-            ActivityLogService::log('lembaga.update-profil', 'warning', 'Pembaruan data profil lembaga '.$this->name);
+            ActivityLogService::log('lembaga.update-profil', 'warning', 'Pembaruan data profil lembaga '.$this->name, json_encode($profil->toArray()));
 
             DB::commit();
             
