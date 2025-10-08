@@ -43,13 +43,11 @@ class IsiRab extends Component
 
     public function render()
     {
-        $this->kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->get();
+        $this->kegiatans = RabPermohonan::where('id_permohonan', $this->permohonan->id)->get();
+        $grand = 0;
         if($this->kegiatans){
-            $grand = 0;
             foreach ($this->kegiatans as $k1 => $item) {
-                foreach ($item->rincian as $k2 => $child) {
-                    $grand += $child->subtotal;
-                }
+                $grand += $item->subtotal;
             }
             $this->total_kegiatan = $grand;
         }
@@ -60,11 +58,12 @@ class IsiRab extends Component
         $countKegiatan = count($this->kegiatan_rab);
         $this->kegiatan_rab[$countKegiatan + 1] = [
             'name_kegiatan' => '',
-            'total_kegiatan' => 0,
-            'rincian' => [],
+            'total_kegiatan' => '',
         ];
     }
 
+    // rincian kegiatan dihapus
+    /*
     public function tambahRincian($k1)
     {
         $countChild = count($this->kegiatan_rab[$k1]['rincian']);
@@ -103,16 +102,6 @@ class IsiRab extends Component
         return $total;
     }
 
-    // Hitung total semua kegiatan
-    public function getGrandTotal()
-    {
-        $grand = 0;
-        foreach ($this->kegiatan_rab as $k1 => $item) {
-            $grand += $this->getTotalKegiatan($k1);
-        }
-        $this->total_kegiatan = $grand;
-    }
-
     public function updated($property)
     {
         if (
@@ -147,8 +136,20 @@ class IsiRab extends Component
             ->filter(fn($val) => is_numeric($val))
             ->sum();
     }
+    */
+
+    // Hitung total semua kegiatan
+    public function getGrandTotal()
+    {
+        $grand = 0;
+        foreach ($this->kegiatan_rab as $k1 => $item) {
+            $grand += $this->getTotalKegiatan($k1);
+        }
+        $this->total_kegiatan = $grand;
+    }
 
     public function store(){
+        dd($this);
         $this->validate();
 
         DB::beginTransaction();
@@ -157,8 +158,10 @@ class IsiRab extends Component
                 $kegiatan = RabPermohonan::create([
                     'id_permohonan' => $this->permohonan->id,
                     'nama_kegiatan' => $this->kegiatan_rab[$k1]['name_kegiatan'],
+                    'subtotal' => $this->kegiatan_rab[$k1]['total_kegiatan'],
                 ]);
 
+                /*
                 foreach($this->kegiatan_rab[$k1]['rincian'] as $k2 => $rincian){
                     RincianRab::create([
                         'id_rab' => $kegiatan->id,
@@ -169,6 +172,7 @@ class IsiRab extends Component
                         'subtotal' => $rincian['subtotal'],
                     ]);
                 }
+                */
             }
 
             ActivityLogService::log('permohonan.create-rab', 'success', 'penambahan data RAB '.$this->permohonan->perihal_mohon, json_encode($this->kegiatan_rab));

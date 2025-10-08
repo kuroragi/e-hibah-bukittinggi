@@ -27,14 +27,5 @@ class RabPermohonan extends Model
         return $this->belongsTo(Permohonan::class, 'id_permohonan');
     }
 
-    /**
-     * Get all of the rincian for the RabPermohonan
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function rincian(): HasMany
-    {
-        return $this->hasMany(RincianRab::class, 'id_rab');
-    }
-    //
+    /** Rincian dihapuskan */
 }
