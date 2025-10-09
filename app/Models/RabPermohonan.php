@@ -14,7 +14,8 @@ class RabPermohonan extends Model
 
     protected $fillable = [
         'id_permohonan',
-        'nama_kegiatan'
+        'nama_kegiatan',
+        'subtotal'
     ];
 
     /**

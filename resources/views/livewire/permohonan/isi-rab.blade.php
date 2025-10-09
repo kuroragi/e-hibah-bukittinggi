@@ -53,10 +53,10 @@
                 </thead>
                 <tbody>
                     @foreach ($kegiatans as $kegiatan)
-                        <tr class="bg-warning">
+                        <tr class="">
                             <td class="text-start">{{ $kegiatan->nama_kegiatan }}</td>
                             <td class="text-end">
-                                {{ number_format(collect($kegiatan->subtotal), 0, ',', '.') }}
+                                {{ number_format($kegiatan->subtotal, 0, ',', '.') }}
                                 {{-- {{ number_format(
                                     collect($kegiatan->rincian)->pluck('subtotal')->filter(fn($val) => is_numeric($val))->sum(),
                                     0,
@@ -100,10 +100,6 @@
                 </div>
 
                 <div class="modal-body">
-                    <!-- Tombol Tambah Rincian -->
-                    <div class="d-flex justify-content-end mb-3">
-                        <button wire:click='tambahKegiatan' class="btn btn-primary">Tambah Kegiatan</button>
-                    </div>
 
                     <!-- Table Input -->
                     <div class="table-responsive">
@@ -129,7 +125,8 @@
                                         <td class="text-center">
                                             {{-- <button wire:click='tambahRincian({{ $k1 }})'
                                                 class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"></i></button> --}}
-                                            <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
+                                            <button wire:click='deleteFormkegiatan({{ $k1 }})'
+                                                class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
                                         </td>
                                     </tr>
                                     {{-- @foreach ($item['rincian'] as $k2 => $child)
@@ -188,6 +185,11 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- Tombol Tambah Rincian -->
+                    <div class="d-flex justify-content-end mb-3">
+                        <button wire:click='tambahKegiatan' class="btn btn-primary">Tambah Kegiatan</button>
                     </div>
 
                     <!-- Tombol Simpan Perubahan -->

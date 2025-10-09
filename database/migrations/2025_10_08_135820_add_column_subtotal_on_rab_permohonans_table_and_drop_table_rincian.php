@@ -13,7 +13,7 @@ return new class extends Migration
     {
         if(!Schema::hasColumn('rab_permohonans', 'subtotal')){
             Schema::table('rab_permohonans', function (Blueprint $table) {
-                $table->string('subtotal')->nullable()->after('nama_kegiatan');
+                $table->bigInteger('subtotal')->nullable()->after('nama_kegiatan');
             });
         }
 
@@ -25,6 +25,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('rab_permohonans', function (Blueprint $table) {
+            $table->dropColumn('subtotal');
+        });
     }
 };

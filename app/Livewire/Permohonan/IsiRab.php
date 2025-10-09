@@ -148,17 +148,21 @@ class IsiRab extends Component
         $this->total_kegiatan = $grand;
     }
 
-    public function store(){
-        dd($this);
-        $this->validate();
+    public function deleteFormkegiatan($index){
+        unset($this->kegiatan_rab[$index]);
+        $this->kegiatan_rab = array_values($this->kegiatan_rab); // reset index array
+    }
 
+    public function store(){
+        $this->validate();
+        
         DB::beginTransaction();
         try {
             foreach($this->kegiatan_rab as $k1 => $item){
                 $kegiatan = RabPermohonan::create([
                     'id_permohonan' => $this->permohonan->id,
-                    'nama_kegiatan' => $this->kegiatan_rab[$k1]['name_kegiatan'],
-                    'subtotal' => $this->kegiatan_rab[$k1]['total_kegiatan'],
+                    'nama_kegiatan' => $item['name_kegiatan'],
+                    'subtotal' => $item['total_kegiatan'],
                 ]);
 
                 /*
@@ -195,11 +199,8 @@ class IsiRab extends Component
         DB::beginTransaction();
 
         try {
-            $kegiatan->rincian()->delete();
     
             $kegiatan->delete();
-
-            ActivityLogService::log('permohonan.create-rab', 'success', 'penambahan data RAB '.$this->permohonan->perihal_mohon, json_encode($this->kegiatan_rab));
 
             DB::commit();
 
