@@ -220,10 +220,12 @@ class IsiRab extends Component
     }
 
     public function saveRab(){
-        $this->permohonan->update([
+        $rab = $this->permohonan->update([
             'nominal_rab' => $this->total_pengajuan,
             'id_status' => $this->id_status_didraft,
-        ]); 
+        ]);
+
+        ActivityLogService::log('permohonan.save-rab', 'info', 'Save RAB '.$this->permohonan->perihal_mohon, json_encode($this->rab->toArray()));
 
         return redirect()->route('permohonan');
     }

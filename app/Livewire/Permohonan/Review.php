@@ -74,7 +74,7 @@ class Review extends Component
         $this->urusan = $this->permohonan->urusan;
         $this->nominal_anggaran = $this->permohonan->nominal_rab;
         $this->nominal_rekomendasi = $this->permohonan->nominal_rab;
-        $this->kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', $id_permohonan)->get();
+        $this->kegiatans = RabPermohonan::where('id_permohonan', $id_permohonan)->get();
 
         $verifikasi = VerifikasiPermohonan::where('id_permohonan', $this->permohonan->id)->first();
         if($verifikasi){
@@ -150,7 +150,7 @@ class Review extends Component
                 'is_pendukung_verif' => $this->is_pendukung_verif,
             ]
         );
-        ActivityLogService::log('permohonan.veriffied-data', 'warning', 'verifikasi pendukung permohonan', json_encode($verification->toArray()));
+        ActivityLogService::log('permohonan.veriffied-data', 'info', 'verifikasi pendukung permohonan', json_encode($verification->toArray()));
     }
 
     public function updatedIsLembagaVerif($value){
@@ -233,7 +233,7 @@ class Review extends Component
                 }
             }
 
-            ActivityLogService::log('permohonan.review', 'info', 'review permohonan', json_encode($berita_acara->toArray()));
+            ActivityLogService::log('permohonan.review', 'warning', 'review permohonan', json_encode($berita_acara->toArray()));
             
             DB::commit();
             
@@ -268,7 +268,7 @@ class Review extends Component
                 $status = Status_permohonan::where('name', 'ditolak')->first()->id;
             }
 
-            $permohonan = $this->permohonan->update([
+            $permohonan = tap($this->permohonan)->update([
                 'id_status' => $status,
                 'status_rekomendasi' => $this->status_rekomendasi,
                 'nominal_anggaran' => $this->nominal_anggaran,
@@ -279,6 +279,19 @@ class Review extends Component
             ]);
 
             DB::commit();
+
+            ActivityLogService::log('permohonan.review', 'info', 'kirim review permohonan', json_encode($permohonan->only([
+                'id',
+                'no_mohon',
+                'perihal_mohon',
+                'id_status',
+                'status_rekomendasi',
+                'nominal_anggaran',
+                'nominal_rekomendasi',
+                'tanggal_rekomendasi',
+                'catatan_rekomendasi',
+                'file_pemberitahuan',
+            ])));
 
             return redirect()->route('permohonan');
         } catch (\Throwable $th) {

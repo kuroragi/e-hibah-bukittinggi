@@ -21,18 +21,7 @@ class DatabaseSeeder extends Seeder
 
         $permission_for_super_admin = Permission::all()->except(
             Permission::whereIn('name', [
-                'View Admin Lembaga',
-                'View Any Permohonan',
-                'View Permohonan',
-                'Restore Permohonan',
-                'Check Permohonan',
-                'Review Permohonan',
-                'Reviewed Permohonan',
-                'Confirm Permohonan',
-                'Download Pemberitahuan Koreksi',
-                'Confirm Review Permohonan',
-                'Review Perbaikan Permohonan',
-                'Confirm Perbaikan Permohonan',
+                'View Admin Lembaga'
             ])->get()->pluck('id')->toArray()
         );
 

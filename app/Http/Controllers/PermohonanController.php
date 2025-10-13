@@ -57,9 +57,12 @@ class PermohonanController extends Controller
     }
 
     public function send($id_permohonan){
-        Permohonan::where('id', $id_permohonan)->update([
+        $permohonan = Permohonan::where('id', $id_permohonan)->first();
+        $permohonan->update([
             'id_status' => 4,
         ]);
+
+        ActivityLogService::log('permohonan.send', 'info', 'lembaga mengirim data permohonan', json_encode($permohonan->toArray()));
 
         return redirect()->route('permohonan');
     }
@@ -69,7 +72,10 @@ class PermohonanController extends Controller
     }
 
     public function send_review($id_permohonan){
-        Permohonan::where('id', $id_permohonan)->increment('id_status');
+        $permohonan = Permohonan::where('id', $id_permohonan)->first();
+        $permohonan->increment('id_status');
+
+        ActivityLogService::log('permohonan.send_result', 'info', 'kirim data hasil review', json_encode($permohonan->toArray()));
 
         return redirect()->route('permohonan');
     }

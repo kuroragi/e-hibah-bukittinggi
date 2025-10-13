@@ -307,41 +307,22 @@
                         <table class="table table-bordered text-center">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Rincian Kegiatan</th>
-                                    <th>Volume</th>
-                                    <th>Satuan<br>(Liter, KD, dan Sebagainya)</th>
-                                    <th>Harga Satuan</th>
+                                    <th>Kegiatan</th>
                                     <th>Total</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($kegiatans as $kegiatan)
-                                    <tr class="bg-warning">
-                                        <td colspan="4" class="text-start">{{ $kegiatan->nama_kegiatan }}</td>
-                                        <td class="text-end">
-                                            {{ number_format(
-                                                collect($kegiatan->rincian)->pluck('subtotal')->filter(fn($val) => is_numeric($val))->sum(),
-                                                0,
-                                                ',',
-                                                '.',
-                                            ) }}
+                                    <tr>
+                                        <td class="text-start">{{ $kegiatan->nama_kegiatan }}</td>
+                                        <td class="d-flex justify-content-between"><span
+                                                class="me-auto">Rp.</span>{{ number_format($kegiatan->subtotal, 0, ',', '.') }}
                                         </td>
                                     </tr>
-                                    @foreach ($kegiatan->rincian as $rincian)
-                                        <tr class="">
-                                            <td class="text-start">{{ $rincian->keterangan }}</td>
-                                            <td>{{ $rincian->volume }}</td>
-                                            <td class="text-start">{{ $rincian->satuan->name }}</td>
-                                            <td class="text-end">{{ number_format($rincian->harga, 0, ',', '.') }}
-                                            </td>
-                                            <td class="text-end">{{ number_format($rincian->subtotal, 0, ',', '.') }}
-                                            </td>
-                                        </tr>
-                                    @endforeach
                                 @endforeach
-                                <tr class="bg-warning">
-                                    <td class="text-start fw-bold" colspan="4">Total</td>
-                                    <td class="text-end fw-bold">
+                                <tr>
+                                    <td class="text-start fw-bold">Total</td>
+                                    <td class="d-flex justify-content-between fw-bold"><span>Rp.</span>
                                         {{ $permohonan->nominal_anggaran ? number_format($permohonan->nominal_anggaran, 0, ',', '.') : number_format($permohonan->nominal_rab, 0, ',', '.') }}
                                     </td>
                                 </tr>
@@ -446,7 +427,6 @@
                 <div class="card-body">
                     <h5 class="card-title text-center fw-bold">
                         Checklist Kesesuaian Data Antara Dokumen Tertulis Dan SoftCopy <br>
-                        <small>(Berdasarkan Pergub 27 Tahun 2023)</small>
                     </h5>
 
                     <div class="mb-4">
@@ -529,7 +509,7 @@
 
             <div x-show="$wire.veriffied == true" class="card">
                 <div class="card-body">
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-4">
                             <div class="mb-3">
                                 <label class="form-label">Berita Acara Kelengkapan Administrasi</label>
@@ -545,7 +525,7 @@
                             </div>
                         </div>
                     </div>
-                    <hr>
+                    <hr> --}}
                     <div class="row">
                         <div class="col-4">
                             <div class="mb-3">
@@ -635,15 +615,13 @@
                             @endif
                         </div>
                     </div>
-
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="text-center">
-                        <button wire:click='store_berita_acara(1)' class="btn btn-primary w-100"
-                            @disabled($permohonan->id_status > 5)>Simpan</button>
+                    <div class="row mb-4">
+                        <div class="col col-12">
+                            <button wire:click='store_berita_acara(1)' class="btn btn-primary w-100"
+                                @disabled($permohonan->id_status > 5)>Simpan</button>
+                        </div>
                     </div>
+
                 </div>
             </div>
 
