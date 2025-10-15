@@ -72,12 +72,12 @@ class ReviewPerbaikan extends Component
     public $listeners = ['updatethis->status_rekomendasiment' => 'veriffiedStatement'];
 
     public function mount($id_permohonan = null){
-        $this->permohonan = Permohonan::with(['lembaga', 'skpd', 'status', 'pendukung', 'perbaikanProposal.perbaikan_rab.rincian'])->where('id', $id_permohonan)->first();
+        $this->permohonan = Permohonan::with(['lembaga', 'skpd', 'status', 'pendukung', 'perbaikanProposal.perbaikan_rab'])->where('id', $id_permohonan)->first();
         $this->skpds = Skpd::all();
         $this->id_skpd = $this->permohonan->id_skpd;
         $this->urusans = UrusanSkpd::where('id_skpd', $this->id_skpd)->get();
         $this->urusan = $this->permohonan->urusan;
-        $this->kegiatans = PerbaikanRab::with(['rincian.satuan'])->where('id_permohonan', $id_permohonan)->get();
+        $this->kegiatans = PerbaikanRab::where('id_permohonan', $id_permohonan)->get();
 
         $verifikasi = VerifikasiPermohonan::where('id_permohonan', $this->permohonan->id)->first();
         if($verifikasi){

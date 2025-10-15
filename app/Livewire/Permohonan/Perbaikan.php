@@ -49,7 +49,7 @@ class Perbaikan extends Component
         $this->count_perbaikan = $perbaikan_rab->count();
         if($this->count_perbaikan > 0){
         
-            $this->kegiatans = PerbaikanRab::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->get();
+            $this->kegiatans = PerbaikanRab::where('id_permohonan', $this->permohonan->id)->get();
             if($this->kegiatans){
                 $grand = 0;
                 foreach ($this->kegiatans as $k1 => $item) {
@@ -63,28 +63,16 @@ class Perbaikan extends Component
                 $this->kegiatan_rab[$k1] = [
                     'id_kegiatan' => $item->id,
                     'nama_kegiatan' => $item->nama_kegiatan,
-                    'total_kegiatan' => 0
+                    'total_kegiatan' => $item->subtotal
                 ];
-                foreach($item->rincian as $k2 => $child){
-                    $this->kegiatan_rab[$k1]['rincian'][$k2] = [
-                        'id_rincian' => $child->id,
-                        'kegiatan' => $child->keterangan,
-                        'volume' => $child->volume,
-                        'satuan' => $child->id_satuan,
-                        'harga_satuan' => $child->harga,
-                        'subtotal' => $child->subtotal,
-                    ];
-                }
             }
         }else{
         
-            $this->kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->get();
+            $this->kegiatans = RabPermohonan::where('id_permohonan', $this->permohonan->id)->get();
             if($this->kegiatans){
                 $grand = 0;
                 foreach ($this->kegiatans as $k1 => $item) {
-                    foreach ($item->rincian as $k2 => $child) {
-                        $grand += $child->subtotal;
-                    }
+                        $grand += $item->subtotal;
                 }
                 $this->total_kegiatan = $grand;
             }
@@ -92,18 +80,8 @@ class Perbaikan extends Component
                 $this->kegiatan_rab[$k1] = [
                     'id_kegiatan' => $item->id,
                     'nama_kegiatan' => $item->nama_kegiatan,
-                    'total_kegiatan' => 0
+                    'subtotal' => $item->subtotal
                 ];
-                foreach($item->rincian as $k2 => $child){
-                    $this->kegiatan_rab[$k1]['rincian'][$k2] = [
-                        'id_rincian' => $child->id,
-                        'kegiatan' => $child->keterangan,
-                        'volume' => $child->volume,
-                        'satuan' => $child->id_satuan,
-                        'harga_satuan' => $child->harga,
-                        'subtotal' => $child->subtotal,
-                    ];
-                }
             }
         }
         $this->satuans = Satuan::orderBy('name')->get();
@@ -121,74 +99,78 @@ class Perbaikan extends Component
         $this->kegiatan_rab[$countKegiatan + 1] = [
             'name_kegiatan' => '',
             'total_kegiatan' => 0,
-            'rincian' => [],
         ];
     }
 
-    public function tambahRincian($k1)
-    {
-        $countChild = count($this->kegiatan_rab[$k1]['rincian']);
-        $this->kegiatan_rab[$k1]['rincian'][$countChild + 1] = [
-            'kegiatan' => '',
-            'volume' => 0,
-            'satuan' => '',
-            'harga_satuan' => 0,
-            'subtotal' => 0,
-        ];
+    // public function tambahRincian($k1)
+    // {
+    //     $countChild = count($this->kegiatan_rab[$k1]['rincian']);
+    //     $this->kegiatan_rab[$k1]['rincian'][$countChild + 1] = [
+    //         'kegiatan' => '',
+    //         'volume' => 0,
+    //         'satuan' => '',
+    //         'harga_satuan' => 0,
+    //         'subtotal' => 0,
+    //     ];
+    // }
+
+    public function deleteFormkegiatan($index){
+        unset($this->kegiatan_rab[$index]);
+        $this->kegiatan_rab = array_values($this->kegiatan_rab);
     }
 
-    public function hapusRincian($index)
-    {
-        unset($this->rincian[$index]);
-        $this->rincian = array_values($this->rincian); // reset index array
-    }
+    // public function hapusRincian($index)
+    // {
+    //     unset($this->rincian[$index]);
+    //     $this->rincian = array_values($this->rincian); // reset index array
+    // }
 
-    public function getSubtotal($k1, $k2)
-    {
-        $child = $this->kegiatan_rab[$k1]['rincian'][$k2];
-        $subtotal = (float) ($child['volume'] ?? 0) * (float) ($child['harga_satuan'] ?? 0);
-        $this->kegiatan_rab[$k1]['rincian'][$k2]['subtotal'] = $subtotal;
-        $this->kegiatan_rab[$k1]['total_kegiatan'] = $this->getTotalKegiatan($k1);
-        return $subtotal;
-    }
+    // public function getSubtotal($k1, $k2)
+    // {
+    //     $child = $this->kegiatan_rab[$k1]['rincian'][$k2];
+    //     $subtotal = (float) ($child['volume'] ?? 0) * (float) ($child['harga_satuan'] ?? 0);
+    //     $this->kegiatan_rab[$k1]['rincian'][$k2]['subtotal'] = $subtotal;
+    //     $this->kegiatan_rab[$k1]['total_kegiatan'] = $this->getTotalKegiatan($k1);
+    //     return $subtotal;
+    // }
 
     // Hitung total kegiatan
-    public function getTotalKegiatan($k1)
-    {
-        $total = 0;
-        foreach ($this->kegiatan_rab[$k1]['rincian'] as $k2 => $child) {
+    // public function getTotalKegiatan($k1)
+    // {
+    //     $total = 0;
+    //     foreach ($this->kegiatan_rab[$k1] as $k2 => $child) {
 
-            $total += $child['subtotal'];
-        }
-        return $total;
-    }
+    //         $total += $child['subtotal'];
+    //     }
+    //     return $total;
+    // }
 
     // Hitung total semua kegiatan
     public function getGrandTotal()
     {
         $grand = 0;
         foreach ($this->kegiatan_rab as $k1 => $item) {
-            $grand += $this->getTotalKegiatan($k1);
+            $grand += $item['subtotal'];
         }
         $this->total_kegiatan = $grand;
     }
 
-    public function hitungSubtotalBaris($index)
-    {
-        if (isset($this->rincian[$index])) {
-            $volume = floatval($this->rincian[$index]['volume'] ?? 0);
-            $harga = floatval($this->rincian[$index]['harga_satuan'] ?? 0);
-            $this->rincian[$index]['subtotal'] = $volume * $harga;
-        }
-    }
+    // public function hitungSubtotalBaris($index)
+    // {
+    //     if (isset($this->rincian[$index])) {
+    //         $volume = floatval($this->rincian[$index]['volume'] ?? 0);
+    //         $harga = floatval($this->rincian[$index]['harga_satuan'] ?? 0);
+    //         $this->rincian[$index]['subtotal'] = $volume * $harga;
+    //     }
+    // }
 
-    public function hitungTotal()
-    {
-        $this->total_kegiatan = collect($this->rincian)
-            ->pluck('subtotal')
-            ->filter(fn($val) => is_numeric($val))
-            ->sum();
-    }
+    // public function hitungTotal()
+    // {
+    //     $this->total_kegiatan = collect($this->rincian)
+    //         ->pluck('subtotal')
+    //         ->filter(fn($val) => is_numeric($val))
+    //         ->sum();
+    // }
 
     public function update_rab(){
             $this->dispatch('close-modal');
@@ -201,7 +183,6 @@ class Perbaikan extends Component
         DB::beginTransaction();
 
         try {
-            $kegiatan->rincian()->delete();
     
             $kegiatan->delete();
 
@@ -245,18 +226,8 @@ class Perbaikan extends Component
                     'id_perbaikan' => 0,
                     'revision_number' => $this->count_perbaikan + 1,
                     'nama_kegiatan' => $this->kegiatan_rab[$k1]['nama_kegiatan'],
+                    'subtotal' => $this->kegiatan_rab[$k1]['subtotal'],
                 ]);
-
-                foreach($this->kegiatan_rab[$k1]['rincian'] as $k2 => $rincian){
-                    PerbaikanRincianRab::create([
-                        'id_perbaikan_rab' => $kegiatan->id,
-                        'keterangan' => $rincian['kegiatan'],
-                        'volume' => $rincian['volume'],
-                        'id_satuan' => $rincian['satuan'],
-                        'harga' => $rincian['harga_satuan'],
-                        'subtotal' => $rincian['subtotal'],
-                    ]);
-                }
             }
 
             $this->permohonan->update([
@@ -269,7 +240,7 @@ class Perbaikan extends Component
                 'perbaikan_rab' => json_encode(PerbaikanRab::with(['rincian'])->where('id_permohonan', $this->permohonan->id)->get()->toArray()),
             ];
             
-            ActivityLogService::log('permohonan.rab.delete', 'danger', 'menghapus data kegiatan dan rincian pada RAB permohonan '.$this->permohonan->perihal_mohon, json_encode($data));
+            ActivityLogService::log('permohonan.rab.update', 'warning', 'perbaikan pada RAB permohonan '.$this->permohonan->perihal_mohon, json_encode($data));
 
             DB::commit();
 

@@ -89,9 +89,9 @@
             <div class="card-body">
 
                 @if (session()->has('warning_rab'))
-                <div class="alert alert-secondary" role="alert">
-                    {{ session('message') }}
-                </div>
+                    <div class="alert alert-secondary" role="alert">
+                        {{ session('message') }}
+                    </div>
                 @endif
                 <h3 class="font-semibold mt-6 mb-2">RAB</h3>
                 <div class="row mb-4">
@@ -112,8 +112,8 @@
                         <div class="col-md-4 mb-3">
                             <label for="nominalRAB" class="form-label">&nbsp;</label><br>
                             <button class="btn btn-primary w-100" data-bs-toggle="modal"
-                                data-bs-target="#update_rab_modal">Update
-                                Kegiatan dan Rincian</button>
+                                data-bs-target="#update_rab_modal">Update RAB
+                                Kegiatan</button>
                         </div>
                     </div>
 
@@ -121,38 +121,18 @@
                         <table class="table table-bordered text-center">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Rincian Kegiatan</th>
-                                    <th>Volume</th>
-                                    <th>Satuan<br>(Liter, KD, dan Sebagainya)</th>
-                                    <th>Harga Satuan</th>
+                                    <th>Kegiatan</th>
                                     <th>Total</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($kegiatans as $kegiatan)
-                                <tr class="bg-warning">
-                                    <td colspan="4" class="text-start">{{ $kegiatan->nama_kegiatan }}</td>
-                                    <td class="text-end">
-                                        {{ number_format(
-                                        collect($kegiatan->rincian)->pluck('subtotal')->filter(fn($val) =>
-                                        is_numeric($val))->sum(),
-                                        0,
-                                        ',',
-                                        '.',
-                                        ) }}
-                                    </td>
-                                </tr>
-                                @foreach ($kegiatan->rincian as $rincian)
-                                <tr class="">
-                                    <td class="text-start">{{ $rincian->keterangan }}</td>
-                                    <td>{{ $rincian->volume }}</td>
-                                    <td class="text-start">{{ $rincian->satuan->name }}</td>
-                                    <td class="text-end">{{ number_format($rincian->harga, 0, ',', '.') }}
-                                    </td>
-                                    <td class="text-end">{{ number_format($rincian->subtotal, 0, ',', '.') }}
-                                    </td>
-                                </tr>
-                                @endforeach
+                                @foreach ($kegiatan_rab as $item)
+                                    <tr>
+                                        <td class="text-start">{{ $item['nama_kegiatan'] }}</td>
+                                        <td class="d-flex justify-content-between"><span>Rp.</span>
+                                            {{ number_format($item['subtotal'], 0, ',', '.') }}
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -184,8 +164,9 @@
             <div class="modal-dialog modal-xl">
                 <div class="modal-content p-3">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="rabModalLabel">Tambah Kegiatan dan Rincian</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title" id="rabModalLabel">Tambah Kegiatan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body">
@@ -199,84 +180,83 @@
                             <table class="table table-bordered text-center align-middle">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Rencana Rincian Kegiatan</th>
-                                        <th>Volume</th>
-                                        <th>Satuan (liter, KD, dan Sebagainya)</th>
-                                        <th>Harga Satuan</th>
-                                        <th>Total</th>
+                                        <th>Kegiatan</th>
+                                        <th>Sutotal</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <!-- Baris Highlight (opsional, bisa dihapus kalau tidak diperlukan) -->
                                     @foreach ($kegiatan_rab as $k1 => $item)
-                                    <!-- Baris Highlight (opsional, bisa dihapus kalau tidak diperlukan) -->
-                                    <tr class="bg-warning">
-                                        <td colspan="4"><input wire:model='kegiatan_rab.{{ $k1 }}.nama_kegiatan'
-                                                type="text" class="form-control" placeholder="Nama Kegiatan">
-                                        </td>
-                                        <td><input wire:model='kegiatan_rab.{{ $k1 }}.total_kegiatan' type="text"
-                                                class="form-control" readonly>
-                                        </td>
-                                        <td class="text-start">
-                                            <button wire:click='tambahRincian({{ $k1 }})'
-                                                class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"></i></button>
-                                            <button wire:click='deleteKegiatan({{ $item["id_kegiatan"] }})'
-                                                class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                    @foreach ($item['rincian'] as $k2 => $child)
-                                    <tr>
-                                        <td><input type="text" class="form-control"
-                                                wire:model="kegiatan_rab.{{ $k1 }}.rincian.{{ $k2 }}.kegiatan">
-                                        </td>
-                                        <td><input type="number" class="form-control"
-                                                wire:model.change="kegiatan_rab.{{ $k1 }}.rincian.{{ $k2 }}.volume">
-                                        </td>
-                                        <td>
-                                            <div wire:ignore x-data x-init="() => {
-                                                    let select_satuan = $($el).find('#select_satuan_{{ $k1 }}{{ $k2 }}');
-                                                    select_satuan.select2({
-                                                        dropdownAutoWidth: true,
-                                                        width: '100%',
-                                                        dropdownParent: $('#create_modal') // pastikan ID-nya sesuai
-                                                    });
-                                                
-                                                    select_satuan.on('change', function() {
-                                                        $wire.set('kegiatan_rab.{{ $k1 }}.rincian.{{ $k2 }}.satuan', this.value);
-                                                    });
-                                                
-                                                    // optional sync back from Livewire
-                                                    $watch('value', value => select_satuan.val(value).trigger('change'));
-                                                }">
-                                                <select class="form-select" id="select_satuan_{{ $k1 }}{{ $k2 }}">
-                                                    <option value="">Pilih Satuan</option>
-                                                    @foreach ($satuans as $satuan)
-                                                    <option value="{{ $satuan->id }}">
-                                                        {{ $satuan->name }}
-                                                    </option>
-                                                    @endforeach
-                                                    <!-- Tambah satuan lain sesuai kebutuhan -->
-                                                </select>
-                                            </div>
-                                        </td>
-                                        <td><input type="number" class="form-control"
-                                                wire:model.change="kegiatan_rab.{{ $k1 }}.rincian.{{ $k2 }}.harga_satuan">
-                                        </td>
-                                        <td class="text-end">
-                                            <input type="hidden"
-                                                wire:model='kegiatan_rab.{{ $k1 }}.rincian.{{ $k2 }}.subtotal'>
-                                            Rp {{ number_format($this->getSubtotal($k1, $k2), 0, ',', '.') }}
-                                        </td>
-                                        <td class="text-start">
-                                            <button type="button"
-                                                wire:click="deleteRincian({{ $kegiatan_rab[$k1]['rincian'][$k2]['id_rincian'] }})"
-                                                class="btn btn-danger btn-sm">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    @endforeach
+                                        <!-- Baris Highlight (opsional, bisa dihapus kalau tidak diperlukan) -->
+                                        <tr>
+                                            <td><input wire:model='kegiatan_rab.{{ $k1 }}.nama_kegiatan'
+                                                    type="text" class="form-control" placeholder="Nama Kegiatan">
+                                            </td>
+                                            <td><input wire:model='kegiatan_rab.{{ $k1 }}.subtotal'
+                                                    type="text" class="form-control">
+                                            </td>
+                                            <td class="text-center">
+                                                {{-- <button wire:click='tambahRincian({{ $k1 }})'
+                                                    class="btn btn-sm btn-primary"><i
+                                                        class="bi bi-plus-lg"></i></button> --}}
+                                                <button wire:click='deleteFormkegiatan({{ $k1 }})'
+                                                    class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        {{-- @foreach ($item['rincian'] as $k2 => $child)
+                                            <tr>
+                                                <td><input type="text" class="form-control"
+                                                        wire:model="kegiatan_rab.{{ $k1 }}.rincian.{{ $k2 }}.kegiatan">
+                                                </td>
+                                                <td><input type="number" class="form-control"
+                                                        wire:model.change="kegiatan_rab.{{ $k1 }}.rincian.{{ $k2 }}.volume">
+                                                </td>
+                                                <td>
+                                                    <div wire:ignore x-data x-init="() => {
+                                                        let select_satuan = $($el).find('#select_satuan_{{ $k1 }}{{ $k2 }}');
+                                                        select_satuan.select2({
+                                                            dropdownAutoWidth: true,
+                                                            width: '100%',
+                                                            dropdownParent: $('#create_modal') // pastikan ID-nya sesuai
+                                                        });
+                                                    
+                                                        select_satuan.on('change', function() {
+                                                            $wire.set('kegiatan_rab.{{ $k1 }}.rincian.{{ $k2 }}.satuan', this.value);
+                                                        });
+                                                    
+                                                        // optional sync back from Livewire
+                                                        $watch('value', value => select_satuan.val(value).trigger('change'));
+                                                    }">
+                                                        <select class="form-select"
+                                                            id="select_satuan_{{ $k1 }}{{ $k2 }}">
+                                                            <option value="">Pilih Satuan</option>
+                                                            @foreach ($satuans as $satuan)
+                                                                <option value="{{ $satuan->id }}">
+                                                                    {{ $satuan->name }}
+                                                                </option>
+                                                            @endforeach
+                                                            <!-- Tambah satuan lain sesuai kebutuhan -->
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td><input type="number" class="form-control"
+                                                        wire:model.change="kegiatan_rab.{{ $k1 }}.rincian.{{ $k2 }}.harga_satuan">
+                                                </td>
+                                                <td class="text-end">
+                                                    <input type="hidden"
+                                                        wire:model='kegiatan_rab.{{ $k1 }}.rincian.{{ $k2 }}.subtotal'>
+                                                    Rp {{ number_format($this->getSubtotal($k1, $k2), 0, ',', '.') }}
+                                                </td>
+                                                <td class="text-start">
+                                                    <button type="button"
+                                                        wire:click="deleteRincian({{ $kegiatan_rab[$k1]['rincian'][$k2]['id_rincian'] }})"
+                                                        class="btn btn-danger btn-sm">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach --}}
                                     @endforeach
                                 </tbody>
                             </table>
@@ -294,8 +274,8 @@
 </div>
 
 @push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
             const fileModal = document.getElementById('fileModal');
             const modalContent = document.getElementById('modalFileContent');
 
@@ -322,5 +302,5 @@
                 $("#update_rab_modal").modal('hide');
             })
         });
-</script>
+    </script>
 @endpush

@@ -98,11 +98,26 @@ class PermohonanController extends Controller
 ;    }
 
     public function send_revisi($id_permohonan){
-        Permohonan::where('id', $id_permohonan)->update([
-            'id_status' => 11,
-        ]);
+        DB::beginTransaction();
+        try {
+            $permohonan = tap(Permohonan::findOrFail($id_permohonan))->update([
+                'id_status' => 11,
+            ]);
 
-        return redirect()->route('permohonan');
+            ActivityLogService::log('permohonan.send_revision', 'info', 'kirim data revisi', json_encode($permohonan->only([
+                'id',
+                'no_mohon',
+                'perihal_mohon',
+                'id_status',
+            ])));
+            
+            DB::commit();
+            return redirect()->route('permohonan');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            session()->flash('error', 'Gagal Mengirim data permohonan yang telah di perbaiki: '.$th->getMessage());
+        }
     }
 
     public function pencairan(){
