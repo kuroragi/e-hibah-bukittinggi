@@ -129,20 +129,20 @@ Route::middleware(['auth'])->group(function () {
 //     ]);
 // });
 
-// Route::get('/testing', function () {
-//     $user = auth()->user();
+Route::get('/testing', function () {
+    $user = auth()->user();
 
-//     if (!$user) {
-//         return 'Tidak ada user yang login.';
-//     }
+    if (!$user) {
+        return 'Tidak ada user yang login.';
+    }
 
-//     return [
-//         'user_id'       => $user->id,
-//         'roles'         => $user->getRoleNames(),       // daftar role
-//         'permissions'   => $user->getAllPermissions()->pluck('name'), // daftar permission
-//         'can_view_nphd'  => $user->can('viewNphd', App\Models\Permohonan::class),   // cek permission view users
-//     ];
-// })->middleware('auth');
+    return [
+        'user_id'       => $user->id,
+        'roles'         => $user->getRoleNames(),       // daftar role
+        'permissions'   => $user->getAllPermissions()->pluck('name'), // daftar permission
+        'can_view_donwload'  => $user->can('download_pemberitahuan', App\Models\Permohonan::class),   // cek permission view users
+    ];
+})->middleware('auth');
 
 // Route::get('/test-email', function () {
 //     \Illuminate\Support\Facades\Mail::raw('Test email SMTP Gmail', function ($message) {

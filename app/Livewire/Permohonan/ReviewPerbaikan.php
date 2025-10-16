@@ -37,6 +37,7 @@ class ReviewPerbaikan extends Component
     public $urusan;
     public $kegiatans;
     public $questions;
+    public $question_perbaikan;
     public $answer = [];
     public $veriffied = false;
 
@@ -182,40 +183,22 @@ class ReviewPerbaikan extends Component
     public function store_berita_acara($VerificationBool){
         if($VerificationBool == 0) return;
         $this->validate();
+        
         DB::beginTransaction();
         try {
-            $ext_kelengkapan_adm = $this->file_kelengkapan_adm->getclientOriginalExtension();
-            $kelengkapan_adm_path = $this->file_kelengkapan_adm->storeAs('berita_acara', 'kelengkapan_adm_'.Auth::user()->id.$this->permohonan->id.date('now').'.'.$ext_kelengkapan_adm, 'public');
-            
-            $ext_tinjau_lap = $this->file_tinjau_lap->getclientOriginalExtension();
-            $tinjau_lap_path = $this->file_tinjau_lap->storeAs('berita_acara', 'tinjau_lap_'.Auth::user()->id.$this->permohonan->id.date('now').'.'.$ext_tinjau_lap, 'public');
-            
-            $berita_acara = BeritaAcara::create([
-                'id_permohonan' => $this->permohonan->id,
-                'is_lengkap' => $this->is_lengkap,
-                'file_kelengkapan_adm' => $kelengkapan_adm_path,
-                'no_kelengkapan_adm' => $this->no_kelengkapan_adm,
-                'tanggal_kelengkapan_adm' => $this->tanggal_kelengkapan_adm,
-                'file_tinjau_lap' => $tinjau_lap_path,
-                'no_tinjau_lap' => $this->no_tinjau_lap,
-                'tanggal_tinjau_lap' => $this->tanggal_tinjau_lap,
-            ]);
-            
-            foreach($this->questions as $question){
-                    foreach($question->children as $child){
+            foreach($this->list_kelengkapan_perbaikan as $key => $item){
                     
-                    KelengkapanBeritaAcara::create([
-                        'id_berita_acara' => $berita_acara->id,
-                        'id_pertanyaan' => $child->id,
-                        'is_ada' => $this->answer[$child->id]['is_ada'] ?? false,
-                        'is_sesuai' => $this->answer[$child->id]['is_sesuai'] ?? false,
-                        'is_keterangan' => $this->answer[$child->id]['is_keterangan'] ?? '',
-                    ]);
-
-                }
+                KelengkapanPerbaikan::create([
+                    'id_perbaikan' => $item['id_perbaikan'],
+                    'id_pertanyaan_perbaikan' => $item['id_pertanyaan_perbaikan'],
+                    'is_ada' => $item['is_ada'],
+                    'is_sesuai' => $item['is_sesuai'],
+                    'keterangan' => $item['keterangan'],
+                ]);
             }
 
-            ActivityLogService::log('permohonan.review-perbaikan-permohonan', 'info', 'review permohonan yang telah diperbaiki', json_encode($berita_acara));
+
+            ActivityLogService::log('permohonan.review-perbaikan-permohonan', 'info', 'review permohonan yang telah diperbaiki', json_encode($this->list_kelengkapan_perbaikan));
             
             DB::commit();
             
@@ -244,7 +227,7 @@ class ReviewPerbaikan extends Component
                 // $perbaikan = $this->permohonan->perbaikanProposal->last()?->perbaikanRab->orderByDesc('id')?->first();
                 // dd($perbaikan);
 
-                $permohonan = $this->permohonan->update([
+                $permohonan = tap($this->permohonan)->update([
                     'id_status' => $status,
                     'file_pemberitahuan_perbaikan' => $file_pemberitahuan_perbaikan_path
                 ]);
@@ -258,7 +241,7 @@ class ReviewPerbaikan extends Component
             }else if($this->status_rekomendasi == 2){
                 $status = Status_permohonan::where('name', 'koreksi')->first()->id;
                 
-                $permohonan = $this->permohonan->update([
+                $permohonan = tap($this->permohonan)->update([
                     'id_status' => $status,
                     'status_rekomendasi' => $this->status_rekomendasi,
                     'nominal_rekomendasi' => $this->nominal_rekomendasi,
@@ -275,7 +258,7 @@ class ReviewPerbaikan extends Component
             }else if($this->status_rekomendasi == 3){
                 $status = Status_permohonan::where('name', 'ditolak')->first()->id;
                 
-                $permohonan = $this->permohonan->update([
+                $permohonan = tap($this->permohonan)->update([
                     'id_status' => $status,
                     'catatan_rekomendasi' => $this->catatan_rekomendasi,
                 ]);
@@ -300,7 +283,6 @@ class ReviewPerbaikan extends Component
                 Storage::disk('public')->delete($file_pemberitahuan_perbaikan_path);
             }
             
-            dd($th);
             session()->flash('error', 'Gagal menyimpan data: ' . $th->getMessage());
         }
     }

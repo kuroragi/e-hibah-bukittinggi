@@ -17,6 +17,7 @@ class PerbaikanRab extends Model
         'id_perbaikan',
         'revision_number',
         'nama_kegiatan',
+        'subtotal',
         'deleted_at',
         'created_by',
         'updated_by',
@@ -38,8 +39,8 @@ class PerbaikanRab extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function rincian(): HasMany
-    {
-        return $this->hasMany(PerbaikanRincianRab::class, 'id_perbaikan_rab');
-    }
+    // public function rincian(): HasMany
+    // {
+    //     return $this->hasMany(PerbaikanRincianRab::class, 'id_perbaikan_rab');
+    // }
 }

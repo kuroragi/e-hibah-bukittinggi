@@ -332,15 +332,15 @@
                             </thead>
                             <tbody>
                                 @foreach ($kegiatans as $kegiatan)
-                                    <tr class="bg-warning">
-                                        <tdclass="text-start">{{ $kegiatan->nama_kegiatan }}</tdclass=>
+                                    <tr>
+                                        <td class="text-start">{{ $kegiatan->nama_kegiatan }}</td>
                                         <td class="text-end">
                                             {{ number_format($kegiatan->subtotal, 0, ',', '.') }}
                                         </td>
                                     </tr>
                                 @endforeach
                                 <tr class="bg-warning">
-                                    <td class="text-start fw-bold" colspan="4">Total</td>
+                                    <td class="text-start fw-bold">Total</td>
                                     <td class="text-end fw-bold">
                                         {{ number_format($permohonan->nominal_anggaran, 0, ',', '.') }}
                                     </td>
@@ -598,23 +598,6 @@
 
             <div x-show="$wire.veriffied == true" class="card bg-secondary">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <label class="form-label">Berita Acara Kelengkapan Administrasi</label>
-                                <a href="{{ Storage::url('/base/Contoh berita acara - kelengkapan berkas.pdf') }}"
-                                    target="_blank"><button class="btn btn-primary w-100">Lihat Dokumen</button></a>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <label class="form-label">Berita Acara Peninjauan Lapangan</label>
-                                <a href="{{ Storage::url('/base/Contoh berita acara - peninjauan lapangan.pdf') }}"
-                                    target="_blank"><button class="btn btn-primary w-100">Lihat Dokumen</button></a>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
                     <div class="row">
                         <div class="col-4">
                             <div class="mb-3">
