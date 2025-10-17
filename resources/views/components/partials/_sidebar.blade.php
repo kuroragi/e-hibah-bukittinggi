@@ -106,14 +106,16 @@
                             </a>
                         @endif
                     @endcan
-                    @can('viewAnyNphd', App\Models\Permohonan::class)
-                        @if (!auth()->user()->hasRole('Admin Lembaga') || auth()->user()->id_lembaga != null)
+                    @if (!auth()->user()->hasRole('Admin Lembaga') || auth()->user()->id_lembaga != null)
+                        @can('viewAnyNphd', App\Models\Permohonan::class)
                             <a href="{{ route('nphd') }}" class="list-group-item"><i
                                     class="bi bi-file-earmark-post"></i>Pengajuan NPHD</a>
-                        @endif
-                    @endcan
+                        @endcan
 
-                    <a href="{{ route('pencairan') }}" class="list-group-item"><i class="bi bi-file"></i>Pencairan</a>
+                        <a href="{{ route('pencairan') }}" class="list-group-item"><i
+                                class="bi bi-file"></i>Pencairan</a>
+                    @endif
+
                     {{-- <a href="javascript::" class="list-group-item"><i class="bi bi-file-earmark-ruled"></i>Laporan</a> --}}
                 </div>
             </div>
