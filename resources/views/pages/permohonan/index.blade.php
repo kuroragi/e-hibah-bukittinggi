@@ -93,7 +93,7 @@
                                 </td>
                                 <td class="text-center">
                                     @action_buttons([$item->status->action_buttons, App\Models\Permohonan::class, $item->id])
-                                    @if ($item->id_status == 8 || $item->id_status == 9)
+                                    @if ($item->id_status == 7 || $item->id_status == 8)
                                         @can('download_pemberitahuan', App\Models\Permohonan::class)
                                             <button class="btn btn-sm btn-secondary" data-bs-toggle="modal"
                                                 data-bs-target="#fileModal"

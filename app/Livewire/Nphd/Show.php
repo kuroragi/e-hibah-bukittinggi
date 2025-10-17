@@ -30,7 +30,6 @@ class Show extends Component
     public $kegiatans;
     #[Validate('required')]
     public $kegiatan_rab = [];
-    public $rincian = [];
 
     public $file_permintaan_nphd;
     
@@ -42,16 +41,15 @@ class Show extends Component
         $perbaikan_rab = PerbaikanRab::where('id_permohonan', $id_permohonan)->get();
         
         
-        $this->kegiatans = PerbaikanRab::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->latest()->get();
+        $this->kegiatans = PerbaikanRab::where('id_permohonan', $this->permohonan->id)->latest()->get();
+
         if(!$this->kegiatans->count() > 0){
-            $this->kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->get();
+            $this->kegiatans = RabPermohonan::where('id_permohonan', $this->permohonan->id)->get();
         }
             if($this->kegiatans){
                 $grand = 0;
                 foreach ($this->kegiatans as $k1 => $item) {
-                    foreach ($item->rincian as $k2 => $child) {
-                        $grand += $child->subtotal;
-                    }
+                    $grand += $item->subtotal;
                 }
                 $this->total_kegiatan = $grand;
             }
@@ -61,16 +59,6 @@ class Show extends Component
                     'nama_kegiatan' => $item->nama_kegiatan,
                     'total_kegiatan' => 0
                 ];
-                foreach($item->rincian as $k2 => $child){
-                    $this->kegiatan_rab[$k1]['rincian'][$k2] = [
-                        'id_rincian' => $child->id,
-                        'kegiatan' => $child->keterangan,
-                        'volume' => $child->volume,
-                        'satuan' => $child->id_satuan,
-                        'harga_satuan' => $child->harga,
-                        'subtotal' => $child->subtotal,
-                    ];
-                }
             }
         $this->satuans = Satuan::orderBy('name')->get();
     }
@@ -82,10 +70,16 @@ class Show extends Component
 
     public function generate_pdf(){
         // $pdf = Pdf::loadView('pdf.nphd', ['data' => $this->permohonan])->setPaper('A4', 'portrait');
-
+        
+        dd(Storage::disk('public')->exists($this->permohonan->file_permintaan_nphd));
+        if($this->permohonan->file_permintaan_nphd && Storage::disk('public')->exists($this->permohonan->file_permintaan_nphd)){
+            $is_deleted = Storage::disk('public')->delete($this->permohonan->file_permintaan_nphd);
+            dd($is_deleted);
+        }
+        
         $dir = 'draft_permintaan_nphd';
         $filename = 'permintaan_nphd_'.$this->permohonan->id.$this->permohonan->tahun_apbd.'.pdf';
-
+        
         if(!Storage::disk('public')->exists($dir.'/'.$filename)){
             $pdf = Pdf::loadView('pdf.permohonan_nphd', ['data' => $this->permohonan])
                 ->setPaper('A4', 'portrait');
@@ -103,6 +97,9 @@ class Show extends Component
             // Simpan PDF langsung ke disk 'public'
             Storage::disk('public')->put("{$dir}/{$filename}", $pdf->output());
 
+            $this->permohonan->update([
+                'file_permintaan_nphd' => $dir.'/'.$filename
+            ]);
         }
 
         $url = asset("storage/{$dir}/{$filename}");
