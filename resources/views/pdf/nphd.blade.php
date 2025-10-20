@@ -343,7 +343,7 @@
         <p class="no-indent mb-3">PIHAK PERTAMA menyerahkan Hibah Berupa Uang kepada PIHAK KEDUA dan PIHAK KEDUA menerima
             Hibah Berupa Uang dari PIHAK PERTAMA sebesar:<br>
             Rp. {{ number_format($nominal_anggaran, 0, ',', '.') }},-
-            ({{ strtolower(App\Helpers\General::Terbilang($nominal_anggaran)) }} rupiah).</p>
+            ({{ strtolower(App\Helpers\General::Terbilang($nominal_anggaran)) }} rupiah),</p>
 
         <div class="w-100 mb-3 text-center">
             <h6>Pasal 2</h6>
@@ -354,7 +354,7 @@
             <li>Hibah sebagaimana dimaksud Pasal 1 ini adalah dana yang telah dianggarkan dalam Anggaran Pendapatan dan
                 Belanja Daerah Kota Bukittinggi Tahun Anggaran 2025 Rekening Nomor 5.2.19.0.00.0006. 5.1.05.05.01.0001, Sub
                 Kegiatan Penyelenggaraan Kerja Sama Organisasi Keolahragaan Daerah, dengan kode rekening belanja hibah
-                berupa uang.</li>
+                berupa uang;</li>
             <li>Dana hibah sebagaimana dimaksud pada ayat (1) dipergunakan untuk kegiatan KONI Kota Bukittinggi Tahun
                 Anggaran 2025 sesuai dengan Rincian Anggaran Biaya Pelaksanaan Program dan Kegiatan Tahun Anggaran 2025 yang
                 menjadi bagian yang tidak terpisahkan dari Naskah Perjanjian Hibah Daerah ini.</li>
