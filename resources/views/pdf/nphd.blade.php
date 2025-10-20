@@ -286,7 +286,7 @@
                     </td>
                     <td><span class="fw-bold justify-content">NIK. {{ $pimpinan_lembaga->nik }}</span> yang beralamat di
                         {{ $pimpinan_lembaga->alamat }}. Dalam hal ini bertindak sebagai {{ $pimpinan_lembaga->jabatan }}
-                        {{ $data->lembaga?->name }} Selanjutnya disebut <span class="fw-bold">PIHAK KEDUA</span></td>
+                        {{ $data->lembaga?->name }} Selanjutnya disebut <span class="fw-bold">PIHAK KEDUA.</span></td>
                 </tr>
             </table>
         </div>
