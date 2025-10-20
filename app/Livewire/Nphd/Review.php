@@ -30,16 +30,14 @@ class Review extends Component
         $this->permohonan = Permohonan::findOrFail($id_permohonan);
         $this->nominal_anggaran = $this->permohonan->nominal_anggaran;
                 
-        $this->kegiatans = PerbaikanRab::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->latest()->get();
+        $this->kegiatans = PerbaikanRab::where('id_permohonan', $this->permohonan->id)->latest()->get();
         if(!$this->kegiatans->count() > 0){
-            $this->kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', $this->permohonan->id)->get();
+            $this->kegiatans = RabPermohonan::where('id_permohonan', $this->permohonan->id)->get();
         }
             if($this->kegiatans){
                 $grand = 0;
                 foreach ($this->kegiatans as $k1 => $item) {
-                    foreach ($item->rincian as $k2 => $child) {
-                        $grand += $child->subtotal;
-                    }
+                    $grand += $item->subtotal;
                 }
                 $this->total_kegiatan = $grand;
             }
@@ -49,16 +47,6 @@ class Review extends Component
                     'nama_kegiatan' => $item->nama_kegiatan,
                     'total_kegiatan' => 0
                 ];
-                foreach($item->rincian as $k2 => $child){
-                    $this->kegiatan_rab[$k1]['rincian'][$k2] = [
-                        'id_rincian' => $child->id,
-                        'kegiatan' => $child->keterangan,
-                        'volume' => $child->volume,
-                        'satuan' => $child->id_satuan,
-                        'harga_satuan' => $child->harga,
-                        'subtotal' => $child->subtotal,
-                    ];
-                }
             }
     }
 

@@ -64,7 +64,6 @@
                     <td>{{ ucwords($data->lembaga?->alamat) }}</td>
                 </tr>
                 <tr>
-                    {{ dd($data) }}
                     <td>Nominal Sebesar</td>
                     <td>:</td>
                     <td>Rp. {{ number_format($data->nominal_anggaran, 0, ',', '.') }}</td>

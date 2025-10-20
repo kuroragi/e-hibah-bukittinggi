@@ -22,37 +22,18 @@
                     <table class="table table-bordered text-center">
                         <thead class="table-light">
                             <tr>
-                                <th>Rincian Kegiatan</th>
-                                <th>Volume</th>
-                                <th>Satuan<br>(Liter, KD, dan Sebagainya)</th>
-                                <th>Harga Satuan</th>
+                                <th>Kegiatan</th>
                                 <th>Total</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($kegiatans as $kegiatan)
-                                <tr class="bg-warning">
-                                    <td colspan="4" class="text-start">{{ $kegiatan->nama_kegiatan }}</td>
-                                    <td class="text-end">
-                                        {{ number_format(
-                                            collect($kegiatan->rincian)->pluck('subtotal')->filter(fn($val) => is_numeric($val))->sum(),
-                                            0,
-                                            ',',
-                                            '.',
-                                        ) }}
+                                <tr>
+                                    <td lass="text-start">{{ $kegiatan->nama_kegiatan }}</td>
+                                    <td class="d-flex justify-content-between"><span>Rp.</span>
+                                        {{ number_format($kegiatan->subtotal, 0, ',', '.') }}
                                     </td>
                                 </tr>
-                                @foreach ($kegiatan->rincian as $rincian)
-                                    <tr class="">
-                                        <td class="text-start">{{ $rincian->keterangan }}</td>
-                                        <td>{{ $rincian->volume }}</td>
-                                        <td class="text-start">{{ $rincian->satuan->name }}</td>
-                                        <td class="text-end">{{ number_format($rincian->harga, 0, ',', '.') }}
-                                        </td>
-                                        <td class="text-end">{{ number_format($rincian->subtotal, 0, ',', '.') }}
-                                        </td>
-                                    </tr>
-                                @endforeach
                             @endforeach
                         </tbody>
                     </table>

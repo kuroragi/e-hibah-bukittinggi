@@ -28,9 +28,9 @@ class Show extends Component
     public $nominal_anggaran;
     public $total_kegiatan = 0;
     public $kegiatans;
-    #[Validate('required')]
     public $kegiatan_rab = [];
 
+    #[Validate('required|file|max:5120|mimes:pdf')]
     public $file_permintaan_nphd;
     
     public $listeners = ['pdf-ready','close-modal'];
@@ -70,15 +70,14 @@ class Show extends Component
 
     public function generate_pdf(){
         // $pdf = Pdf::loadView('pdf.nphd', ['data' => $this->permohonan])->setPaper('A4', 'portrait');
+        $dir = 'draft_permintaan_nphd';
+        $filename = 'permintaan_nphd_'.$this->permohonan->id.$this->permohonan->tahun_apbd;
+        $ext = '.pdf';
         
-        dd(Storage::disk('public')->exists($this->permohonan->file_permintaan_nphd));
-        if($this->permohonan->file_permintaan_nphd && Storage::disk('public')->exists($this->permohonan->file_permintaan_nphd)){
-            $is_deleted = Storage::disk('public')->delete($this->permohonan->file_permintaan_nphd);
-            dd($is_deleted);
+        if($this->permohonan->file_permintaan_nphd && Storage::disk('public')->exists($dir.'/'.$filename.$ext)){
+            Storage::disk('public')->delete($this->permohonan->file_permintaan_nphd);
         }
         
-        $dir = 'draft_permintaan_nphd';
-        $filename = 'permintaan_nphd_'.$this->permohonan->id.$this->permohonan->tahun_apbd.'.pdf';
         
         if(!Storage::disk('public')->exists($dir.'/'.$filename)){
             $pdf = Pdf::loadView('pdf.permohonan_nphd', ['data' => $this->permohonan])
@@ -114,9 +113,12 @@ class Show extends Component
     }
 
     public function store(){
+        $this->validate();
+
         $dir = 'permintaan_nphd';
-        $filename = 'permintaan_nphd'.$this->permohonan->id.$this->permohonan->tahun_apbd.'.pdf';
-        $path = $dir.'/'.$filename;
+        $filename = 'permintaan_nphd_'.$this->permohonan->id.$this->permohonan->tahun_apbd;
+        $ext = '.pdf';
+        $path = $dir.'/'.$filename.$ext;
 
         DB::beginTransaction();
 
@@ -131,12 +133,18 @@ class Show extends Component
 
             $status = Status_permohonan::where('name', 'Permohonan NPHD')->first();
             
-            $add_permintaan_nphd = $this->permohonan->update([
+            $add_permintaan_nphd = tap($this->permohonan)->update([
                 'id_status' => $status->id,
                 'file_permintaan_nphd' => $permintaan_nphd_path,
             ]);
 
-            ActivityLogService::log('permohonan.upload-permohonan-nphd', 'info', 'upload file permintaan nphd untuk permohonan perihal '.$this->permohonan->perihal_mohon, json_encode($add_permintaan_nphd));
+            ActivityLogService::log('permohonan.upload-permohonan-nphd', 'info', 'upload file permintaan nphd untuk permohonan perihal '.$this->permohonan->perihal_mohon, json_encode(collect($add_permintaan_nphd->only([
+                'id', 'perihal_mohon', 'title', 'file_permintaan_nphd'
+            ]))->mapWithKeys(function ($value, $key) {
+                return [
+                    $key === 'title' ? 'judul_proposal' : $key => $value,
+                ];
+            })->toArray()));
 
             DB::commit();
 

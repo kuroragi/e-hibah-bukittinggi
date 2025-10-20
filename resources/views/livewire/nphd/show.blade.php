@@ -62,6 +62,9 @@
                 <div class="mb-3">
                     <lable class="form-label">Surat permohonan penandatanganan NPHD Hibah Berupa uang</lable>
                     <input type="file" wire:model='file_permintaan_nphd' class="form-control">
+                    @error('file_permintaan_nphd')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="modal-footer">
                     <button wire:click.prevent='store' type="button" class="btn btn-primary">Simpan Permintaan</button>
