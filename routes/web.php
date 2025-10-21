@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\LembagaController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\NphdContoller;
@@ -77,7 +78,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/permohonan/review_revisi/{id_permohonan}', ReviewPerbaikan::class)->name('permohonan.review_revisi');
     Route::get('/permohonan/confirm_revisi/{id_permohonan}', ReviewPerbaikan::class)->name('permohonan.confirm_revisi');
 
-    Route::get('/nphd/config', [NphdContoller::class, 'config'])->name('nphd.config');
+    Route::get('/config/nphd', [ConfigController::class, 'nphd'])->name('config.nphd');
 
     Route::get('/nphd', [NphdContoller::class, 'index'])->name('nphd');
     Route::get('/nphd/show/{id_permohonan}', \App\Livewire\Nphd\Show::class)->name('nphd.show');

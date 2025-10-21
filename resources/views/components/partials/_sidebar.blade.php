@@ -38,26 +38,26 @@
                     <a href="{{ route('user.change_password') }}" class="list-group-item"><i class="bi bi-key"></i>
                         Ubah Sandi</a>
                     @can('viewAny', App\Models\Permission::class)
-                        <a href="{{ route('permission') }}" class="list-group-item"><i class="bi bi-person-lock"></i>
-                            Permission</a>
+                    <a href="{{ route('permission') }}" class="list-group-item"><i class="bi bi-person-lock"></i>
+                        Permission</a>
                     @endcan
                     @can('viewAny', App\Models\Role::class)
-                        <a href="{{ route('role') }}" class="list-group-item"><i class="bi bi-person-badge"></i>
-                            Role</a>
+                    <a href="{{ route('role') }}" class="list-group-item"><i class="bi bi-person-badge"></i>
+                        Role</a>
                     @endcan
                     @can('viewAny', App\Models\Skpd::class)
-                        <a href="{{ route('skpd') }}" class="list-group-item"><i class="bi bi-building"></i>SKPD</a>
+                    <a href="{{ route('skpd') }}" class="list-group-item"><i class="bi bi-building"></i>SKPD</a>
                     @endcan
                     @can('viewAny', App\Models\User::class)
-                        <a href="{{ route('user.index') }}" class="list-group-item"><i class="bi bi-people"></i>
-                            Pengguna</a>
-                        <a href="{{ route('user.log') }}" class="list-group-item"><i
-                                class="bi bi-file-earmark-person"></i>Log
-                            Pengguna</a>
+                    <a href="{{ route('user.index') }}" class="list-group-item"><i class="bi bi-people"></i>
+                        Pengguna</a>
+                    <a href="{{ route('user.log') }}" class="list-group-item"><i
+                            class="bi bi-file-earmark-person"></i>Log
+                        Pengguna</a>
                     @endcan
                     @can('View Any Pertanyaan', App\Models\PertanyaanKelengkapan::class)
-                        <a href="{{ route('pertanyaan') }}" class="list-group-item"><i class="bi bi-question-square"></i>
-                            Pertanyaan</a>
+                    <a href="{{ route('pertanyaan') }}" class="list-group-item"><i class="bi bi-question-square"></i>
+                        Pertanyaan</a>
                     @endcan
                     <a href="{{ route('user_guide') }}" class="list-group-item"><i
                             class="bi bi-question text-success"></i>
@@ -73,54 +73,55 @@
                         <small class="mb-0">Menu Untuk Lembaga</small>
                     </div>
                     @can('viewAny', App\Models\Lembaga::class)
-                        <a href="{{ route('lembaga') }}" class="list-group-item"><i class="bi bi-building"></i>
-                            Lembaga</a>
+                    <a href="{{ route('lembaga') }}" class="list-group-item"><i class="bi bi-building"></i>
+                        Lembaga</a>
                     @endcan
                     @can('viewLembaga', App\Models\Lembaga::class)
-                        <a href="{{ route('lembaga.admin', ['id_lembaga' => Auth::user()->id_lembaga ?? 0]) }}"
-                            class="list-group-item"><i class="bi bi-building"></i>
-                            Lembaga</a>
+                    <a href="{{ route('lembaga.admin', ['id_lembaga' => Auth::user()->id_lembaga ?? 0]) }}"
+                        class="list-group-item"><i class="bi bi-building"></i>
+                        Lembaga</a>
                     @endcan
                     @can('viewAny', App\Models\Permohonan::class)
-                        @if (!auth()->user()->hasRole('Admin Lembaga') || auth()->user()->id_lembaga != null)
-                            @php
-                                if (
-                                    auth()
-                                        ->user()
-                                        ->hasAnyRole(['Super Admin', 'Admin Skpd'])
-                                ) {
-                                    $badgeCount =
-                                        $permohonanCounts['review_permohonan'] +
-                                        $permohonanCounts['confirm_permohonan'];
-                                } elseif (auth()->user()->hasRole('Verifikator')) {
-                                    $badgeCount = $permohonanCounts['confirm_permohonan'];
-                                } elseif (auth()->user()->hasRole('Reviewer')) {
-                                    $badgeCount = $permohonanCounts['review_permohonan'];
-                                } else {
-                                    $badgeCount = 0;
-                                }
-                            @endphp
-                            <a href="{{ route('permohonan') }}" class="list-group-item"><i
-                                    class="bi bi-chat-left-text"></i>Permohonan Hibah
-                                @if ($badgeCount > 0)
-                                    <span
-                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">+{{ $badgeCount }}
-                                        <span class="visually-hidden">unread messages</span></span>
-                                @endif
-                            </a>
+                    @if (!auth()->user()->hasRole('Admin Lembaga') || auth()->user()->id_lembaga != null)
+                    @php
+                    if (
+                    auth()
+                    ->user()
+                    ->hasAnyRole(['Super Admin', 'Admin Skpd'])
+                    ) {
+                    $badgeCount =
+                    $permohonanCounts['review_permohonan'] +
+                    $permohonanCounts['confirm_permohonan'];
+                    } elseif (auth()->user()->hasRole('Verifikator')) {
+                    $badgeCount = $permohonanCounts['confirm_permohonan'];
+                    } elseif (auth()->user()->hasRole('Reviewer')) {
+                    $badgeCount = $permohonanCounts['review_permohonan'];
+                    } else {
+                    $badgeCount = 0;
+                    }
+                    @endphp
+                    <a href="{{ route('permohonan') }}" class="list-group-item"><i
+                            class="bi bi-chat-left-text"></i>Permohonan Hibah
+                        @if ($badgeCount > 0)
+                        <span
+                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">+{{
+                            $badgeCount }}
+                            <span class="visually-hidden">unread messages</span></span>
                         @endif
+                    </a>
+                    @endif
                     @endcan
                     @if (!auth()->user()->hasRole('Admin Lembaga') || auth()->user()->id_lembaga != null)
-                        @can('viewAnyNphd', App\Models\Permohonan::class)
-                            <a href="{{ route('nphd') }}" class="list-group-item"><i
-                                    class="bi bi-file-earmark-post"></i>Pengajuan NPHD</a>
-                        @endcan
+                    @can('viewAnyNphd', App\Models\Permohonan::class)
+                    <a href="{{ route('nphd') }}" class="list-group-item"><i
+                            class="bi bi-file-earmark-post"></i>Pengajuan NPHD</a>
+                    @endcan
 
-                        <a href="{{ route('pencairan') }}" class="list-group-item"><i
-                                class="bi bi-file"></i>Pencairan</a>
+                    <a href="{{ route('pencairan') }}" class="list-group-item"><i class="bi bi-file"></i>Pencairan</a>
                     @endif
 
-                    {{-- <a href="javascript::" class="list-group-item"><i class="bi bi-file-earmark-ruled"></i>Laporan</a> --}}
+                    {{-- <a href="javascript::" class="list-group-item"><i
+                            class="bi bi-file-earmark-ruled"></i>Laporan</a> --}}
                 </div>
             </div>
             <div class="tab-pane fade" id="pills-tools">
@@ -131,10 +132,11 @@
                         </div>
                         <small class="mb-0">Menu Tools</small>
                     </div>
-                    <a href="{{ route('nphd.config') }}" class="list-group-item"><i class="bi bi-file"></i>
+                    <a href="{{ route('config.nphd') }}" class="list-group-item"><i class="bi bi-file"></i>
                         NPHD Config</a>
 
-                    {{-- <a href="javascript::" class="list-group-item"><i class="bi bi-file-earmark-ruled"></i>Laporan</a> --}}
+                    {{-- <a href="javascript::" class="list-group-item"><i
+                            class="bi bi-file-earmark-ruled"></i>Laporan</a> --}}
                 </div>
             </div>
         </div>

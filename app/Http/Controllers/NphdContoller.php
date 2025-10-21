@@ -36,11 +36,4 @@ class NphdContoller extends Controller
             'id_status' => 14
         ]);
     }
-
-    public function config(){
-        $configs = NphdConfig::all();
-        return view('pages.nphd.config', [
-            'configs' => $configs
-        ]);
-    }
 }
