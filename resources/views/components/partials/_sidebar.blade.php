@@ -13,6 +13,10 @@
                 <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-menu" type="button"><i
                         class="bi bi-grid-fill"></i></button>
             </li>
+            <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="Tools">
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-tools" type="button"><i
+                        class="bi bi-wrench"></i></button>
+            </li>
         </ul>
     </div>
     <div class="textmenu">
@@ -115,6 +119,20 @@
                         <a href="{{ route('pencairan') }}" class="list-group-item"><i
                                 class="bi bi-file"></i>Pencairan</a>
                     @endif
+
+                    {{-- <a href="javascript::" class="list-group-item"><i class="bi bi-file-earmark-ruled"></i>Laporan</a> --}}
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-tools">
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-0">Tools</h5>
+                        </div>
+                        <small class="mb-0">Menu Tools</small>
+                    </div>
+                    <a href="{{ route('nphd.config') }}" class="list-group-item"><i class="bi bi-file"></i>
+                        NPHD Config</a>
 
                     {{-- <a href="javascript::" class="list-group-item"><i class="bi bi-file-earmark-ruled"></i>Laporan</a> --}}
                 </div>

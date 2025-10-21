@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\NphdConfig;
 use App\Models\Permohonan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,13 @@ class NphdContoller extends Controller
     public function sendNphd($id_permohonan){
         $permohonan = Permohonan::where('id', $id_permohonan)->update([
             'id_status' => 14
+        ]);
+    }
+
+    public function config(){
+        $configs = NphdConfig::all();
+        return view('pages.nphd.config', [
+            'configs' => $configs
         ]);
     }
 }

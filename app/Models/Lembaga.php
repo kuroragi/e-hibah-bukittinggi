@@ -18,7 +18,6 @@ class Lembaga extends BaseModel
         'id_kelurahan',
         'alamat',
         'photo',
-        'photo',
         'npwp',
         'no_akta_kumham',
         'date_akta_kumham',

@@ -236,26 +236,23 @@
 @endpush
 
 @section('pdf-content')
+    <table>
+        <tr>
+            <td style="width: 125px;"><img
+                    src="{{ optional($data->lembaga)->photo ? Storage::url($data->lembaga->photo) : '' }}" width="115px"
+                    alt="" /></td>
+            <td class="text-center">
+                <span>NASKAH PERJANJIAN HIBAH DAERAH DALAM BENTUK UANG</span><br>
+                <span>PERJANJIAN</span><br>
+                <span>ANTARA</span><br>
+                <span>PEMERINTAH DAERAH KOTA BUKITTINGGI</span><br>
+                <span>DAN</span><br>
+                <span>PENERIMA HIBAH</span><br>
+            </td>
+            <td style="width: 125px;"><img src="/assets/images/logo/bkt.png" width="115px" alt="" /></td>
+        </tr>
+    </table>
     <div class="container-fluid">
-        <!-- Judul Utama -->
-        <div class="judul-utama mb-1">
-            NASKAH PERJANJIAN HIBAH DAERAH DALAM BENTUK UANG
-        </div>
-        <div class="judul-utama mb-1">
-            PERJANJIAN
-        </div>
-        <div class="judul-utama mb-1">
-            ANTARA
-        </div>
-        <div class="judul-utama mb-1">
-            PEMERINTAH DAERAH KOTA BUKITTINGGI
-        </div>
-        <div class="judul-utama mb-1">
-            DAN
-        </div>
-        <div class="judul-utama mb-1">
-            PENERIMA HIBAH
-        </div>
 
         <!-- Nomor Surat -->
         <div class="nomor-surat">
@@ -270,8 +267,8 @@
 
             <table class="table">
                 <tr class="pb-3">
-                    <td class="text-end" style="width:3%;">I</td>
-                    <td style="width: 37%"></td>
+                    <td class="text-end" style="width:5%;">I</td>
+                    <td style="width: 35%"></td>
                     <td style="width: 60%;"><span class="fw-bold">NIP. ..................................</span> selaku
                         <span class="fw-bold">Kepala
                             Bidang {{ $data->lembaga?->urusan?->nama_urusan }}</span> dalam hal ini bertindak untuk dan atas
@@ -623,22 +620,22 @@
                         <tr>
                             <td style="width: 34%">Nama/Jabatan</td>
                             <td style="width: 1%;">:</td>
-                            <td>HENDRA HENDARMAN / Ketua Umum</td>
+                            <td>{{ strtoupper($data->lembaga?->pengurus[0]?->name) }} / Ketua Umum</td>
                         </tr>
                         <tr>
                             <td>Alamat</td>
                             <td>:</td>
-                            <td>Jl. Dr. A. Rivai No. 17A, Bukit Apit Puhun, Guguk Panjang, Bukittinggi, Sumatera Barat</td>
+                            <td>{{ ucwords($data->lembaga?->pengurus[0]?->alamat) ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td>Telp./HP</td>
                             <td>:</td>
-                            <td>0812 8227 6909</td>
+                            <td>{{ $data->lembaga?->pengurus[0]?->no_hp ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td>Surel</td>
                             <td>:</td>
-                            <td>konibukittinggi99@gmail.com</td>
+                            <td>{{ $data->lembaga?->pengurus[0]?->email ?? '-' }}</td>
                         </tr>
                     </table>
                 </div>
