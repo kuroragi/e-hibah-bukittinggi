@@ -167,4 +167,20 @@ class General {
         $data = self::convertDateToIndo($date);
         return $data['tanggal'].' '.$data['bulan'].' '.$data['tahun'];
     }
+
+    public static function formatBidangList(array $items): string
+    {
+        $count = count($items);
+
+        if ($count === 0) {
+            return '';
+        }
+
+        if ($count === 1) {
+            return $items[0];
+        }
+
+        $last = array_pop($items);
+        return implode(', ', $items) . ' dan ' . $last;
+    }
 }

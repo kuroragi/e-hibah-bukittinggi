@@ -26,6 +26,7 @@ use App\Livewire\Permohonan\ReviewPerbaikan;
 use App\Livewire\PertanyaanKelengkapan;
 use App\Livewire\Role;
 use App\Livewire\SKPD;
+use App\Livewire\Skpd\DetailSkpd;
 use App\Livewire\User;
 use App\Livewire\User\ChangePassword;
 use App\Models\Permohonan;
@@ -45,6 +46,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/permission', Permission::class)->name('permission');
     Route::get('/role', Role::class)->name('role');
     Route::get('/skpd', SKPD::class)->name('skpd');
+    // Route::get('/skpd/detail/{id_skpd}', function(){
+    //     dd(request()->id_skpd);
+    // })->name('skpd.detail');
+    Route::get('/skpd/detail/{id_skpd}', DetailSkpd::class)->name('skpd.detail');
     Route::get('/user', User::class)->name('user.index');
     Route::get('/user/change_password', ChangePassword::class)->name('user.change_password');
     Route::get('/user-create', [UserController::class, 'create'])->name('user.create');
@@ -93,7 +98,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/testing-pdf', function(){
     $data = Permohonan::with(['lembaga' => function($query){
-        $query->with(['skpd', 'urusan', 'pengurus' => function($query){
+        $query->with(['skpd.detail', 'urusan', 'pengurus' => function($query){
             $query->where('jabatan', 'Pimpinan');
         }]);
     }])->where('id', 1)->first();

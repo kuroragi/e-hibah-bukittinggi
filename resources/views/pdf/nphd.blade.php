@@ -268,10 +268,10 @@
             <table class="table">
                 <tr class="pb-3">
                     <td class="text-end" style="width:5%;">I</td>
-                    <td style="width: 35%"></td>
+                    <td style="width: 35%">{{ $data->skpd?->detail?->nama_pimpinan }}</td>
                     <td style="width: 60%;"><span class="fw-bold">NIP. ..................................</span> selaku
-                        <span class="fw-bold">Kepala
-                            Bidang {{ $data->lembaga?->urusan?->nama_urusan }}</span> dalam hal ini bertindak untuk dan atas
+                        <span class="fw-bold">{{ $data->skpd?->detail?->jabatan }}
+                            {{ $data->skpd?->name }}</span> dalam hal ini bertindak untuk dan atas
                         nama
                         <span class="fw-bold">{{ $data?->lembaga?->skpd?->name }}</span> selanjutnya disebut <span
                             class="fw-bold">PIHAK PERTAMA</span>
@@ -293,14 +293,12 @@
             secara sendiri-sendiri disebuk PIHAK:</p>
         <ol class="mb-3">
             <li>
-                PIHAK PERTAMA adalah Satuan Kerja Perangkat Daerah yang dibentuk berdasarkan Peraturan Daerah Kota
-                Bukittinggi Nomor 4 Tahun 2022 tentang Perubahan. Atas Peraturan Daerah Kota Bukittinggi Nomor 09 Tahun 2015
-                tentang Pembentukan dan Susunan Perangkat Daerah yang turunannya berupa Peraturan Wali Kota Bukittinggi
-                Nomor 42 Tahun 2022 tentang Kedudukan, Susunan Organisasi, Tugas dan Fungsi Serta Tata Kerja Dinas Pemuda
-                dan Olahraga;</li>
+                PIHAK PERTAMA adalah {{ $data->skpd?->deskripsi }};</li>
             <li>PIHAK PERTAMA sebagai penyelenggara sebagian urusan pemerintahan daerah menurut asas otonomi dengan
                 kewenangan, hak dan kewajiban untuk mengatur serta mengurus sendiri urusan pemerintahan dan kepentingan
-                masyarakat setempat di bidang olahraga sesuai ketentuan peraturan perundang-undangan;</li>
+                masyarakat setempat di bidang
+                {{ App\Helpers\General::formatBidangList($data->lembaga?->urusan?->pluck('nama_urusan')->toArray()) }}
+                sesuai ketentuan peraturan perundang-undangan;</li>
             <li>PIHAK KEDUA adalah pimpinan {{ ucwords($data->lembaga?->name) }} ({{ $data->lembaga?->acronym }}) Kota
                 Bukittinggi selaku
                 penyelenggara dan pembina langsung olahraga prestasi di Kota Bukittinggi sebagaimana dimaksud dalam Surat
@@ -594,22 +592,22 @@
                         <tr>
                             <td style="width: 34%">Nama/Jabatan</td>
                             <td style="width: 1%;">:</td>
-                            <td>NENTA OKTAVIA, S.STP, MPA. / Kepala Dinas</td>
+                            <td>{{ $data->skpd?->detail?->nama_pimpinan }} / {{ $data->skpd?->detail?->jabatan }}</td>
                         </tr>
                         <tr>
                             <td>Alamat</td>
                             <td>:</td>
-                            <td>Jl. Cindua Mato No. 7, Kel. Benteng Pasar Atas, Kec. Guguk Panjang, Kota Bukittinggi</td>
+                            <td>{{ $data->skpd?->alamat ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td>Telp./HP</td>
                             <td>:</td>
-                            <td>0811 661 712</td>
+                            <td>{{ $data->skpd?->detail?->hp_pimpinan ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td>Surel</td>
                             <td>:</td>
-                            <td>-</td>
+                            <td>{{ $data->skpd?->detail?->email_pimpinan ?? '-' }}</td>
                         </tr>
                     </table>
                 </div>

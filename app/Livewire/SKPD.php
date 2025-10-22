@@ -19,6 +19,13 @@ class SKPD extends Component
 
     #[Validate('required')]
     public $name;
+    #[Validate('required')]
+    public $deskripsi;
+    #[Validate('required')]
+    public $alamat;
+    public $telp;
+    public $email;
+    public $fax;
     public $urusan_skpd = [];
     public $count_urusan = 0;
 
@@ -60,6 +67,11 @@ class SKPD extends Component
         DB::transaction(function () {
             $skpd = ModelsSkpd::create([
                 'name' => $this->name,
+                'deskripsi' => $this->deskripsi,
+                'alamat' => $this->alamat,
+                'telp' => $this->telp,
+                'email' => $this->email,
+                'fax' => $this->fax,
             ]);
 
             $skpdArray = ['name' => $this->name];
@@ -85,6 +97,11 @@ class SKPD extends Component
     public function edit($id){
         $this->skpd = ModelsSkpd::with(['has_urusan'])->findOrFail($id);
         $this->name = $this->skpd->name;
+        $this->deskripsi = $this->skpd->deskripsi;
+        $this->alamat = $this->skpd->alamat;
+        $this->telp = $this->skpd->telp;
+        $this->email = $this->skpd->email;
+        $this->fax = $this->skpd->fax;
         $this->urusan_skpd = $this->skpd->has_urusan->toArray();
         $this->count_urusan = count($this->urusan_skpd);
         $this->dispatch('editModal');
@@ -97,6 +114,11 @@ class SKPD extends Component
         DB::transaction(function () {
             $this->skpd->update([
                 'name' => $this->name,
+                'deskripsi' => $this->deskripsi,
+                'alamat' => $this->alamat,
+                'telp' => $this->telp,
+                'email' => $this->email,
+                'fax' => $this->fax,
             ]);
 
             // Ambil semua ID urusan lama dari DB

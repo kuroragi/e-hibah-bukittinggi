@@ -32,6 +32,29 @@
                                                 placeholder="Masukkan nama pengguna">
                                         </div>
                                         <div class="mb-3">
+                                            <label for="skpd-deskripsi" class="form-label">Deskripsi SKPD</label>
+                                            <textarea wire:model='deskripsi' class="form-control" id="skpd-deskripsi" rows="3"></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="skpd-alamat" class="form-label">Alamat SKPD</label>
+                                            <textarea wire:model='alamat' class="form-control" id="skpd-alamat" rows="3"></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="skpd-telp" class="form-label">No. Telp SKPD</label>
+                                            <input wire:model='telp' type="text" class="form-control" id="skpd-telp"
+                                                placeholder="Masukkan nama pengguna">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="skpd-email" class="form-label">Alamat Email</label>
+                                            <input wire:model='email' type="email" class="form-control"
+                                                id="skpd-email" placeholder="Masukkan nama pengguna">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="skpd-fax" class="form-label">No. fax SKPD</label>
+                                            <input wire:model='fax' type="text" class="form-control" id="skpd-fax"
+                                                placeholder="Masukkan nama pengguna">
+                                        </div>
+                                        <div class="mb-3">
                                             <label for="skpd-urusan" class="form-label">Urusan SKPD</label>
                                             @foreach ($urusan_skpd as $key => $urusan)
                                                 <div class="input-group mb-3">
@@ -81,6 +104,8 @@
                                         data-bs-target="#collapse{{ $item->id }}" aria-expanded="false"
                                         aria-controls="collapse{{ $item->id }}"><i class="bi bi-eye"></i>
                                         Urusan</button>
+                                    <a href="{{ route('skpd.detail', ['id_skpd' => $item->id]) }}"
+                                        class="btn btn-sm btn-secondary"><i class="bi bi-search"></i> Detail SKPD</a>
                                     {{-- <button class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"></i> Tambah
                                     Urusan</button> --}}
                                     <button wire:click='edit({{ $item->id }})' class="btn btn-sm btn-warning"><i
@@ -140,11 +165,34 @@
                                     placeholder="Masukkan nama SKPD">
                             </div>
                             <div class="mb-3">
+                                <label for="skpd-deskripsi" class="form-label">Deskripsi SKPD</label>
+                                <textarea wire:model='deskripsi' class="form-control" id="skpd-deskripsi" rows="3"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="skpd-alamat" class="form-label">Alamat SKPD</label>
+                                <textarea wire:model='alamat' class="form-control" id="skpd-alamat" rows="3"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="skpd-telp" class="form-label">No. Telp SKPD</label>
+                                <input wire:model='telp' type="text" class="form-control" id="skpd-telp"
+                                    placeholder="ex: 000000000">
+                            </div>
+                            <div class="mb-3">
+                                <label for="skpd-email" class="form-label">Alamat Email</label>
+                                <input wire:model='email' type="email" class="form-control" id="skpd-email"
+                                    placeholder="ex: bukittinggi@example.com">
+                            </div>
+                            <div class="mb-3">
+                                <label for="skpd-fax" class="form-label">No. fax SKPD</label>
+                                <input wire:model='fax' type="text" class="form-control" id="skpd-fax"
+                                    placeholder="ex: 000000000">
+                            </div>
+                            <div class="mb-3">
                                 <label for="skpd-urusan" class="form-label">Urusan SKPD</label>
                                 @foreach ($urusan_skpd as $key => $urusan)
                                     <div class="input-group mb-3">
-                                        <input wire:model='urusan_skpd.{{ $key }}.nama_urusan' type="text"
-                                            class="form-control" placeholder="Masukkan nama urusan">
+                                        <input wire:model='urusan_skpd.{{ $key }}.nama_urusan'
+                                            type="text" class="form-control" placeholder="Masukkan nama urusan">
                                         <button wire:click.prevent='removeUrusan({{ $key }})'
                                             class="btn btn-danger" type="button"><i
                                                 class="bi bi-trash"></i></button>
