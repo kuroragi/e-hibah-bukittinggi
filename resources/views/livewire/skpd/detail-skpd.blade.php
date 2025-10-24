@@ -93,6 +93,10 @@
                                     class="form-control">
                             </div>
                             <div class="mb-3">
+                                <label for="nip_pimpinan" class="form-label">NIP</label>
+                                <input wire:model='nip_pimpinan' type="text" id="nip_pimpinan" class="form-control">
+                            </div>
+                            <div class="mb-3">
                                 <label for="alamat_pimpinan" class="form-label">Alamat</label>
                                 <textarea wire:model='alamat_pimpinan' id="alamat_pimpinan" class="form-control" rows="3"></textarea>
                             </div>
@@ -105,11 +109,17 @@
                         <div class="col-6">
                             <div class="mb-3">
                                 <label for="jabatan" class="form-label">Nama Jabatan</label>
-                                <input wire:model='jabatan' type="text" id="jabatan" class="form-control">
+                                <input wire:model='jabatan' type="text" id="jabatan_pimpinan" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="golongan_pimpinan" class="form-label">Kelompok jabatan dan Golongan</label>
+                                <input wire:model='golongan_pimpinan' type="text" id="golongan_pimpinan"
+                                    class="form-control" placeholder="Pembina Utama Muda - IV/c">
                             </div>
                             <div class="mb-3">
                                 <label for="hp_pimpinan" class="form-label">Hp/WA</label>
-                                <input wire:model='hp_pimpinan' type="text" id="hp_pimpinan" class="form-control">
+                                <input wire:model='hp_pimpinan' type="text" id="hp_pimpinan"
+                                    class="form-control">
                             </div>
                         </div>
                     </div>
@@ -117,6 +127,61 @@
                         <div class="col-12">
                             <button wire:click='simpan_pimpinan' class="btn btn-primary w-100">Simpan Data
                                 Pimpinan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-header">
+                    <h4>Data Sekretaris</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="nama_sekretaris" class="form-label">Nama</label>
+                                <input wire:model='nama_sekretaris' type="text" id="nama_sekretaris"
+                                    class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="nip_sekretaris" class="form-label">NIP</label>
+                                <input wire:model='nip_sekretaris' type="text" id="nip_sekretaris"
+                                    class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="alamat_sekretaris" class="form-label">Alamat</label>
+                                <textarea wire:model='alamat_sekretaris' id="alamat_sekretaris" class="form-control" rows="3"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email_sekretaris" class="form-label">Email</label>
+                                <input wire:model='email_sekretaris' type="email" id="email_sekretaris"
+                                    class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="jabatan" class="form-label">Nama Jabatan</label>
+                                <input wire:model='jabatan' type="text" id="jabatan_sekretaris"
+                                    class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="golongan_sekretaris" class="form-label">Kelompok jabatan dan
+                                    Golongan</label>
+                                <input wire:model='golongan_sekretaris' type="text" id="golongan_sekretaris"
+                                    class="form-control" placeholder="Pembina Utama Muda - IV/c">
+                            </div>
+                            <div class="mb-3">
+                                <label for="hp_sekretaris" class="form-label">Hp/WA</label>
+                                <input wire:model='hp_sekretaris' type="text" id="hp_sekretaris"
+                                    class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <button wire:click='simpan_pimpinan' class="btn btn-primary w-100">Simpan Data
+                                Sekretaris</button>
                         </div>
                     </div>
                 </div>

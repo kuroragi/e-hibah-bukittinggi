@@ -15,10 +15,15 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_skpd');
             $table->string('nama_pimpinan');
-            $table->string('jabatan');
+            $table->string('nip_pimpinan');
+            $table->string('jabatan_pimpinan');
+            $table->string('golongan');
             $table->text('alamat_pimpinan')->nullable();
             $table->string('hp_pimpinan')->nullable();
             $table->string('email_pimpinan')->nullable();
+            $table->string('nama_sekretaris');
+            $table->string('nip_sekretaris')->nullable();
+            $table->string('jabatan_sekretaris');
             $table->text('perhatian_nphd')->nullable();
             $table->text('rekening_anggaran')->nullable();
             $table->timestamps();

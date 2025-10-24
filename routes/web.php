@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\General;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\LembagaController;
@@ -132,12 +133,15 @@ Route::get('/testing-pdf', function(){
                     ];
                 }
             }
+    $waktu = General::getIndoTerbilangDate(now());
+        $waktu['tanggal_penuh'] = now();
     return view('pdf.nphd', [
         'data' => $data,
         'pimpinan_lembaga' => $pimpinan_lembaga,
         'kegiatans' => $kegiatans,
         'nominal_rab' => 5000000,
         'nominal_anggaran' => $nominal_anggaran,
+        'waktu' => $waktu,
     ]);
 });
 

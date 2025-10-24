@@ -163,6 +163,20 @@ class General {
         ];
     }
 
+    public static function getIndoTerbilangDate($date){
+        $data_hari = self::convertDateToIndo($date);
+        $hari = $data_hari['hari'];
+        $tanggal = self::Terbilang(date('d', strtotime($date)));
+        $bulan = $data_hari['bulan'];
+        $tahun = self::Terbilang(date('Y', strtotime($date)));
+        return [
+            'hari' => $hari,
+            'tanggal' => $tanggal,
+            'bulan' => $bulan,
+            'tahun' => $tahun
+        ];
+    }
+
     public static function getIndoDate($date){
         $data = self::convertDateToIndo($date);
         return $data['tanggal'].' '.$data['bulan'].' '.$data['tahun'];

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Nphd;
 
+use App\Helpers\General;
 use App\Models\PerbaikanRab;
 use App\Models\Permohonan;
 use App\Models\RabPermohonan;
@@ -80,11 +81,13 @@ class Review extends Component
     public function generate_pdf() : void {
         $dir = 'draft_nphd';
         $filename = 'nphd_'.$this->permohonan->id.$this->permohonan->tahun_apbd.'.pdf';
+        $waktu_sekarang = General::getIndoTerbilangDate(now());
+        $waktu_sekarang['tanggal_penuh'] = now();
 
         $pimpinan_lembaga = $this->permohonan->lembaga?->pengurus->where('jabatan', 'Pimpinan')->first();
 
         // if(!Storage::disk('public')->exists($dir.'/'.$filename)){
-            $pdf = Pdf::loadView('pdf.nphd', ['data' => $this->permohonan, 'kegiatans' => $this->kegiatans, 'nominal_anggaran' => $this->nominal_anggaran, 'pimpinan_lembaga' => $pimpinan_lembaga])
+            $pdf = Pdf::loadView('pdf.nphd', ['data' => $this->permohonan, 'kegiatans' => $this->kegiatans, 'nominal_anggaran' => $this->nominal_anggaran, 'pimpinan_lembaga' => $pimpinan_lembaga, 'waktu' => $waktu_sekarang])
                 ->setPaper('A4', 'portrait');
 
             // Pastikan folder ada (di disk 'public' = storage/app/public)
