@@ -17,6 +17,8 @@
         </div>
     </div>
 
+    @include('components.partials._page_notification')
+
 
     <div class="card mb-4">
         <div class="card-body">
@@ -29,8 +31,7 @@
                     </a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" data-bs-toggle="pill" href="#data_nphd" role="tab"
-                        aria-selected="false">
+                    <a class="nav-link active" data-bs-toggle="pill" href="#data_nphd" role="tab" aria-selected="false">
                         <div class="d-flex align-items-center">
                             <div class="tab-title">Data NPHD</div>
                         </div>
@@ -89,8 +90,7 @@
                         <div class="col-6">
                             <div class="mb-3">
                                 <label for="nama_pimpinan" class="form-label">Nama</label>
-                                <input wire:model='nama_pimpinan' type="text" id="nama_pimpinan"
-                                    class="form-control">
+                                <input wire:model='nama_pimpinan' type="text" id="nama_pimpinan" class="form-control">
                             </div>
                             <div class="mb-3">
                                 <label for="nip_pimpinan" class="form-label">NIP</label>
@@ -98,7 +98,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="alamat_pimpinan" class="form-label">Alamat</label>
-                                <textarea wire:model='alamat_pimpinan' id="alamat_pimpinan" class="form-control" rows="3"></textarea>
+                                <textarea wire:model='alamat_pimpinan' id="alamat_pimpinan" class="form-control"
+                                    rows="3"></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="email_pimpinan" class="form-label">Email</label>
@@ -108,8 +109,9 @@
                         </div>
                         <div class="col-6">
                             <div class="mb-3">
-                                <label for="jabatan" class="form-label">Nama Jabatan</label>
-                                <input wire:model='jabatan' type="text" id="jabatan_pimpinan" class="form-control">
+                                <label for="jabatan_pimpinan" class="form-label">Nama Jabatan</label>
+                                <input wire:model='jabatan_pimpinan' type="text" id="jabatan_pimpinan"
+                                    class="form-control">
                             </div>
                             <div class="mb-3">
                                 <label for="golongan_pimpinan" class="form-label">Kelompok jabatan dan Golongan</label>
@@ -118,8 +120,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="hp_pimpinan" class="form-label">Hp/WA</label>
-                                <input wire:model='hp_pimpinan' type="text" id="hp_pimpinan"
-                                    class="form-control">
+                                <input wire:model='hp_pimpinan' type="text" id="hp_pimpinan" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -146,12 +147,12 @@
                             </div>
                             <div class="mb-3">
                                 <label for="nip_sekretaris" class="form-label">NIP</label>
-                                <input wire:model='nip_sekretaris' type="text" id="nip_sekretaris"
-                                    class="form-control">
+                                <input wire:model='nip_sekretaris' type="text" id="nip_sekretaris" class="form-control">
                             </div>
                             <div class="mb-3">
                                 <label for="alamat_sekretaris" class="form-label">Alamat</label>
-                                <textarea wire:model='alamat_sekretaris' id="alamat_sekretaris" class="form-control" rows="3"></textarea>
+                                <textarea wire:model='alamat_sekretaris' id="alamat_sekretaris" class="form-control"
+                                    rows="3"></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="email_sekretaris" class="form-label">Email</label>
@@ -162,8 +163,7 @@
                         <div class="col-6">
                             <div class="mb-3">
                                 <label for="jabatan" class="form-label">Nama Jabatan</label>
-                                <input wire:model='jabatan' type="text" id="jabatan_sekretaris"
-                                    class="form-control">
+                                <input wire:model='jabatan' type="text" id="jabatan_sekretaris" class="form-control">
                             </div>
                             <div class="mb-3">
                                 <label for="golongan_sekretaris" class="form-label">Kelompok jabatan dan
@@ -173,14 +173,13 @@
                             </div>
                             <div class="mb-3">
                                 <label for="hp_sekretaris" class="form-label">Hp/WA</label>
-                                <input wire:model='hp_sekretaris' type="text" id="hp_sekretaris"
-                                    class="form-control">
+                                <input wire:model='hp_sekretaris' type="text" id="hp_sekretaris" class="form-control">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <button wire:click='simpan_pimpinan' class="btn btn-primary w-100">Simpan Data
+                            <button wire:click='simpan_sekretaris' class="btn btn-primary w-100">Simpan Data
                                 Sekretaris</button>
                         </div>
                     </div>

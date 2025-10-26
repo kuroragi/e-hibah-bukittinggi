@@ -7,6 +7,7 @@ use App\Models\SkpdDetail;
 use App\Services\ActivityLogService;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class DetailSkpd extends Component
@@ -75,13 +76,15 @@ class DetailSkpd extends Component
                 ['id_skpd' => $this->skpd->id],
                 [
                     'nama_pimpinan' => $this->nama_pimpinan,
-                    'jabatan' => $this->jabatan,
+                    'jabatan_pimpinan' => $this->jabatan_pimpinan,
+                    'nip_pimpinan' => $this->nip_pimpinan,
+                    'golongan_pimpinan' => $this->golongan_pimpinan,
                     'alamat_pimpinan' => $this->alamat_pimpinan,
                     'hp_pimpinan' => $this->hp_pimpinan,
                     'email_pimpinan' => $this->email_pimpinan,
-                ]
-            );
-
+                    ]
+                );
+                
             $detail['skpd'] = $this->skpd->name;
 
             ActivityLogService::log('skpd.update_pimpinan', 'warning', 'update data pimpinan ', json_encode($detail->toArray()));

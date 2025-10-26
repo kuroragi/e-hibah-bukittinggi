@@ -103,6 +103,7 @@ Route::get('/testing-pdf', function(){
             $query->where('jabatan', 'Pimpinan');
         }]);
     }])->where('id', 1)->first();
+    dd($data);
     $nominal_anggaran = $data->nominal_anggaran;
     $pimpinan_lembaga = $data->lembaga?->pengurus->first();
     $kegiatan_rab = [];
