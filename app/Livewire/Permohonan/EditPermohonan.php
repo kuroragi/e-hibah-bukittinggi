@@ -304,17 +304,17 @@ class EditPermohonan extends Component
         }
     }
 
-    public function deleteRincian($id_rincian){
-        DB::beginTransaction();
+    // public function deleteRincian($id_rincian){
+    //     DB::beginTransaction();
 
-        try {
-            RincianRab::findOrFail($id_rincian)->delete();
+    //     try {
+    //         RincianRab::findOrFail($id_rincian)->delete();
 
-            DB::commit();
-        } catch (\Throwable $th) {
-            session()->flash('error', 'Rincian gagal dihapus :'.$th);
-        }
-    }
+    //         DB::commit();
+    //     } catch (\Throwable $th) {
+    //         session()->flash('error', 'Rincian gagal dihapus :'.$th);
+    //     }
+    // }
 
     public function update_rab(){
 
@@ -325,15 +325,15 @@ class EditPermohonan extends Component
                     'nama_kegiatan' => $this->kegiatan_rab[$k1]['nama_kegiatan'],
                 ]);
 
-                foreach($this->kegiatan_rab[$k1]['rincian'] as $k2 => $rincian){
-                    RincianRab::findOrFail($rincian['id_rincian'])->update([
-                        'keterangan' => $rincian['kegiatan'],
-                        'volume' => $rincian['volume'],
-                        'id_satuan' => $rincian['satuan'],
-                        'harga' => $rincian['harga_satuan'],
-                        'subtotal' => $rincian['subtotal'],
-                    ]);
-                }
+                // foreach($this->kegiatan_rab[$k1]['rincian'] as $k2 => $rincian){
+                //     RincianRab::findOrFail($rincian['id_rincian'])->update([
+                //         'keterangan' => $rincian['kegiatan'],
+                //         'volume' => $rincian['volume'],
+                //         'id_satuan' => $rincian['satuan'],
+                //         'harga' => $rincian['harga_satuan'],
+                //         'subtotal' => $rincian['subtotal'],
+                //     ]);
+                // }
             }
             DB::commit();
             $this->dispatch('close-modal');

@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('skpd_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_skpd');
-            $table->string('nama_pimpinan');
-            $table->string('nip_pimpinan');
-            $table->string('jabatan_pimpinan');
-            $table->string('golongan_pimpinan');
+            $table->string('nama_pimpinan')->nullable();
+            $table->string('nip_pimpinan')->nullable();
+            $table->string('jabatan_pimpinan')->nullable();
+            $table->string('golongan_pimpinan')->nullable();
             $table->text('alamat_pimpinan')->nullable();
             $table->string('hp_pimpinan')->nullable();
             $table->string('email_pimpinan')->nullable();

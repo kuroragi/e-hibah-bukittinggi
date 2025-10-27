@@ -4,6 +4,7 @@ namespace App\Livewire\Skpd;
 
 use App\Models\Skpd;
 use App\Models\SkpdDetail;
+use App\Models\UrusanSkpd;
 use App\Services\ActivityLogService;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Title;
@@ -24,12 +25,14 @@ class DetailSkpd extends Component
     public $email_pimpinan;
     
     public $nama_sekretaris;
-    public $jabatan_sekretaris;
-    public $nip_sekretaris;
-    public $golongan_sekretaris;
-    public $alamat_sekretaris;
-    public $hp_sekretaris;
-    public $email_sekretaris;
+    // public $jabatan_sekretaris;
+    // public $nip_sekretaris;
+    // public $golongan_sekretaris;
+    // public $alamat_sekretaris;
+    // public $hp_sekretaris;
+    // public $email_sekretaris;
+
+    public $urusans = [];
 
     public $perhatian_nphd;
     public $rekening_anggaran;
@@ -47,12 +50,21 @@ class DetailSkpd extends Component
             $this->email_pimpinan = $this->detail_skpd->email_pimpinan;
 
             $this->nama_sekretaris = $this->detail_skpd->nama_sekretaris;
-            $this->jabatan_sekretaris = $this->detail_skpd->jabatan_sekretaris;
-            $this->nip_sekretaris = $this->detail_skpd->nip_sekretaris;
-            $this->golongan_sekretaris = $this->detail_skpd->golongan_sekretaris;
-            $this->alamat_sekretaris = $this->detail_skpd->alamat_sekretaris;
-            $this->hp_sekretaris = $this->detail_skpd->hp_sekretaris;
-            $this->email_sekretaris = $this->detail_skpd->email_sekretaris;
+            // $this->jabatan_sekretaris = $this->detail_skpd->jabatan_sekretaris;
+            // $this->nip_sekretaris = $this->detail_skpd->nip_sekretaris;
+            // $this->golongan_sekretaris = $this->detail_skpd->golongan_sekretaris;
+            // $this->alamat_sekretaris = $this->detail_skpd->alamat_sekretaris;
+            // $this->hp_sekretaris = $this->detail_skpd->hp_sekretaris;
+            // $this->email_sekretaris = $this->detail_skpd->email_sekretaris;
+
+            $urusans = $this->skpd->has_urusan()->get();
+            foreach ($urusans as $urusan) {
+                $this->urusans[] = [
+                    'id' => $urusan->id,
+                    'nama_urusan' => $urusan->nama_urusan,
+                    'kepala_urusan' => $urusan->kepala_urusan,
+                ];
+            }
 
             $this->perhatian_nphd = $this->detail_skpd->perhatian_nphd;
             $this->rekening_anggaran = $this->detail_skpd->rekening_anggaran;
@@ -82,47 +94,24 @@ class DetailSkpd extends Component
                     'alamat_pimpinan' => $this->alamat_pimpinan,
                     'hp_pimpinan' => $this->hp_pimpinan,
                     'email_pimpinan' => $this->email_pimpinan,
+                    'nama_sekretaris' => $this->nama_sekretaris,
                     ]
                 );
+
+            foreach ($this->urusans as $key => $item) {
+                UrusanSkpd::findOrFail($item['id'])->update([
+                    'kepala_urusan' => $item['kepala_urusan'],
+                ]);
+            }
                 
             $detail['skpd'] = $this->skpd->name;
+            $detail['urusan_skpd'] = $this->urusans;
 
             ActivityLogService::log('skpd.update_pimpinan', 'warning', 'update data pimpinan ', json_encode($detail->toArray()));
             
             DB::commit();
     
             session()->flash('message', 'Data Pimpinan SKPD berhasil disimpan.');
-        } catch (\Throwable $th) {
-            //throw $th;
-            DB::rollBack();
-            session()->flash('error', 'Terjadi kesalahan saat menyimpan data Pimpinan SKPD: ' . $th->getMessage());
-        }
-    }
-
-    public function simpan_sekretaris(){
-        // $this->validate();
-        DB::beginTransaction();
-        try {
-            $detail = SkpdDetail::updateOrCreate(
-                ['id_skpd' => $this->skpd->id],
-                [
-                    'nama_sekretaris' => $this->nama_sekretaris,
-                    'jabatan_sekretaris' => $this->jabatan_sekretaris,
-                    'nip_sekretaris' => $this->nip_sekretaris,
-                    'golongan_sekretaris' => $this->golonganan_sekretaris,
-                    'alamat_sekretaris' => $this->alamat_sekretaris,
-                    'hp_sekretaris' => $this->hp_sekretaris,
-                    'email_sekretaris' => $this->email_sekretaris,
-                ]
-            );
-
-            $detail['skpd'] = $this->skpd->name;
-
-            ActivityLogService::log('skpd.update_pimpinan', 'warning', 'update data pimpinan ', json_encode($detail->toArray()));
-            
-            DB::commit();
-    
-            session()->flash('message', 'Data Sekretaris SKPD berhasil disimpan.');
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
