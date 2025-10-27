@@ -97,25 +97,25 @@ class DetailSkpd extends Component
                     'nama_sekretaris' => $this->nama_sekretaris,
                     ]
                 );
-
-            foreach ($this->urusans as $key => $item) {
-                UrusanSkpd::findOrFail($item['id'])->update([
-                    'kepala_urusan' => $item['kepala_urusan'],
-                ]);
-            }
                 
-            $detail['skpd'] = $this->skpd->name;
-            $detail['urusan_skpd'] = $this->urusans;
-
-            ActivityLogService::log('skpd.update_pimpinan', 'warning', 'update data pimpinan ', json_encode($detail->toArray()));
+                foreach ($this->urusans as $key => $item) {
+                    $urusan = tap(UrusanSkpd::findOrFail($item['id']))->update([
+                        'kepala_urusan' => $item['kepala_urusan'],
+                    ]);
+                }
+                
+                $detail['skpd'] = $this->skpd->name;
+                $detail['urusan_skpd'] = $this->urusans;
+                
+                ActivityLogService::log('skpd.update_pimpinan', 'warning', 'update data pimpinan ', json_encode($detail->toArray()));
             
             DB::commit();
     
-            session()->flash('message', 'Data Pimpinan SKPD berhasil disimpan.');
+            session()->flash('success', 'Data Pimpinan dan saksi SKPD berhasil disimpan.');
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
-            session()->flash('error', 'Terjadi kesalahan saat menyimpan data Pimpinan SKPD: ' . $th->getMessage());
+            session()->flash('error', 'Terjadi kesalahan saat menyimpan data Pimpinan SKPD atau saksi: ' . $th->getMessage());
         }
     }
 }

@@ -102,7 +102,7 @@ Route::get('/testing-pdf', function(){
         $query->with(['skpd.detail', 'urusan', 'pengurus' => function($query){
             $query->where('jabatan', 'Pimpinan');
         }]);
-    }])->where('id', 1)->first();
+    }])->where('id', 4)->first();
     $nominal_anggaran = $data->nominal_anggaran;
     $pimpinan_lembaga = $data->lembaga?->pengurus->first();
     $kegiatan_rab = [];
@@ -135,6 +135,7 @@ Route::get('/testing-pdf', function(){
             }
     $waktu = General::getIndoTerbilangDate(now());
         $waktu['tanggal_penuh'] = now();
+    dd($data->lembaga->pengurus);
     return view('pdf.nphd', [
         'data' => $data,
         'pimpinan_lembaga' => $pimpinan_lembaga,

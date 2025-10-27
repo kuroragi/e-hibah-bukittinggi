@@ -372,7 +372,7 @@
             <li>PIHAK PERTAMA sebagai penyelenggara sebagian urusan pemerintahan daerah menurut asas otonomi dengan
                 kewenangan, hak dan kewajiban untuk mengatur serta mengurus sendiri urusan pemerintahan dan kepentingan
                 masyarakat setempat di bidang
-                {{ App\Helpers\General::formatBidangList($data->lembaga?->urusan?->pluck('nama_urusan')->toArray()) }}
+                {{ App\Helpers\General::formatBidangList($data->skpd?->has_urusan?->pluck('nama_urusan')->toArray()) }}
                 sesuai ketentuan peraturan perundang-undangan;</li>
             <li>PIHAK KEDUA adalah pimpinan {{ ucwords($data->lembaga?->name) }} ({{ $data->lembaga?->acronym }}) Kota
                 Bukittinggi selaku
@@ -900,12 +900,11 @@
                             <div class="ttd-space"></div>
 
                             <div class="signature-line">
-                                <strong></strong>
+                                <strong>{{ $data->lembaga?->skpd?->detail?->nama_pimpinan }}</strong>
                             </div>
-                            <div><span class="text-wrap">Kepala Bidang
-                                    {{ $data->lembaga?->urusan?->nama_urusan }}</span>
+                            <div><span class="text-wrap">{{ $data->lembaga?->skpd?->detail?->golongan_pimpinan }}</span>
                             </div>
-                            <div class="text-center">NIP </div>
+                            <div class="text-center">NIP. {{ $data->lembaga?->skpd?->detail?->nip_pimpinan }}</div>
                         </td>
                     </tr>
                 </table>
@@ -917,17 +916,19 @@
         <table class="w-100">
             <tr>
                 <td style="width: 15px; height: 50px; padding-bottom: 1.5rem;">1</td>
-                <td style="width: 75%;">Devi Yarman, S.Sos, M.AP<br>Sekretaris Dinas Pemuda dan Olahraga<br></td>
+                <td style="width: 75%;">{{ $data->lembaga?->skpd?->detail?->nama_sekretaris }}<br>Sekretaris {{
+                    $data->lembaga?->skpd?->name }}<br></td>
                 <td>1</td>
             </tr>
             <tr>
                 <td style="width: 15px; height: 50px; padding-bottom: 1.5rem;">2</td>
-                <td>Devi Yarman, S.Sos, M.AP<br>Sekretaris Dinas Pemuda dan Olahraga<br></td>
+                <td>{{ $data->lembaga?->urusan?->kepala_urusan }}<br>Kepala Bidang {{
+                    $data->lembaga?->urusan?->nama_urusan }} pada {{ $data->lembaga?->skpd?->name }}<br></td>
                 <td>2</td>
             </tr>
             <tr>
                 <td style="width: 15px; height: 50px; padding-bottom: 1.5rem;">3</td>
-                <td>Devi Yarman, S.Sos, M.AP<br>Sekretaris Dinas Pemuda dan Olahraga<br></td>
+                <td>{{ $data->lembaga?->pengurus[1]?->name }}<br>Sekretaris {{ $data->lembaga?->name }}<br></td>
                 <td>3</td>
             </tr>
             <tr>

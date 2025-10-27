@@ -11,6 +11,7 @@ class UrusanSkpd extends BaseModel
     protected $fillable = [
         'id_skpd',
         'nama_urusan',
+        'kepala_urusan',
         'deleted_at',
         'created_by',
         'updated_by',
