@@ -17,19 +17,7 @@
         </div>
     </div>
 
-    @if (session()->has('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
-    @if (session()->has('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+    @include('components.partials._page_notification')
 
     <div class="card shadow-sm mt-4">
         <div class="card-header bg-primary text-white">
@@ -127,8 +115,8 @@
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label class="form-label">NIK <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" wire:model='pengurus.1.nik'
-                        value="{{ old('nik') }}" required>
+                    <input type="text" class="form-control" wire:model='pengurus.1.nik' value="{{ old('nik') }}"
+                        required>
                     @error('nik')
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                     @enderror

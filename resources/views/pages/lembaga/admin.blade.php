@@ -37,6 +37,8 @@
                                 Data Pendukung</a>
                             <a class="dropdown-item"
                                 href="{{ route('lembaga.update.pengurus', ['id_lembaga' => $lembaga->id]) }}">Edit Pengurus</a>
+                            <a class="dropdown-item"
+                                href="{{ route('lembaga.update.nphd', ['id_lembaga' => $lembaga->id]) }}">Edit Data NPHD</a>
                         </div>
                     </div>
                 @endif

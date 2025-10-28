@@ -45,6 +45,8 @@ class Profile extends Component
     #[Validate('required')]
     public $alamat;
 
+    public $deskripsi;
+
     public $listeners = [
         'updatedPropinsi' => 'updatedPropinsi',
         'updatedKabkota' => 'updatedKabkota',

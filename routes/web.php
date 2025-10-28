@@ -9,6 +9,7 @@ use App\Http\Controllers\NphdContoller;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PermohonanController;
 use App\Http\Controllers\UserController;
+use App\Livewire\Lembaga\Nphd;
 use App\Livewire\Lembaga\Pendukung;
 use App\Livewire\Lembaga\Pengurus;
 use App\Livewire\Lembaga\Profile;
@@ -66,6 +67,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/lembaga/update/profile/{id_lembaga}', Profile::class)->name('lembaga.update.profile');
     Route::get('/lembaga/update/pendukung/{id_lembaga}', Pendukung::class)->name('lembaga.update.pendukung');
     Route::get('/lembaga/update/pengurus/{id_lembaga}', Pengurus::class)->name('lembaga.update.pengurus');
+    Route::get('/lembaga/update/nphd/{id_lembaga}', Nphd::class)->name('lembaga.update.nphd');
     Route::get('/lembaga/show/{id_lembaga}', [LembagaController::class, 'show'])->name('lembaga.show');
     Route::get('/permohonan', [PermohonanController::class, 'index'])->name('permohonan');
     Route::get('/permohonan/create', CreateOrUpdate::class)->name('permohonan.create');
@@ -98,11 +100,10 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::get('/testing-pdf', function(){
+    $permohonan = Permohonan::first();
     $data = Permohonan::with(['lembaga' => function($query){
-        $query->with(['skpd.detail', 'urusan', 'pengurus' => function($query){
-            $query->where('jabatan', 'Pimpinan');
-        }]);
-    }])->where('id', 4)->first();
+        $query->with(['skpd.detail', 'urusan', 'pengurus']);
+    }])->where('id', $permohonan->id)->first();
     $nominal_anggaran = $data->nominal_anggaran;
     $pimpinan_lembaga = $data->lembaga?->pengurus->first();
     $kegiatan_rab = [];
@@ -135,7 +136,6 @@ Route::get('/testing-pdf', function(){
             }
     $waktu = General::getIndoTerbilangDate(now());
         $waktu['tanggal_penuh'] = now();
-    dd($data->lembaga->pengurus);
     return view('pdf.nphd', [
         'data' => $data,
         'pimpinan_lembaga' => $pimpinan_lembaga,
