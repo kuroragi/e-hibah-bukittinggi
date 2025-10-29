@@ -55,8 +55,8 @@ class IsiRab extends Component
     }
 
     public function tambahKegiatan(){
-        $countKegiatan = count($this->kegiatan_rab);
-        $this->kegiatan_rab[$countKegiatan + 1] = [
+        $indexKegiatan = count($this->kegiatan_rab) - 1;
+        $this->kegiatan_rab[$indexKegiatan + 1] = [
             'name_kegiatan' => '',
             'total_kegiatan' => '',
         ];

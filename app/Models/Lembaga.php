@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Blameable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Lembaga extends BaseModel
@@ -59,5 +61,15 @@ class Lembaga extends BaseModel
     public function pengurus()
     {
         return $this->hasMany(Pengurus::class, 'id_lembaga');
+    }
+
+    public function nphdLembaga(): HasOne
+    {
+        return $this->hasOne(NphdLembaga::class, 'id_lembaga');
+    }
+
+    public function kelurahan(): BelongsTo
+    {
+        return $this->belongsTo(Kelurahan::class, 'id_kelurahan');
     }
 }

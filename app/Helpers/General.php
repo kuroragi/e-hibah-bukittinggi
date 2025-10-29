@@ -109,7 +109,7 @@ class General {
         $timestamp = strtotime($date);
         $day = date('l', $timestamp);  // Mendapatkan hari
         $month = date('F', $timestamp);  // Mendapatkan bulan
-        $dateFormatted = date('d', $timestamp);  // Mendapatkan tanggal
+        $dateFormatted = date('j', $timestamp);  // Mendapatkan tanggal
         $year = date('Y', $timestamp);  // Mendapatkan tahun
 
         return [

@@ -102,7 +102,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/testing-pdf', function(){
     $permohonan = Permohonan::first();
     $data = Permohonan::with(['lembaga' => function($query){
-        $query->with(['skpd.detail', 'urusan', 'pengurus']);
+        $query->with(['skpd.detail', 'urusan', 'pengurus', 'nphdLembaga']);
     }])->where('id', $permohonan->id)->first();
     $nominal_anggaran = $data->nominal_anggaran;
     $pimpinan_lembaga = $data->lembaga?->pengurus->first();

@@ -354,11 +354,18 @@
                         <td class="fw-bold">{{ strtoupper($pimpinan_lembaga->name) }}</td>
                         <td style="text-align: justify;">Selaku {{ $data->lembaga?->pengurus[0]?->jabatan }}
                             {{ $data->lembaga?->name }} ({{ $data->lembaga?->acronym }}) Kota Bukittinggi berdasarkan
-                            surat keputusan Ketua Umum {{ $data->lembaga?->acronym }} Provinsi Sumatera Barat, dalam
-                            hal
-                            ini bertindak dalam jabatannya untuk dan atas nama {{ $data->lembaga?->acronym }} Kota
-                            Bukittinggi, beralamat di {{ $data->lembaga?->alamat }} Selanjutnya disebut <span
-                                class="fw-bold">PIHAK EDUA</span>.
+                            surat keputusan {{ $data->lembaga?->nphdLembaga?->pemberi_amanat }} Nomor :
+                            {{ $data->lembaga?->nphdLembaga?->nomor_pengukuhan }} Tanggal
+                            {{ App\Helpers\General::getIndoDate($data->lembaga?->nphdLembaga?->tanggal_pengukuhan) }},
+                            tentang
+                            {{ $data->lembaga?->nphdLembaga?->tentang_pengukuhan }} Masa Bakti
+                            {{ $data->lembaga?->nphdLembaga?->masa_bakti }}, dalam hal ini bertindak dalam jabatannya
+                            untuk dan atas nama {{ $data->lembaga?->acronym }} Kota
+                            Bukittinggi, beralamat di {{ $data->lembaga?->alamat }},
+                            {{ $data->lembaga?->kelurahan?->name }}, {{ $data->lembaga?->kelurahan?->kecamatan?->name }},
+                            {{ $data->lembaga?->kelurahan?->kecamatan?->kabkota?->name }},
+                            {{ $data->lembaga?->kelurahan?->kecamatan?->kabkota?->propinsi?->name }}
+                            Selanjutnya disebut <span class="fw-bold">PIHAK EDUA</span>.
                         </td>
                     </tr>
                 </table>
@@ -377,9 +384,11 @@
                     sesuai ketentuan peraturan perundang-undangan;</li>
                 <li>PIHAK KEDUA adalah pimpinan {{ ucwords($data->lembaga?->name) }} ({{ $data->lembaga?->acronym }}) Kota
                     Bukittinggi selaku
-                    penyelenggara dan pembina langsung olahraga prestasi di Kota Bukittinggi sebagaimana dimaksud dalam
+                    {{ $data->lembaga?->nphdLembaga?->deskripsi }} sebagaimana dimaksud dalam
                     Surat
-                    Keputusan Ketua KONI Provinsi Sumatera Barat Nomor : 064 Tahun 2025 Tanggal 5 Februari 2025.</li>
+                    Keputusan {{ $data->lembaga?->nphdLembaga?->pemberi_amanat }} Nomor :
+                    {{ $data->lembaga?->nphdLembaga?->nomor_pengukuhan }} Tanggal
+                    {{ App\Helpers\General::getIndoDate($data->lembaga?->nphdLembaga?->tanggal_pengukuhan) }}.</li>
             </ol>
             <p class="no-indent mb-3">PIHAK PERTAMA dan PIHAK KEDUA dengan mendasarkan dan memperhatikan hal sebagai
                 berikut:
@@ -401,14 +410,9 @@
                 <li>Keputusan Wali Kota Bukittinggi Nomor 188.45-51-2025 tanggal 1 Maret 2025 tentang Penerima dan Besaran
                     Hibah
                     Berupa Uang Pada Dinas Pemuda dan Olahraga Tahun Anggaran 2025;</li>
-                <li>Surat Ketua Umum KONI Kota Bukittinggi yang ditujukan kepada Walikota Bukittinggi Cq. Dinas Pemuda dan
-                    Olahraga (DISPORA) Nomor : 003/KU/KONI-BKT/III/2025 Tanggal 10 Maret 2025 perihal Mohon Pencairan Dana
-                    Hibah
-                    Tahun 2025;.</li>
-                <li>Rincian Anggaran Biaya (RAB) KONI Kota Bukittinggi Tahun 2025 yang menjadi bagian pelaksanaan program
-                    dan
-                    kegiatan KONI Kota Bukittinggi Tahun Anggaran 2025;</li>
-                <li>Pakta Integritas dari KONI Kota Bukittinggi.</li>
+                @foreach (json_decode($data->lembaga?->nphdLembaga?->uraian) as $item)
+                    <li>{{ $item->uraian }}</li>
+                @endforeach
             </ol>
 
             <p class="no-indent mb-3">Dengan ini sepakat untuk melaksanakan Perjanjian Hibah Daerah, dengan ketentuan dan
