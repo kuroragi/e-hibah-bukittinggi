@@ -4,7 +4,15 @@
     <style>
         @page {
             size: 215mm 330mm;
-            margin: 18mm 18mm 25mm 18mm;
+            margin: 18mm 18mm 30mm 18mm;
+        }
+
+        @media print {
+            @page {
+                @top-center {
+                    content: "Halaman " counter(page) " dari " counter(pages);
+                }
+            }
         }
 
         body {
@@ -114,18 +122,19 @@
 
         ol>li {
             counter-increment: num;
-            text-indent: -1.55em;
+            text-indent: -1.75em;
             padding-left: 1.75em;
-            text-align: justify;
+            text-align: justify !important;
             list-style: none;
+            vertical-align: middle;
         }
 
         ol>li::before {
             content: counter(num) ". ";
             display: inline-block;
-            width: 2ch;
-            margin-right: .6rem;
-            text-align: right;
+            width: 4ch;
+            margin-right: 1em;
+            text-align: left !important;
         }
 
         ol.angka-kurung {
@@ -136,18 +145,19 @@
 
         ol.angka-kurung>li {
             counter-increment: num;
-            text-indent: -1.55em;
+            text-indent: -1.75em;
             padding-left: 1.75em;
-            text-align: justify;
+            text-align: justify !important;
             list-style: none;
+            vertical-align: middle;
         }
 
         ol.angka-kurung>li::before {
             content: "(" counter(num) ") ";
             display: inline-block;
-            width: 2ch;
-            margin-right: .6rem;
-            text-align: right;
+            width: 4ch;
+            margin-right: .5em;
+            text-align: left !important;
         }
 
         ol.alpha {
@@ -158,18 +168,23 @@
 
         ol.alpha>li {
             counter-increment: alpha;
-            text-indent: -1.55em;
+            text-indent: -1.75em;
             padding-left: 1.75em;
-            text-align: justify;
+            text-align: justify !important;
             list-style: none;
+            vertical-align: middle;
         }
 
         ol.alpha>li::before {
             content: counter(alpha, lower-alpha) ". ";
             display: inline-block;
-            width: 2ch;
-            margin-right: .6rem;
-            text-align: right;
+            width: 4ch;
+            margin-right: 1em;
+            text-align: right !important;
+        }
+
+        li p {
+            margin: 0;
         }
 
         .signature-table {
@@ -279,12 +294,14 @@
             height: 50px;
         }
 
-        .nphd-content {
-            page-break-inside: avoid;
-        }
+        @media print {
+            .nphd-content {
+                page-break-inside: avoid;
+            }
 
-        .header_block {
-            page-break-inside: avoid;
+            .header_block {
+                page-break-inside: avoid;
+            }
         }
     </style>
 @endpush
@@ -308,11 +325,11 @@
                     <span style="font-size: 0.8rem;">{{ strtoupper($data->lembaga?->acronym) }} KOTA BUKITTINGGI TAHUN
                         ANGGARAN
                         {{ $data->tahun_apbd }}</span><br>
-                    <div class="border-bottom: 1px black solid;">
-                        Nomor: ...................
+                    <div class="signature-line mb-0">
+                        Nomor: {{ $nomor_skpd }}
                     </div>
                     <div class="mb-3">
-                        Nomor: ...................
+                        Nomor: {{ $nomor_lembaga }}
                     </div>
                 </td>
                 <td style="width: 125px;"><img src="{{ public_path('assets/images/logo/bkt.png') }}" width="115px"
@@ -326,7 +343,7 @@
 
             <!-- Para Pihak -->
             <div class="mb-4">
-                <p class="paragraph-indent">
+                <p class="no-indent">
                     Pada hari ini <span class="fw-bold">{{ $waktu['hari'] }}</span> tanggal <span
                         class="fw-bold">{{ $waktu['tanggal'] }}</span> bulan <span
                         class="fw-bold">{{ $waktu['bulan'] }}</span> Tahun
@@ -338,7 +355,7 @@
 
                 <table class="table">
                     <tr class="pb-3">
-                        <td class="text-end" style="width:5%;">I</td>
+                        <td class="text-start" style="width:6ch;">I</td>
                         <td style="width: 35%" class="fw-bold">{{ $data->skpd?->detail?->nama_pimpinan }}</td>
                         <td style="width: 60%; text-align:justify;"><span class="fw-bold">NIP.
                                 {{ $data->skpd?->detail?->nip_pimpinan }}</span>
@@ -350,7 +367,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="text-end">II</td>
+                        <td class="text-start">II</td>
                         <td class="fw-bold">{{ strtoupper($pimpinan_lembaga->name) }}</td>
                         <td style="text-align: justify;">Selaku {{ $data->lembaga?->pengurus[0]?->jabatan }}
                             {{ $data->lembaga?->name }} ({{ $data->lembaga?->acronym }}) Kota Bukittinggi berdasarkan
@@ -393,23 +410,10 @@
             <p class="no-indent mb-3">PIHAK PERTAMA dan PIHAK KEDUA dengan mendasarkan dan memperhatikan hal sebagai
                 berikut:
             </p>
-            <ol class="mb-5">
-                <li>Undang-Undang Nomor 23 Tahun 2014 tentang Pemerintahan Daerah sebagaimana telah diubah beberapa kali,
-                    terakhir dengan Undang-Undang Nomor 11 Tahun 2020 tentang Cipta Kerja;</li>
-                <li>Undang-Undang Republik Indonesia Nomor 11 Tahun 2022 tentang Keolahragaan;</li>
-                <li>Peraturan Pemerintah Nomor 12 Tahun 2019 tentang Pengelolaan Keuangan Daerah;</li>
-                <li>Peraturan Menteri Dalam Negeri Nomor 90 Tahun 2019 tentang Perubahan Kelima Atas Peraturan Menteri Dalam
-                    Negeri Nomor 32 Tahun 2011 tentang Pedoman Pemberian Hibah dan Bantuan Sosial yang Bersumber Dari
-                    Anggaran
-                    Pendapatan dan Belanja Daerah;</li>
-                <li>Peraturan Menteri Dalam Negeri Nomor 77 Tahun 2020 tentang Pedoman Teknis Pengelolaan Keuangan Daerah;
-                </li>
-                <li>Peraturan Wali Kota Bukittinggi Nomor 11 Tahun 2021 tentang Pedoman dan Prosedur Pemberian Hibah dan
-                    Bantuan
-                    Sosial;</li>
-                <li>Keputusan Wali Kota Bukittinggi Nomor 188.45-51-2025 tanggal 1 Maret 2025 tentang Penerima dan Besaran
-                    Hibah
-                    Berupa Uang Pada Dinas Pemuda dan Olahraga Tahun Anggaran 2025;</li>
+            <ol class="mb-3">
+                @foreach (json_decode($data->lembaga?->skpd?->detail?->perhatian_nphd) as $item)
+                    <li>{{ $item->uraian }}</li>
+                @endforeach
                 @foreach (json_decode($data->lembaga?->nphdLembaga?->uraian) as $item)
                     <li>{{ $item->uraian }}</li>
                 @endforeach
@@ -425,28 +429,31 @@
 
             <p class="no-indent mb-3">PIHAK PERTAMA menyerahkan Hibah Berupa Uang kepada PIHAK KEDUA dan PIHAK KEDUA
                 menerima
-                Hibah Berupa Uang dari PIHAK PERTAMA sebesar:<br>
-                Rp. {{ number_format($nominal_anggaran, 0, ',', '.') }},-
-                ({{ strtolower(App\Helpers\General::Terbilang($nominal_anggaran)) }} rupiah),</p>
+                Hibah Berupa Uang dari PIHAK PERTAMA sebesar:
+                <span class="fw-bold">Rp. {{ number_format($nominal_anggaran, 0, ',', '.') }},-
+                    ({{ strtolower(App\Helpers\General::Terbilang($nominal_anggaran)) }} rupiah)</span>,
+            </p>
 
-            <div class="w-100 mb-3 text-center header_block">
+            <div class="w-100 mb-3 mt-4 text-center header_block">
                 <h6 class="fw-bold">Pasal 2</h6>
                 <h6 class="fw-bold">Ruang Lingkup</h6>
             </div>
 
             <ol class="mb-3 angka-kurung">
                 <li>Hibah sebagaimana dimaksud Pasal 1 ini adalah dana yang telah dianggarkan dalam Anggaran Pendapatan dan
-                    Belanja Daerah Kota Bukittinggi Tahun Anggaran 2025 Rekening Nomor 5.2.19.0.00.0006. 5.1.05.05.01.0001,
+                    Belanja Daerah Kota Bukittinggi Tahun Anggaran {{ $data->tahun_apbd }} Rekening Nomor 5.2.19.0.00.0006.
+                    5.1.05.05.01.0001,
                     Sub
                     Kegiatan Penyelenggaraan Kerja Sama Organisasi Keolahragaan Daerah, dengan kode rekening belanja hibah
                     berupa uang;</li>
                 <li>Dana hibah sebagaimana dimaksud pada ayat (1) dipergunakan untuk kegiatan KONI Kota Bukittinggi Tahun
-                    Anggaran 2025 sesuai dengan Rincian Anggaran Biaya Pelaksanaan Program dan Kegiatan Tahun Anggaran 2025
+                    Anggaran 2025 sesuai dengan Rincian Anggaran Biaya Pelaksanaan Program dan Kegiatan Tahun Anggaran
+                    {{ $data->tahun_apbd }}
                     yang
                     menjadi bagian yang tidak terpisahkan dari Naskah Perjanjian Hibah Daerah ini.</li>
             </ol>
 
-            <div class="w-100 mb-3 text-center header_block">
+            <div class="w-100 mb-3 mt-4 text-center header_block">
                 <h6 class="fw-bold">Pasal 3</h6>
                 <h6 class="fw-bold">JANGKA WAKTU</h6>
             </div>
@@ -457,7 +464,7 @@
                 {{ App\Helpers\General::getIndoDate($data->akhir_laksana) }}.
             </p>
 
-            <div class="w-100 mb-3 text-center header_block">
+            <div class="w-100 mb-3 mt-4 text-center header_block">
                 <h6 class="fw-bold">Pasal 4</h6>
                 <h6 class="fw-bold">PENYERAHAN DANA HIBAH</h6>
             </div>
@@ -468,9 +475,9 @@
                     terkait dengan penggunaan hibah dan nomor rekening tersendiri atas nama Dana Hibah KONI Kota
                     Bukittinggi,
                     sehingga hibah terpisah dari keuangan KONI Kota Bukittinggi lainnya.</li>
-                <li>Penyerahan hibah dilakukan secara sekaligus sebesar Rp.
-                    {{ number_format($nominal_anggaran, 0, ',', '.') }},-
-                    <span class="fw-bold">({{ strtolower(App\Helpers\General::Terbilang($nominal_anggaran)) }}
+                <li>Penyerahan hibah dilakukan secara sekaligus sebesar <span class="fw-bold">Rp.
+                        {{ number_format($nominal_anggaran, 0, ',', '.') }},-
+                        ({{ strtolower(App\Helpers\General::Terbilang($nominal_anggaran)) }}
                         rupiah).</span>
                 </li>
                 <li>Penyerahan hibah dibuktikan dengan Berita Acara Serah Terima Hibah yang ditandatangani oleh PIHAK
@@ -482,7 +489,7 @@
                 </li>
             </ol>
 
-            <div class="w-100 mb-3 text-center header_block">
+            <div class="w-100 mb-3 mt-4 text-center header_block">
                 <h6 class="fw-bold">Pasal 5</h6>
                 <h6 class="fw-bold">LAPORAN PENGGUNAAN DANA HIBAH</h6>
             </div>
@@ -530,13 +537,13 @@
                     langsung terhadap penggunaan hibah..</li>
             </ol>
 
-            <div class="w-100 mb-3 text-center header_block">
+            <div class="w-100 mb-3 mt-4 text-center header_block">
                 <h6 class="fw-bold">Pasal 6</h6>
                 <h6 class="fw-bold">HAK DAN KEWAJIBAN</h6>
             </div>
 
-            <ol class="angka-kurung">
-                <li> Hak PIHAK PERTAMA :</li>
+            <ol class="angka-kurung mb-3">
+                <li>Hak PIHAK PERTAMA :</li>
                 <ol class="alpha">
                     <li>Meminta nomor rekening tersendiri sebagaimana dimaksud Pasal 4 ayat (1);</li>
                     <li>Meminta kelengkapan yang dibutuhkan dalam rangka proses monitoring dan evaluasi yang dilaksanakan
@@ -576,7 +583,7 @@
                 </ol>
                 <li>Hak PIHAK KEDUA :</li>
                 <ol class="alpha">
-                    <li> Menerima penyerahan dana hibah dari PIHAK PERTAMA sebagaimana dimaksud pada Pasal 4, apabila
+                    <li>Menerima penyerahan dana hibah dari PIHAK PERTAMA sebagaimana dimaksud pada Pasal 4, apabila
                         seluruh
                         persyaratan dan kelengkapan berkas pengajuan dana hibah telah dipenuhi oleh PIHAK KEDUA dan
                         dinyatakan lengkap
@@ -590,7 +597,8 @@
                         (2)
                         yang disesuaikan dengan Rincian Anggaran Biaya (RAB) Pelaksanaan Program dan Kegiatan KONI Kota
                         Bukittinggi
-                        Tahun Anggaran 2025 (Rincian Anggaran Biaya tersebut merupakan satu kesatuan yang tak terpisahkan
+                        Tahun Anggaran {{ $data->tahun_apbd }} (Rincian Anggaran Biaya tersebut merupakan satu kesatuan
+                        yang tak terpisahkan
                         dengan
                         Perjanjian ini);</li>
                     <li>Menandatangani Pakta Integritas yang menyatakan bahwa hibah yang diterima akan dipergunakan sesuai
@@ -607,14 +615,15 @@
                         bahwa hibah yang diterima telah digunakan sesuai perjanjian hibah ini paling lambat tanggal 10
                         Januari
                         2026;</li>
-                    <li> Menyediakan kelengkapan yang dibutuhkan dalam rangka proses monitoring dan evaluasi yang
+                    <li>Menyediakan kelengkapan yang dibutuhkan dalam rangka proses monitoring dan evaluasi yang
                         dilaksanakan
                         oleh PIHAK PERTAMA terkait dengan penggunaan dana hibah daerah;</li>
                     <li>Melaksanakan pengadaan barang/jasa dengan berpedoman kepada Rencana Anggaran Biaya (RAB) yang telah
                         diverifikasi dan disahkan oleh Satuan Kerja Perangkat Daerah (SKPD) teknis terkait;</li>
                     <li>Menyetor sisa dana hibah/bunga yang ditimbulkan dari penempatan dana hibah di rekening bank kepada
                         PIHAK
-                        PERTAMA, dalam rangka optimalisasi program dan kegiatan KONI Kota Bukittinggi Tahun Anggaran 2025
+                        PERTAMA, dalam rangka optimalisasi program dan kegiatan KONI Kota Bukittinggi Tahun Anggaran
+                        {{ $data->tahun_apbd }}
                         telah
                         diselesaikan;</li>
                     <li>Menjaga dan mempergunakan bukti-bukti pengeluaran yang lengkap dan sah sesuai peraturan
@@ -624,22 +633,22 @@
                 </ol>
             </ol>
 
-            <div class="w-100 mb-3 text-center header_block">
+            <div class="w-100 mb-3 mt-4 text-center header_block">
                 <h6 class="fw-bold">Pasal 7</h6>
                 <h6 class="fw-bold">KETENTUAN PAJAK</h6>
             </div>
 
-            <p class="no-indent">Segala ketentuan pajak yang timbul akibat pelaksanaan perjanjian ini, ditanggung oleh
+            <p class="no-indent mb-3">Segala ketentuan pajak yang timbul akibat pelaksanaan perjanjian ini, ditanggung oleh
                 {{ $data->lembaga?->name }} Kota
                 Bukittinggi sesuai
                 dengan ketentuan peraturan perundang-undangan.</p>
 
-            <div class="w-100 mb-3 text-center header_block">
+            <div class="w-100 mb-3 mt-4 text-center header_block">
                 <h6 class="fw-bold">Pasal 8</h6>
                 <h6 class="fw-bold">WANPRESTASI</h6>
             </div>
 
-            <ol class="angka-kurung">
+            <ol class="angka-kurung mb-3">
 
 
                 <li>Wanprestasi adalah apabila PIHAK PERTAMA atau PIHAK KEDUA tidak memenuhi atau lalai melaksanakan
@@ -657,12 +666,12 @@
                     3 (tiga) kali dengan jarak waktu masing-masing 1 (satu) minggu.</li>
             </ol>
 
-            <div class="w-100 mb-3 text-center">
+            <div class="w-100 mb-3 mt-4 text-center">
                 <h6 class="fw-bold">Pasal 9</h6>
                 <h6 class="fw-bold">SANKSI</h6>
             </div>
 
-            <ol class="angka-kurung">
+            <ol class="angka-kurung mb-3">
 
                 <li>Dalam hal PIHAK PERTAMA setelah melakukan monitoring dan evaluasi terhadap pemberian hibah sebagaimana
                     dimaksud pada
@@ -696,19 +705,20 @@
                     KEDUA dan atau PIHAK PERTAMA dapat membatalkan perjanjian secara sepihak;</li>
             </ol>
 
-            <div class="w-100 mb-3 text-center header_block">
+            <div class="w-100 mb-3 mt-4 text-center header_block">
                 <h6 class="fw-bold">Pasal 10</h6>
                 <h6 class="fw-bold">PEMBERITAHUAN DAN KORESPONDENSI</h6>
             </div>
 
-            <ol class="angka-kurung">
-                <li>Segala macam pemberitahuan dan surat-menyurat yang berkaitan dengan pelaksanaan perjanjian ini dibuat
+            <ol class="angka-kurung mb-3">
+                <li class="mb-3">Segala macam pemberitahuan dan surat-menyurat yang berkaitan dengan pelaksanaan
+                    perjanjian ini dibuat
                     secara
                     tertulis dan dapat disampaikan terlebih dahulu melalui faksimile pada hari dan/atau tanggal surat dengan
                     diikuti
                     konfirmasi secara tertulis kepada alamat-alamat di bawah ini:</li>
 
-                <ol class="a">
+                <div class="mb-3" style="page-break-inside: avoid;">
                     <li class="fw-bold">Dinas Pemuda dan Olahraga Kota Bukittinggi</li>
                     <div class="container">
                         <table>
@@ -746,7 +756,7 @@
                                     {{ $data->lembaga?->pengurus[0]?->jabatan }}</td>
                             </tr>
                             <tr>
-                                <td>Alamat</td>
+                                <td style="width: 34%">Alamat</td>
                                 <td>:</td>
                                 <td>{{ ucwords($data->lembaga?->alamat) ?? '-' }}</td>
                             </tr>
@@ -762,20 +772,21 @@
                             </tr>
                         </table>
                     </div>
-                </ol>
-                <li>Jika terjadi keterlambatan penerimaan pemberitahuan secara tertulis, maka keterlambatan tersebut tidak
-                    dianggap
-                    sebagai suatu keterlambatan dan tetap berlaku sejak tanggal dikeluarkannya surat tersebut.</li>
+                    </d>
+                    <li>Jika terjadi keterlambatan penerimaan pemberitahuan secara tertulis, maka keterlambatan tersebut
+                        tidak
+                        dianggap
+                        sebagai suatu keterlambatan dan tetap berlaku sejak tanggal dikeluarkannya surat tersebut.</li>
             </ol>
 
-            <div class="w-100 mb-3 text-center header_block">
+            <div class="w-100 mb-3 mt-4 text-center header_block">
                 <h6 class="fw-bold">Pasal 11</h6>
                 <h6 class="fw-bold">BERAKHIRNYA PERJANJIAN</h6>
             </div>
 
-            <p class="no-indent">Perjanjian ini berakhir dengan:</p>
+            <p class="no-indent mb-3">Perjanjian ini berakhir dengan:</p>
 
-            <ol class="no-">
+            <ol class="no-indent mb-3">
                 <li>Telah selesainya jangka waktu perjanjian sebagaimana dimaksud Pasal 3;</li>
                 <li>Tercapainya tujuan pemberian hibah sebagaimana dimaksud Pasal 2 ayat (2) yang dibuktikan dengan Laporan
                     Penggunaan</li>
@@ -783,12 +794,12 @@
                 <li>pembatalan sebagaimana dimaksud pada Pasal 9 ayat (4);</li>
             </ol>
 
-            <div class="w-100 mb-3 text-center header_block">
+            <div class="w-100 mb-3 mt-4 text-center header_block">
                 <h6 class="fw-bold">Pasal 12</h6>
                 <h6 class="fw-bold">PENYELESAIAN PERSELISIHAN</h6>
             </div>
 
-            <ol class="angka-kurung">
+            <ol class="angka-kurung mb-3">
 
                 <li>Dalam hal terjadi perselisihan akibat pelaksanaan perjanjian ini, maka para pihak sepakat langkah
                     pertama
@@ -811,12 +822,12 @@
 
             </ol>
 
-            <div class="w-100 mb-3 text-center header_block">
+            <div class="w-100 mb-3 mt-4 text-center header_block">
                 <h6 class="fw-bold">Pasal 13</h6>
                 <h6 class="fw-bold">KEADAAN KAHAR</h6>
             </div>
 
-            <ol class="angka-kurung">
+            <ol class="angka-kurung mb-3">
                 <li>Yang dimaksud dengan keadaan kahar dalam perjanjian ini, adalah dimana terjadi suatu tindakan dan/atau
                     kejadian di
                     luar kemampuan PARA PIHAK untuk mengatasinya dan mengakibatkan tidak dapat dilaksanakannya perjanjian
@@ -852,12 +863,12 @@
                     merupakan beban dan tanggung jawab pihak yang bersangkutan.</li>
             </ol>
 
-            <div class="w-100 mb-3 text-center header_block">
+            <div class="w-100 mb-3 mt-4 text-center header_block">
                 <h6 class="fw-bold">Pasal 14</h6>
                 <h6 class="fw-bold">ADDENDUM ATAU AMANDEMEN</h6>
             </div>
 
-            <ol class="angka-kurung">
+            <ol class="angka-kurung mb-3">
 
                 <li>Hal-hal yang belum cukup diatur dalam perjanjian ini dapat diatur tersendiri dalam bentuk addendum atau
                     amandemen
@@ -869,8 +880,8 @@
 
             </ol>
 
-            <div class="header_block">
-                <p class="no-indent">Naskah Perjanjian Hibah Daerah ini dibuat dan ditandatangani oleh PARA PIHAK dan
+            <div style="page-break-inside: avoid;">
+                <p class="no-indent mb-3">Naskah Perjanjian Hibah Daerah ini dibuat dan ditandatangani oleh PARA PIHAK dan
                     saksi-saksi di
                     Bukittinggi pada hari dan tanggal tersebut di atas dalam rangkap 2 (dua) bermaterai cukup, 1 (satu)
                     rangkap

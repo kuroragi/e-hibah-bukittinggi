@@ -25,6 +25,10 @@ class Review extends Component
     public $kegiatans;
     public $kegiatan_rab = [];
 
+    public $nomor_nphd_skpd;
+    public $nomor_nphd_lembaga;
+    public $tanggal_nphd;
+
     public $file_nphd;
 
     public function mount($id_permohonan){
@@ -81,14 +85,14 @@ class Review extends Component
     public function generate_pdf() : void {
         $dir = 'draft_nphd';
         $filename = 'nphd_'.$this->permohonan->id.$this->permohonan->tahun_apbd.'.pdf';
-        $waktu_sekarang = General::getIndoTerbilangDate(now());
-        $waktu_sekarang['tanggal_penuh'] = now();
+        $waktu_sekarang = General::getIndoTerbilangDate($this->tanggal_nphd);
+        $waktu_sekarang['tanggal_penuh'] = $this->tanggal_nphd;
 
         $pimpinan_lembaga = $this->permohonan->lembaga?->pengurus->where('jabatan', 'Pimpinan')->first();
 
         // if(!Storage::disk('public')->exists($dir.'/'.$filename)){
-            $pdf = Pdf::loadView('pdf.nphd', ['data' => $this->permohonan, 'kegiatans' => $this->kegiatans, 'nominal_anggaran' => $this->nominal_anggaran, 'pimpinan_lembaga' => $pimpinan_lembaga, 'waktu' => $waktu_sekarang])
-                ->setPaper('A4', 'portrait');
+            $pdf = Pdf::loadView('pdf.nphd', ['data' => $this->permohonan, 'kegiatans' => $this->kegiatans, 'nominal_anggaran' => $this->nominal_anggaran, 'pimpinan_lembaga' => $pimpinan_lembaga, 'waktu' => $waktu_sekarang, 'nomor_skpd' => $this->nomor_nphd_skpd, 'nomor_lembaga' => $this->nomor_nphd_lembaga])
+                ->setPaper([0, 0, 210, 330], 'portrait');
 
             // Pastikan folder ada (di disk 'public' = storage/app/public)
             Storage::disk('public')->makeDirectory($dir);

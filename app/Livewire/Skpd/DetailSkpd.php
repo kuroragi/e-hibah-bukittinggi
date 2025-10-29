@@ -68,6 +68,13 @@ class DetailSkpd extends Component
 
             $this->perhatian_nphd = $this->detail_skpd->perhatian_nphd;
             $this->rekening_anggaran = $this->detail_skpd->rekening_anggaran;
+            if($this->perhatian_nphd == null || $this->perhatian_nphd == ''){
+                $this->perhatian_nphd = [
+                    ['uraian' => '']
+                ];
+            }else{
+                $this->perhatian_nphd = json_decode($this->perhatian_nphd, true);
+            }
         }
     }
 
@@ -116,6 +123,36 @@ class DetailSkpd extends Component
             //throw $th;
             DB::rollBack();
             session()->flash('error', 'Terjadi kesalahan saat menyimpan data Pimpinan SKPD atau saksi: ' . $th->getMessage());
+        }
+    }
+
+    public function tambahPerhatian(){
+        $indexPerhatian = count($this->perhatian_nphd) - 1;
+        $this->perhatian_nphd[$indexPerhatian + 1] = ['uraian' => ''];
+    }
+
+    public function hapusPerhatian($index){
+        unset($this->perhatian_nphd[$index]);
+        $this->perhatian_nphd = array_values($this->perhatian_nphd);
+    }
+
+    public function updatePerhatian(){
+        dd($this);
+        DB::beginTransaction();
+        try {
+            $perhatian = SkpdDetail::updateOrCreate([
+                'id_skpd' => $this->skpd->id
+            ], [
+                'perhatian_nphd' => json_encode($this->perhatian_nphd)
+            ]);
+
+            ActivityLogService::log('skpd.update_perhatian_nphd', 'warning', 'update data perhatian dalam NPHD ', json_encode($perhatian->toArray()));
+
+            DB::commit();
+            return session()->flash('warning', 'Berhasil memperbarui data yang menjadi perhatian dalam NPHD');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            session()->flash('error', 'Terjadi kesalahan saat menyimpan data yang menjadi perhatian dalam NPHD: ' . $th->getMessage());
         }
     }
 }

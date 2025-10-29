@@ -134,14 +134,18 @@ Route::get('/testing-pdf', function(){
                     ];
                 }
             }
+    $nomor_skpd = '400.4.8.2/02.DISPORA/2025';
+    $nomor_lembaga = '004/PE/KONI-BKT/III/2025';
     $waktu = General::getIndoTerbilangDate(now());
-        $waktu['tanggal_penuh'] = now();
+    $waktu['tanggal_penuh'] = now();
     return view('pdf.nphd', [
         'data' => $data,
         'pimpinan_lembaga' => $pimpinan_lembaga,
         'kegiatans' => $kegiatans,
         'nominal_rab' => 5000000,
         'nominal_anggaran' => $nominal_anggaran,
+        'nomor_skpd' => $nomor_skpd,
+        'nomor_lembaga' => $nomor_lembaga,
         'waktu' => $waktu,
     ]);
 });

@@ -31,10 +31,17 @@
                     </a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" data-bs-toggle="pill" href="#data_nphd" role="tab"
-                        aria-selected="false">
+                    <a class="nav-link" data-bs-toggle="pill" href="#data_nphd" role="tab" aria-selected="false">
                         <div class="d-flex align-items-center">
                             <div class="tab-title">Data TTD NPHD</div>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" data-bs-toggle="pill" href="#data_perhatian" role="tab"
+                        aria-selected="false">
+                        <div class="d-flex align-items-center">
+                            <div class="tab-title">Menjadi Perhatian di NPHD</div>
                         </div>
                     </a>
                 </li>
@@ -81,7 +88,7 @@
 
         </div>
 
-        <div wire:ignore.self class="tab-pane fade show active" id="data_nphd" role="tabpanel">
+        <div wire:ignore.self class="tab-pane fade" id="data_nphd" role="tabpanel">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-primary text-light">
                     <h4>Data Pimpinan</h4>
@@ -115,7 +122,8 @@
                                     class="form-control">
                             </div>
                             <div class="mb-3">
-                                <label for="golongan_pimpinan" class="form-label">Kelompok jabatan dan Golongan</label>
+                                <label for="golongan_pimpinan" class="form-label">Kelompok jabatan dan
+                                    Golongan</label>
                                 <input wire:model='golongan_pimpinan' type="text" id="golongan_pimpinan"
                                     class="form-control" placeholder="Pembina Utama Muda - IV/c">
                             </div>
@@ -166,5 +174,43 @@
             </div>
 
         </div>
+
+        <div wire:ignore.self class="tab-pane fade show active" id="data_perhatian" role="tabpanel">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-light">
+                    <h4>Hal-hal yang harus menjadi Perhatian Dalam NPHD</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            @foreach ($perhatian_nphd as $key => $item)
+                                <div class="mb-3">
+                                    <div class="mb-1 w-100 d-flex jutify-content-between">
+                                        <label for="perhatian_nphd_{{ $loop->iteration }}" class="form-label">Uraian -
+                                            {{ $loop->iteration }}</label>
+                                        <button wire:click='hapusPerhatian({{ $key }})'
+                                            class="btn btn-sm btn-danger ms-auto">Hapus Uraian -
+                                            {{ $loop->iteration }}</button>
+                                    </div>
+                                    <textarea wire:model='perhatian_nphd.{{ $key }}.uraian' id="perhatian_nphd_{{ $loop->iteration }}"
+                                        class="form-control" rows="3"></textarea>
+                                </div>
+                            @endforeach
+                            <button wire:click='tambahPerhatian' class="btn btn-primary">Tambah Uraian</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <button wire:click='updatePerhatian' class="btn btn-primary w-100">Simpan Perubahan
+                                Data</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>

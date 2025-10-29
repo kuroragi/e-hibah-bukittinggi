@@ -83,7 +83,8 @@
 
                 <div class="mb-4">
                     <p>Surat NPHD</p><br>
-                    <button wire:click='generate_pdf' class="btn btn-sm btn-warning">Download Surat</button>
+                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                        data-bs-target="#form_generate_pdf">Download Surat</button>
                 </div>
 
                 <div class="card-footer text-end">
@@ -103,6 +104,42 @@
                 </div>
                 <div class="modal-body text-center" id="modalFileContent">
                     <p>Memuat konten...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="form_generate_pdf" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Inputan NPHD</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="nomor_nphd_skpd" class="form-label"></label>
+                                <input wire:model='nomor_nphd_skpd' type="text" id="nomor_nphd_skpd"
+                                    class="form-control" placeholder="400.4.8.2/02.DISPORA/2025"></input>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nomor_nphd_lembaga" class="form-label"></label>
+                                <input wire:model='nomor_nphd_lembaga' type="text" id="nomor_nphd_lembaga"
+                                    class="form-control" placeholder="400.4.8.2/02.DISPORA/2025"></input>
+                            </div>
+                            <div class="mb-3">
+                                <label for="tanggal_nphd" class="form-label"></label>
+                                <input wire:model='tanggal_nphd' type="date" id="tanggal_nphd"
+                                    class="form-control"></input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button wire:click='generate_pdf' class="btn btn-primary w-100">Donwload NPHD</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -135,6 +172,7 @@
             });
 
             Livewire.on('pdf-ready', function(data) {
+                $("#form_generate_pdf").modal('hide');
                 window.open(data[0].url, '_blank');
             });
 
