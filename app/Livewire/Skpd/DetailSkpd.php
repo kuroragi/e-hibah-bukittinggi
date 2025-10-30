@@ -58,23 +58,26 @@ class DetailSkpd extends Component
             // $this->email_sekretaris = $this->detail_skpd->email_sekretaris;
 
             $urusans = $this->skpd->has_urusan()->get();
-            foreach ($urusans as $urusan) {
+            foreach ($urusans as $key => $urusan) {
                 $this->urusans[] = [
                     'id' => $urusan->id,
                     'nama_urusan' => $urusan->nama_urusan,
                     'kepala_urusan' => $urusan->kepala_urusan,
+                    'kegiatan' => $urusan->kegiatan ? 
+                            json_decode($urusan->kegiatan) : 
+                            [0 => ['nama_kegiatan' => '', 'sub_kegiatan' => [0 => ['nama_sub_kegiatan' => '', 'rekening_anggaran' => [0 => ['rekening' => '']]]]]]
+                    // 'kegiatan' => $urusan->kegiatan,
+                    // 'sub_kegiatan' => $urusan->sub_kegiatan,
+                    // 'rekening_anggaran' => $urusan->sub_kegiatan ? json_decode($urusan->sub_kegiatan) : [0 => ['rekening' => '']],
                 ];
+                // if($urusan->rekening_anggaran == null || $urusan->rekening_anggaran == ''){
+                //     $this->urusans[$key]['rekening_anggaran'][] = ['rekening' => ''];
+                // }else{
+                //     $this->urusans[$key]['rekening_anggaran'][] = json_decode($urusan->rekening_anggaran);
+                // }
             }
 
-            $this->perhatian_nphd = $this->detail_skpd->perhatian_nphd;
-            $this->rekening_anggaran = $this->detail_skpd->rekening_anggaran;
-            if($this->perhatian_nphd == null || $this->perhatian_nphd == ''){
-                $this->perhatian_nphd = [
-                    ['uraian' => '']
-                ];
-            }else{
-                $this->perhatian_nphd = json_decode($this->perhatian_nphd, true);
-            }
+            $this->perhatian_nphd = $this->detail_skpd->perhatian_nphd ? json_decode($this->detail_skpd->perhatian_nphd, true) : [0 => ['uraian' => '', 'urusan' => 0]];
         }
     }
 
@@ -126,9 +129,63 @@ class DetailSkpd extends Component
         }
     }
 
+    // kegiatan
+    public function tambahKegiatan($index1){
+        $indexKegiatan = count($this->urusans[$index1]['kegiatan']) - 1;
+        $this->urusans[$index1]['kegiatan'][$indexKegiatan + 1] = ['nama_kegiatan' => '', 'sub_kegiatan' => [0 => ['nama_sub_kegiatan' => '', 'rekening_anggaran' => [0 => ['rekening' => '']]]]];
+    }
+
+    public function hapusKegiatan($index1, $index2){
+        unset($this->urusans[$index1]['kegiatan'][$index2]);
+        $this->urusans = array_values($this->urusans);
+    }
+    // end kegiatan
+
+    // Subkegiatan
+    public function tambahSubkegiatan($index1, $index2){
+        $indexSubkegiatan = count($this->urusans[$index1]['kegiatan'][$index2]['sub_kegiatan']) - 1;
+        $this->urusans[$index1]['kegiatan'][$index2]['sub_kegiatan'][$indexSubkegiatan + 1] = ['nama_sub_kegiatan' => '', 'rekening_anggaran' => [0 => ['rekening' => '']]];
+    }
+
+    public function hapusSubkegiatan($index1, $index2, $index3){
+        unset($this->urusans[$index1]['kegiatan'][$index2]['sub_kegiatan'][$index3]);
+        $this->urusans = array_values($this->urusans);
+    }
+    // end Subkegiatan
+
+    // rekening
+    public function tambahRekening($index1, $index2, $index3){
+        $indexRekening = count($this->urusans[$index1]['kegiatan'][$index2]['sub_kegiatan'][$index3]['rekening_anggaran']) - 1;
+        $this->urusans[$index1]['kegiatan'][$index2]['sub_kegiatan'][$index3]['rekening_anggaran'][$indexRekening + 1] = ['rekening' => ''];
+    }
+
+    public function hapusRekening($index1, $index2, $index3, $index4){
+        unset($this->urusans[$index1]['kegiatan'][$index2]['sub_kegiatan'][$index3]['rekening_anggaran'][$index4]);
+        $this->urusans = array_values($this->urusans);
+    }
+    // rekening
+
+    public function updateUrusan(){
+        DB::beginTransaction();
+        try {
+            foreach ($this->urusans as $key => $item) {
+                $urusan = UrusanSkpd::updateOrCreate([
+                    'id' => $item['id']
+                ], [
+                    'kegiatan' => json_encode($item['kegiatan'])
+                ]);
+            }
+            DB::commit();
+            session()->flash('warning', 'Berhasil memperbarui data urusan terkait NPHD');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            session()->flash('error', 'Terjadi kesalahan saat menyimpan data urusan terkait NPHD: ' . $th->getMessage());
+        }
+    }
+
     public function tambahPerhatian(){
         $indexPerhatian = count($this->perhatian_nphd) - 1;
-        $this->perhatian_nphd[$indexPerhatian + 1] = ['uraian' => ''];
+        $this->perhatian_nphd[$indexPerhatian + 1] = ['uraian' => '', 'urusan' => 0];
     }
 
     public function hapusPerhatian($index){
@@ -137,7 +194,6 @@ class DetailSkpd extends Component
     }
 
     public function updatePerhatian(){
-        dd($this);
         DB::beginTransaction();
         try {
             $perhatian = SkpdDetail::updateOrCreate([
@@ -149,7 +205,7 @@ class DetailSkpd extends Component
             ActivityLogService::log('skpd.update_perhatian_nphd', 'warning', 'update data perhatian dalam NPHD ', json_encode($perhatian->toArray()));
 
             DB::commit();
-            return session()->flash('warning', 'Berhasil memperbarui data yang menjadi perhatian dalam NPHD');
+            session()->flash('warning', 'Berhasil memperbarui data yang menjadi perhatian dalam NPHD');
         } catch (\Throwable $th) {
             DB::rollBack();
             session()->flash('error', 'Terjadi kesalahan saat menyimpan data yang menjadi perhatian dalam NPHD: ' . $th->getMessage());

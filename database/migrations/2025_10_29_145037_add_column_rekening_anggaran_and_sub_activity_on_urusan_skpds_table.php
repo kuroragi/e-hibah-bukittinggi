@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('urusans_skpds', function (Blueprint $table) {
-            //
+        Schema::table('urusan_skpds', function (Blueprint $table) {
+            $table->text('kegiatan')->nullable()->after('kepala_urusan');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('urusans_skpds', function (Blueprint $table) {
-            //
+        Schema::table('urusan_skpds', function (Blueprint $table) {
+            $table->dropColumn('kegiatan');
         });
     }
 };

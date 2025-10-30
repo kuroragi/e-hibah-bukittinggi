@@ -12,6 +12,7 @@ class UrusanSkpd extends BaseModel
         'id_skpd',
         'nama_urusan',
         'kepala_urusan',
+        'kegiatan',
         'deleted_at',
         'created_by',
         'updated_by',

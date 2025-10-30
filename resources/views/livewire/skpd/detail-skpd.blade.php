@@ -38,7 +38,15 @@
                     </a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" data-bs-toggle="pill" href="#data_perhatian" role="tab"
+                    <a class="nav-link active" data-bs-toggle="pill" href="#data_urusan" role="tab"
+                        aria-selected="false">
+                        <div class="d-flex align-items-center">
+                            <div class="tab-title">Data Urusan</div>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" data-bs-toggle="pill" href="#data_perhatian" role="tab"
                         aria-selected="false">
                         <div class="d-flex align-items-center">
                             <div class="tab-title">Menjadi Perhatian di NPHD</div>
@@ -175,7 +183,7 @@
 
         </div>
 
-        <div wire:ignore.self class="tab-pane fade show active" id="data_perhatian" role="tabpanel">
+        <div wire:ignore.self class="tab-pane fade" id="data_perhatian" role="tabpanel">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-primary text-light">
                     <h4>Hal-hal yang harus menjadi Perhatian Dalam NPHD</h4>
@@ -208,6 +216,98 @@
                         <div class="col-12">
                             <button wire:click='updatePerhatian' class="btn btn-primary w-100">Simpan Perubahan
                                 Data</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div wire:ignore.self class="tab-pane fade show active" id="data_urusan" role="tabpanel">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-light">
+                    <h4>Konfigurasi data Urusan</h4>
+                </div>
+                <div class="card-body">
+                    @foreach ($urusans as $k1 => $urusan)
+                        <div class="row mb-5">
+                            <div class="col-12">
+                                <div class="d-inline">
+                                    <span class="mb-3 h3">Urusan {{ $urusan['nama_urusan'] }} Tentang Hibah</span>
+                                    <button wire:click='tambahKegiatan({{ $k1 }})'
+                                        class="btn btn-primary btn-sm ms-3">Tambah kegiatan</button>
+                                </div>
+                                @foreach ($urusan['kegiatan'] as $k2 => $kegiatan)
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <div class="mb-3">
+                                                <label
+                                                    for="kegiatan_{{ $urusan['nama_urusan'] }}_ke_{{ $k1 + 1 }}"
+                                                    class="form-label">Nama Kegiatan</label>
+                                                <div class="input-group">
+                                                    <input
+                                                        wire:model='urusans.{{ $k1 }}.kegiatan.{{ $k2 }}.nama_kegiatan'
+                                                        type="text"
+                                                        id="kegiatan_{{ $urusan['nama_urusan'] }}_ke_{{ $k1 + 1 }}"
+                                                        class="form-control">
+                                                    <button
+                                                        wire:click='tambahSubkegiatan({{ $k1 }}, {{ $k2 }})'
+                                                        class="btn btn-primary btn-s">Tambah
+                                                        Subkegiatan</button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @foreach ($kegiatan->sub_kegiatan as $k3 => $sub_kegiatan)
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="mb-3">
+                                                    <label
+                                                        for="sub_kegiatan_{{ $kegiatan->nama_kegiatan }}_ke_{{ $k3 + 1 }}"
+                                                        class="form-label">Nama Subkegiatan</label>
+                                                    <div class="input-group">
+                                                        <input
+                                                            wire:model='urusans.{{ $k1 }}.kegiatan.{{ $k2 }}.sub_kegiatan.{{ $k3 }}.nama_sub_kegiatan'
+                                                            type="text"
+                                                            id="sub_kegiatan_{{ $kegiatan->nama_kegiatan }}_ke_{{ $k3 + 1 }}"
+                                                            class="form-control">
+                                                        <button
+                                                            wire:click='tambahRekening({{ $k1 }}, {{ $k2 }}, {{ $k3 }})'
+                                                            class="btn btn-sm btn-primary">Tambah
+                                                            Rekening</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="mb-3">
+                                                    <div>
+                                                        <label
+                                                            for="rekening_anggaran_{{ $sub_kegiatan->nama_sub_kegiatan }}"
+                                                            class="form-label">Rekening Anggaran</label>
+
+                                                    </div>
+                                                    @foreach ($sub_kegiatan->rekening_anggaran as $k4 => $rekening)
+                                                        <div class="input-group mb-3">
+                                                            <input
+                                                                wire:model='urusans.{{ $k1 }}.kegiatan.{{ $k2 }}.sub_kegiatan.{{ $k3 }}.rekening_anggaran.{{ $k4 }}.rekening'
+                                                                type="text" class="form-control">
+                                                            <button class="btn btn-danger btn-sm"><i
+                                                                    class="bi bi-trash"></i></button>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endforeach
+                            </div>
+                        </div>
+                        <hr class="mb-3">
+                    @endforeach
+                    <div class="row">
+                        <div class="col-12">
+                            <button wire:click='updateUrusan' class="btn btn-primary w-100">Simpan Perubahan
+                                Konfigurasi Urusan</button>
                         </div>
                     </div>
                 </div>
