@@ -138,6 +138,7 @@ Route::get('/testing-pdf', function(){
     $nomor_lembaga = '004/PE/KONI-BKT/III/2025';
     $waktu = General::getIndoTerbilangDate(now());
     $waktu['tanggal_penuh'] = now();
+    $kegiatan_urusan = json_decode($data->lembaga?->urusan?->kegiatan, true);
     return view('pdf.nphd', [
         'data' => $data,
         'pimpinan_lembaga' => $pimpinan_lembaga,
@@ -147,6 +148,7 @@ Route::get('/testing-pdf', function(){
         'nomor_skpd' => $nomor_skpd,
         'nomor_lembaga' => $nomor_lembaga,
         'waktu' => $waktu,
+        'kegiatan_urusan' => $kegiatan_urusan,
     ]);
 });
 

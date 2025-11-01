@@ -441,11 +441,13 @@
 
             <ol class="mb-3 angka-kurung">
                 <li>Hibah sebagaimana dimaksud Pasal 1 ini adalah dana yang telah dianggarkan dalam Anggaran Pendapatan dan
-                    Belanja Daerah Kota Bukittinggi Tahun Anggaran {{ $data->tahun_apbd }} Rekening Nomor 5.2.19.0.00.0006.
-                    5.1.05.05.01.0001,
-                    Sub
-                    Kegiatan Penyelenggaraan Kerja Sama Organisasi Keolahragaan Daerah, dengan kode rekening belanja hibah
-                    berupa uang;</li>
+                    Belanja Daerah Kota Bukittinggi Tahun Anggaran {{ $data->tahun_apbd }} @foreach ($kegiatan_urusan as $kegiatan)
+                        @foreach ($kegiatan['sub_kegiatan'] as $sub_kegiatan)
+                            Rekening Nomor:
+                            {{ App\Helpers\General::formatBidangList($sub_kegiatan['rekening_anggaran'], 'rekening') }},
+                            Subkegiatan {{ $sub_kegiatan['nama_sub_kegiatan'] }}
+                        @endforeach pada Kegiatan {{ $kegiatan['nama_kegiatan'] }}
+                    @endforeach;</li>
                 <li>Dana hibah sebagaimana dimaksud pada ayat (1) dipergunakan untuk kegiatan KONI Kota Bukittinggi Tahun
                     Anggaran 2025 sesuai dengan Rincian Anggaran Biaya Pelaksanaan Program dan Kegiatan Tahun Anggaran
                     {{ $data->tahun_apbd }}

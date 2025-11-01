@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Collection;
+
 class General {
     public static function formatDate($date) {
         return date('d-m-Y', strtotime($date));
@@ -182,19 +184,41 @@ class General {
         return $data['tanggal'].' '.$data['bulan'].' '.$data['tahun'];
     }
 
-    public static function formatBidangList(array $items): string
+    // public static function formatBidangList(array $items): string
+    // {
+    //     $count = count($items);
+
+    //     if ($count === 0) {
+    //         return '';
+    //     }
+
+    //     if ($count === 1) {
+    //         return $items[0];
+    //     }
+
+    //     $last = array_pop($items);
+    //     return implode(', ', $items) . ' dan ' . $last;
+    // }
+
+    public static function formatBidangList($items, $key = null, $separator = ', ', $lastSeparator = ' dan '): string
     {
-        $count = count($items);
+        // Pastikan items selalu Collection agar bisa pakai join()
+        $collection = $items instanceof Collection ? $items : collect($items);
 
-        if ($count === 0) {
-            return '';
+        // Jika key disediakan (misalnya array berisi objek/array)
+        if ($key) {
+            $collection = $collection->pluck($key);
         }
 
-        if ($count === 1) {
-            return $items[0];
+        // Bersihkan nilai kosong/null
+        $collection = $collection->filter(fn($item) => filled($item));
+
+        // Jika kosong, kembalikan tanda "-"
+        if ($collection->isEmpty()) {
+            return '-';
         }
 
-        $last = array_pop($items);
-        return implode(', ', $items) . ' dan ' . $last;
+        // Gabungkan dengan format "a, b, dan c"
+        return $collection->join($separator, $lastSeparator);
     }
 }
