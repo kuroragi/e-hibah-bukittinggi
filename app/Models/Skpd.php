@@ -12,6 +12,7 @@ class Skpd extends BaseModel
     use SoftDeletes, Blameable;
     
     protected $fillable = [
+        'type',
         'name',
         'deskripsi',
         'alamat',

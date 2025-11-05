@@ -899,6 +899,13 @@
                             <td style="width: 50%;" class="fw-bold text-center">PIHAK PERTAMA</td>
                         </tr>
                         <tr>
+                            <td class="fw-bold text-center">
+                                {{ $pimpinan_lembaga->jabatan }}<br>{{ strtoupper($data->lembaga?->acronym) }} Kota
+                                Bukittinggi</td>
+                            <td class="fw-bold text-center">{{ $data->lembaga?->skpd?->detail?->jabatan_pimpinan }}
+                                {{ $data->lembaga?->skpd?->name }}<br>Kota Bukittinggi</td>
+                        </tr>
+                        <tr>
                             <td style="height: 8rem;"></td>
                             <td></td>
                         </tr>

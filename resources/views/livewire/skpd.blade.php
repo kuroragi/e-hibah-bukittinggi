@@ -28,8 +28,16 @@
                                     <div class="col-12">
                                         <div class="mb-3">
                                             <label for="skpd-name" class="form-label">Nama SKPD</label>
-                                            <input wire:model='name' type="text" class="form-control" id="skpd-name"
-                                                placeholder="Masukkan nama pengguna">
+                                            <div class="input-group">
+                                                <select wire:model='type'
+                                                    style="width: 15ch; border-radius: 5px 0 0 5px; padding: 0.375rem 2.25rem 0.375rem 0.75rem;"
+                                                    aria-label="Default select example">
+                                                    <option value="dinas">Dinas</option>
+                                                    <option value="badan">Badan</option>
+                                                </select>
+                                                <input wire:model='name' type="text" class="form-control"
+                                                    id="skpd-name" placeholder="Masukkan nama pengguna">
+                                            </div>
                                         </div>
                                         <div class="mb-3">
                                             <label for="skpd-deskripsi" class="form-label">Deskripsi SKPD</label>
@@ -74,7 +82,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Close</button>
                                 <button wire:click.prevent='store' type="button" class="btn btn-primary">Save
                                     changes</button>
                             </div>
@@ -161,8 +170,16 @@
                         <div class="col-12">
                             <div class="mb-3">
                                 <label for="user-name" class="form-label">Nama SKPD</label>
-                                <input wire:model='name' type="text" class="form-control" id="user-name"
-                                    placeholder="Masukkan nama SKPD">
+                                <div class="input-group">
+                                    <select wire:model='type'
+                                        style="width: 15ch; border-radius: 5px 0 0 5px; padding: 0.375rem 2.25rem 0.375rem 0.75rem;"
+                                        aria-label="Default select example">
+                                        <option value="dinas">Dinas</option>
+                                        <option value="badan">Badan</option>
+                                    </select>
+                                    <input wire:model='name' type="text" class="form-control" id="skpd-name"
+                                        placeholder="Masukkan nama pengguna">
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="skpd-deskripsi" class="form-label">Deskripsi SKPD</label>

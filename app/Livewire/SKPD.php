@@ -17,6 +17,7 @@ class SKPD extends Component
     public $skpds;
     public $skpd;
 
+    public $type;
     #[Validate('required')]
     public $name;
     #[Validate('required')]
@@ -66,6 +67,7 @@ class SKPD extends Component
 
         DB::transaction(function () {
             $skpd = ModelsSkpd::create([
+                'type' => $this->type,
                 'name' => $this->name,
                 'deskripsi' => $this->deskripsi,
                 'alamat' => $this->alamat,

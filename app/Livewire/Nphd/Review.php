@@ -91,8 +91,16 @@ class Review extends Component
         $pimpinan_lembaga = $this->permohonan->lembaga?->pengurus->where('jabatan', 'Pimpinan')->first();
 
         // if(!Storage::disk('public')->exists($dir.'/'.$filename)){
-            $pdf = Pdf::loadView('pdf.nphd', ['data' => $this->permohonan, 'kegiatans' => $this->kegiatans, 'nominal_anggaran' => $this->nominal_anggaran, 'pimpinan_lembaga' => $pimpinan_lembaga, 'waktu' => $waktu_sekarang, 'nomor_skpd' => $this->nomor_nphd_skpd, 'nomor_lembaga' => $this->nomor_nphd_lembaga])
-                ->setPaper([0, 0, 210, 330], 'portrait');
+            $pdf = Pdf::loadView('pdf.nphd', [
+                'data' => $this->permohonan, 
+                'kegiatans' => $this->kegiatans, 
+                'nominal_anggaran' => $this->nominal_anggaran, 
+                'pimpinan_lembaga' => $pimpinan_lembaga, 
+                'waktu' => $waktu_sekarang, 
+                'nomor_skpd' => $this->nomor_nphd_skpd, 
+                'nomor_lembaga' => $this->nomor_nphd_lembaga,
+                'kegiatan_urusan' => json_decode($this->permohonan->lembaga?->urusan?->kegiatan, true)
+                ])->setPaper([0, 0, 210, 330], 'portrait');
 
             // Pastikan folder ada (di disk 'public' = storage/app/public)
             Storage::disk('public')->makeDirectory($dir);
