@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -11,6 +13,8 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
+    protected $model = User::class;
+
     /**
      * The current password being used by the factory.
      */
@@ -26,8 +30,12 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'id_role' => null,
+            'id_skpd' => null,
+            'id_urusan' => null,
+            'id_lembaga' => null,
+            'email_verified_at' => now(),
             'remember_token' => Str::random(10),
         ];
     }
@@ -40,5 +48,46 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    /**
+     * Create user with admin role
+     */
+    public function admin(): static
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => 'Admin User',
+                'email' => 'admin@example.com',
+            ];
+        });
+    }
+
+    /**
+     * Create user with lembaga role
+     */
+    public function lembaga(): static
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => 'Lembaga User',
+                'email' => 'lembaga@example.com',
+                'id_lembaga' => \App\Models\Lembaga::factory(),
+            ];
+        });
+    }
+
+    /**
+     * Create user with skpd role
+     */
+    public function skpd(): static
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => 'SKPD User',
+                'email' => 'skpd@example.com',
+                'id_skpd' => \App\Models\Skpd::factory(),
+            ];
+        });
     }
 }
