@@ -6,13 +6,14 @@ use Tests\TestCase;
 use App\Livewire\User as UserLivewire;
 use App\Models\User;
 use App\Models\Lembaga;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Spatie\Permission\Models\Role;
 
 class UserLivewireTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     protected $admin;
     protected $lembaga;
@@ -34,7 +35,7 @@ class UserLivewireTest extends TestCase
         $this->skpd = \App\Models\Skpd::factory()->create();
     }
 
-    /** @test */
+    #[Test]
     public function component_can_render_for_admin()
     {
         Livewire::actingAs($this->admin)
@@ -42,7 +43,7 @@ class UserLivewireTest extends TestCase
             ->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function component_displays_users_list()
     {
         $user1 = User::factory()->create(['name' => 'Test User 1']);
@@ -54,7 +55,7 @@ class UserLivewireTest extends TestCase
             ->assertSee('Test User 2');
     }
 
-    /** @test */
+    #[Test]
     public function component_can_search_users()
     {
         $user1 = User::factory()->create(['name' => 'John Doe']);
@@ -67,7 +68,7 @@ class UserLivewireTest extends TestCase
             ->assertDontSee('Jane Smith');
     }
 
-    /** @test */
+    #[Test]
     public function component_can_create_new_user()
     {
         Livewire::actingAs($this->admin)
@@ -91,7 +92,7 @@ class UserLivewireTest extends TestCase
         $this->assertTrue($user->hasRole('lembaga'));
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_required_fields()
     {
         Livewire::actingAs($this->admin)
@@ -100,7 +101,7 @@ class UserLivewireTest extends TestCase
             ->assertHasErrors(['name', 'email', 'password', 'selectedRole']);
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_unique_email()
     {
         $existingUser = User::factory()->create(['email' => 'existing@example.com']);
@@ -116,7 +117,7 @@ class UserLivewireTest extends TestCase
             ->assertHasErrors(['email']);
     }
 
-    /** @test */
+    #[Test]
     public function component_can_update_existing_user()
     {
         $user = User::factory()->create([
@@ -139,7 +140,7 @@ class UserLivewireTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function component_can_delete_user()
     {
         $user = User::factory()->create();
@@ -152,7 +153,7 @@ class UserLivewireTest extends TestCase
         $this->assertSoftDeleted('users', ['id' => $user->id]);
     }
 
-    /** @test */
+    #[Test]
     public function component_can_restore_deleted_user()
     {
         $user = User::factory()->create();
@@ -169,7 +170,7 @@ class UserLivewireTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function component_assigns_role_correctly_on_user_creation()
     {
         Livewire::actingAs($this->admin)
@@ -188,7 +189,7 @@ class UserLivewireTest extends TestCase
         $this->assertEquals($this->skpd->id, $user->id_skpd);
     }
 
-    /** @test */
+    #[Test]
     public function component_resets_form_after_save()
     {
         Livewire::actingAs($this->admin)
@@ -205,7 +206,7 @@ class UserLivewireTest extends TestCase
             ->assertSet('selectedRole', '');
     }
 
-    /** @test */
+    #[Test]
     public function component_shows_confirmation_before_delete()
     {
         $user = User::factory()->create();

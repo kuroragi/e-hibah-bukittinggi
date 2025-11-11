@@ -12,12 +12,13 @@ use App\Models\Propinsi;
 use App\Models\KabKota;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 
 class ProfileTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     protected $user;
     protected $lembaga;
@@ -45,10 +46,7 @@ class ProfileTest extends TestCase
         $this->lembaga = Lembaga::factory()->create([
             'id_skpd' => $this->skpd->id,
             'id_urusan' => $this->urusan->id,
-            'propinsi' => $this->propinsi->id,
-            'kabkota' => $this->kabkota->id,
-            'kecamatan' => $this->kecamatan->id,
-            'kelurahan' => $this->kelurahan->id,
+            'id_kelurahan' => $this->kelurahan->id,
         ]);
 
         $this->user = User::factory()->create([
@@ -56,7 +54,7 @@ class ProfileTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function component_can_render()
     {
         Livewire::actingAs($this->user)
@@ -64,7 +62,7 @@ class ProfileTest extends TestCase
             ->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function component_loads_lembaga_data_on_mount()
     {
         Livewire::actingAs($this->user)
@@ -78,7 +76,7 @@ class ProfileTest extends TestCase
             ->assertSet('id_urusan', $this->lembaga->id_urusan);
     }
 
-    /** @test */
+    #[Test]
     public function component_can_update_lembaga_profile()
     {
         Livewire::actingAs($this->user)
@@ -100,7 +98,7 @@ class ProfileTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_required_fields()
     {
         Livewire::actingAs($this->user)
@@ -122,7 +120,7 @@ class ProfileTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function component_loads_geographical_cascade()
     {
         $component = Livewire::actingAs($this->user)
@@ -144,7 +142,7 @@ class ProfileTest extends TestCase
             ->assertCount('kelurahans', 1);
     }
 
-    /** @test */
+    #[Test]
     public function component_loads_urusan_based_on_skpd()
     {
         $newSkpd = Skpd::factory()->create();
@@ -158,7 +156,7 @@ class ProfileTest extends TestCase
             ->assertCount('urusan', 2);
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_email_format()
     {
         Livewire::actingAs($this->user)
@@ -168,7 +166,7 @@ class ProfileTest extends TestCase
             ->assertHasErrors(['email']);
     }
 
-    /** @test */
+    #[Test]
     public function component_only_allows_lembaga_owner_access()
     {
         $otherUser = User::factory()->create(); // User without lembaga
@@ -178,7 +176,7 @@ class ProfileTest extends TestCase
             ->assertForbidden();
     }
 
-    /** @test */
+    #[Test]
     public function component_logs_profile_update_activity()
     {
         Livewire::actingAs($this->user)
@@ -195,7 +193,7 @@ class ProfileTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function component_handles_geographical_data_reset()
     {
         $component = Livewire::actingAs($this->user)
@@ -216,7 +214,7 @@ class ProfileTest extends TestCase
             ->assertSet('kelurahan', null);
     }
 
-    /** @test */
+    #[Test]
     public function component_preserves_non_geographical_data_on_update()
     {
         $originalDescription = $this->lembaga->deskripsi;
@@ -230,7 +228,7 @@ class ProfileTest extends TestCase
         $this->assertEquals($originalDescription, $this->lembaga->deskripsi);
     }
 
-    /** @test */
+    #[Test]
     public function component_updates_geographical_location()
     {
         $newPropinsi = Propinsi::factory()->create();

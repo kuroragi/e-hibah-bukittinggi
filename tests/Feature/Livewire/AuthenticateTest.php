@@ -5,23 +5,23 @@ namespace Tests\Feature\Livewire;
 use Tests\TestCase;
 use App\Livewire\Authenticate;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
 
 class AuthenticateTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
-    /** @test */
+    #[Test]
     public function component_can_render()
     {
         Livewire::test(Authenticate::class)
             ->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function component_can_authenticate_valid_user()
     {
         $user = User::factory()->create([
@@ -40,7 +40,7 @@ class AuthenticateTest extends TestCase
         $this->assertEquals($user->id, Auth::id());
     }
 
-    /** @test */
+    #[Test]
     public function component_rejects_invalid_credentials()
     {
         $user = User::factory()->create([
@@ -57,7 +57,7 @@ class AuthenticateTest extends TestCase
         $this->assertFalse(Auth::check());
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_required_fields()
     {
         Livewire::test(Authenticate::class)
@@ -65,7 +65,7 @@ class AuthenticateTest extends TestCase
             ->assertHasErrors(['email', 'password']);
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_email_format()
     {
         Livewire::test(Authenticate::class)
@@ -75,7 +75,7 @@ class AuthenticateTest extends TestCase
             ->assertHasErrors(['email']);
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_password_minimum_length()
     {
         Livewire::test(Authenticate::class)
@@ -85,7 +85,7 @@ class AuthenticateTest extends TestCase
             ->assertHasErrors(['password']);
     }
 
-    /** @test */
+    #[Test]
     public function component_can_remember_user()
     {
         $user = User::factory()->create([
@@ -105,7 +105,7 @@ class AuthenticateTest extends TestCase
         $this->assertNotNull(Auth::user()->getRememberToken());
     }
 
-    /** @test */
+    #[Test]
     public function component_regenerates_session_on_successful_login()
     {
         $user = User::factory()->create([
@@ -123,7 +123,7 @@ class AuthenticateTest extends TestCase
         $this->assertNotEquals($originalSessionId, session()->getId());
     }
 
-    /** @test */
+    #[Test]
     public function component_rejects_non_existent_user()
     {
         Livewire::test(Authenticate::class)
@@ -135,7 +135,7 @@ class AuthenticateTest extends TestCase
         $this->assertFalse(Auth::check());
     }
 
-    /** @test */
+    #[Test]
     public function component_initializes_properties_correctly()
     {
         Livewire::test(Authenticate::class)

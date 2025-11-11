@@ -10,16 +10,17 @@ use App\Models\User;
 use App\Models\Pengurus;
 use App\Models\NphdLembaga;
 use App\Models\Kelurahan;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use PHPUnit\Framework\Attributes\Test;
 
 class LembagaTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
-    /** @test */
+    #[Test]
     public function it_has_correct_fillable_attributes()
     {
         $expectedFillable = [
@@ -58,7 +59,7 @@ class LembagaTest extends TestCase
         $this->assertModelHasFillable(Lembaga::class, $expectedFillable);
     }
 
-    /** @test */
+    #[Test]
     public function it_belongs_to_skpd()
     {
         $skpd = Skpd::factory()->create();
@@ -68,7 +69,7 @@ class LembagaTest extends TestCase
         $this->assertEquals($skpd->id, $lembaga->skpd->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_belongs_to_urusan()
     {
         $urusan = UrusanSkpd::factory()->create();
@@ -78,7 +79,7 @@ class LembagaTest extends TestCase
         $this->assertEquals($urusan->id, $lembaga->urusan->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_belongs_to_kelurahan()
     {
         $kelurahan = Kelurahan::factory()->create();
@@ -88,7 +89,7 @@ class LembagaTest extends TestCase
         $this->assertEquals($kelurahan->id, $lembaga->kelurahan->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_has_one_user()
     {
         $lembaga = Lembaga::factory()->create();
@@ -98,7 +99,7 @@ class LembagaTest extends TestCase
         $this->assertEquals($user->id, $lembaga->user->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_has_many_pengurus()
     {
         $lembaga = Lembaga::factory()->create();
@@ -109,7 +110,7 @@ class LembagaTest extends TestCase
         $this->assertCount(2, $lembaga->pengurus);
     }
 
-    /** @test */
+    #[Test]
     public function it_has_one_nphd_lembaga()
     {
         $lembaga = Lembaga::factory()->create();
@@ -119,7 +120,7 @@ class LembagaTest extends TestCase
         $this->assertEquals($nphdLembaga->id, $lembaga->nphdLembaga->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_created_with_factory()
     {
         $lembaga = Lembaga::factory()->create();
@@ -131,7 +132,7 @@ class LembagaTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_created_with_documents()
     {
         $lembaga = Lembaga::factory()->withDocuments()->create();
@@ -144,7 +145,7 @@ class LembagaTest extends TestCase
         $this->assertNotNull($lembaga->photo_rek);
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_soft_deletes()
     {
         $lembaga = Lembaga::factory()->create();
@@ -156,7 +157,7 @@ class LembagaTest extends TestCase
         $this->assertNotNull($lembaga->fresh()->deleted_at);
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_blameable_trait()
     {
         $user = User::factory()->create();
@@ -167,7 +168,7 @@ class LembagaTest extends TestCase
         $this->assertNotNull($lembaga->created_by);
     }
 
-    /** @test */
+    #[Test]
     public function it_has_valid_npwp_format()
     {
         $lembaga = Lembaga::factory()->create();
@@ -178,7 +179,7 @@ class LembagaTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function it_has_valid_bank_account_number()
     {
         $lembaga = Lembaga::factory()->create();
@@ -188,7 +189,7 @@ class LembagaTest extends TestCase
         $this->assertNotNull($lembaga->atas_nama);
     }
 
-    /** @test */
+    #[Test]
     public function it_has_valid_email_format()
     {
         $lembaga = Lembaga::factory()->create();
@@ -200,7 +201,7 @@ class LembagaTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function it_extends_base_model()
     {
         $lembaga = new Lembaga();
@@ -208,7 +209,7 @@ class LembagaTest extends TestCase
         $this->assertInstanceOf(\App\Models\BaseModel::class, $lembaga);
     }
 
-    /** @test */
+    #[Test]
     public function required_fields_should_not_be_null()
     {
         $lembaga = Lembaga::factory()->create();
@@ -219,7 +220,7 @@ class LembagaTest extends TestCase
         $this->assertNotNull($lembaga->alamat);
     }
 
-    /** @test */
+    #[Test]
     public function acronym_should_be_short()
     {
         $lembaga = Lembaga::factory()->create();
@@ -227,7 +228,7 @@ class LembagaTest extends TestCase
         $this->assertLessThanOrEqual(10, strlen($lembaga->acronym));
     }
 
-    /** @test */
+    #[Test]
     public function documents_can_be_null()
     {
         $lembaga = Lembaga::factory()->create([

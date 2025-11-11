@@ -6,15 +6,16 @@ use Tests\TestCase;
 use App\Livewire\User\ChangePassword;
 use App\Models\User;
 use App\Mail\SendPasswordUpdateAlert;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 
 class ChangePasswordTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     protected $user;
 
@@ -29,7 +30,7 @@ class ChangePasswordTest extends TestCase
         Mail::fake();
     }
 
-    /** @test */
+    #[Test]
     public function component_can_render()
     {
         Livewire::actingAs($this->user)
@@ -37,7 +38,7 @@ class ChangePasswordTest extends TestCase
             ->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function component_mounts_with_current_user_id()
     {
         Livewire::actingAs($this->user)
@@ -45,7 +46,7 @@ class ChangePasswordTest extends TestCase
             ->assertSet('id_user', $this->user->id);
     }
 
-    /** @test */
+    #[Test]
     public function component_can_change_password_successfully()
     {
         Livewire::actingAs($this->user)
@@ -61,7 +62,7 @@ class ChangePasswordTest extends TestCase
         $this->assertTrue(Hash::check('NewPassword123!', $this->user->password));
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_current_password()
     {
         Livewire::actingAs($this->user)
@@ -73,7 +74,7 @@ class ChangePasswordTest extends TestCase
             ->assertSessionHas('error', 'Password lama salah.');
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_required_fields()
     {
         Livewire::actingAs($this->user)
@@ -82,7 +83,7 @@ class ChangePasswordTest extends TestCase
             ->assertHasErrors(['current_password', 'password']);
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_password_confirmation()
     {
         Livewire::actingAs($this->user)
@@ -94,7 +95,7 @@ class ChangePasswordTest extends TestCase
             ->assertHasErrors(['password']);
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_password_minimum_length()
     {
         Livewire::actingAs($this->user)
@@ -106,7 +107,7 @@ class ChangePasswordTest extends TestCase
             ->assertHasErrors(['password']);
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_password_uppercase_requirement()
     {
         Livewire::actingAs($this->user)
@@ -118,7 +119,7 @@ class ChangePasswordTest extends TestCase
             ->assertHasErrors(['password']);
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_password_lowercase_requirement()
     {
         Livewire::actingAs($this->user)
@@ -130,7 +131,7 @@ class ChangePasswordTest extends TestCase
             ->assertHasErrors(['password']);
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_password_number_requirement()
     {
         Livewire::actingAs($this->user)
@@ -142,7 +143,7 @@ class ChangePasswordTest extends TestCase
             ->assertHasErrors(['password']);
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_password_symbol_requirement()
     {
         Livewire::actingAs($this->user)
@@ -154,7 +155,7 @@ class ChangePasswordTest extends TestCase
             ->assertHasErrors(['password']);
     }
 
-    /** @test */
+    #[Test]
     public function component_updates_password_strength_indicators()
     {
         $component = Livewire::actingAs($this->user)
@@ -177,7 +178,7 @@ class ChangePasswordTest extends TestCase
             ->assertSet('rulesStatus.match', false);
     }
 
-    /** @test */
+    #[Test]
     public function component_sends_password_update_email()
     {
         Livewire::actingAs($this->user)
@@ -192,7 +193,7 @@ class ChangePasswordTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function component_resets_form_after_successful_update()
     {
         Livewire::actingAs($this->user)
@@ -206,7 +207,7 @@ class ChangePasswordTest extends TestCase
             ->assertSet('password_confirmation', '');
     }
 
-    /** @test */
+    #[Test]
     public function component_logs_password_change_activity()
     {
         Livewire::actingAs($this->user)
@@ -224,7 +225,7 @@ class ChangePasswordTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function component_handles_update_exceptions_gracefully()
     {
         // This test would require mocking a database failure

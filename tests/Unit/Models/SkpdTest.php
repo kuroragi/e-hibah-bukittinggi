@@ -5,14 +5,15 @@ namespace Tests\Unit\Models;
 use Tests\TestCase;
 use App\Models\Skpd;
 use App\Models\UrusanSkpd;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use PHPUnit\Framework\Attributes\Test;
 
 class SkpdTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
-    /** @test */
+    #[Test]
     public function it_has_correct_fillable_attributes()
     {
         $expectedFillable = [
@@ -24,7 +25,7 @@ class SkpdTest extends TestCase
         $this->assertModelHasFillable(Skpd::class, $expectedFillable);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_created_with_factory()
     {
         $skpd = Skpd::factory()->create();
@@ -36,7 +37,7 @@ class SkpdTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_created_with_specific_name()
     {
         $name = 'Dinas Pendidikan Test';
@@ -45,7 +46,7 @@ class SkpdTest extends TestCase
         $this->assertEquals($name, $skpd->name);
     }
 
-    /** @test */
+    #[Test]
     public function it_extends_base_model()
     {
         $skpd = new Skpd();
@@ -53,7 +54,7 @@ class SkpdTest extends TestCase
         $this->assertInstanceOf(\App\Models\BaseModel::class, $skpd);
     }
 
-    /** @test */
+    #[Test]
     public function required_fields_should_not_be_null()
     {
         $skpd = Skpd::factory()->create();
@@ -62,7 +63,7 @@ class SkpdTest extends TestCase
         $this->assertNotNull($skpd->alamat);
     }
 
-    /** @test */
+    #[Test]
     public function it_has_valid_skpd_names()
     {
         $validNames = [
@@ -83,7 +84,7 @@ class SkpdTest extends TestCase
         $this->assertContains($skpd->name, $validNames);
     }
 
-    /** @test */
+    #[Test]
     public function name_should_be_string()
     {
         $skpd = Skpd::factory()->create();
@@ -91,7 +92,7 @@ class SkpdTest extends TestCase
         $this->assertIsString($skpd->name);
     }
 
-    /** @test */
+    #[Test]
     public function alamat_should_be_string()
     {
         $skpd = Skpd::factory()->create();
@@ -100,7 +101,7 @@ class SkpdTest extends TestCase
         $this->assertNotEmpty($skpd->alamat);
     }
 
-    /** @test */
+    #[Test]
     public function deskripsi_can_be_null_or_string()
     {
         $skpd = Skpd::factory()->create();
@@ -108,7 +109,7 @@ class SkpdTest extends TestCase
         $this->assertTrue(is_string($skpd->deskripsi) || is_null($skpd->deskripsi));
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_blameable_trait()
     {
         $user = \App\Models\User::factory()->create();
@@ -119,7 +120,7 @@ class SkpdTest extends TestCase
         $this->assertNotNull($skpd->created_by);
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_soft_deletes()
     {
         $skpd = Skpd::factory()->create();

@@ -5,13 +5,14 @@ namespace Tests\Feature\Mail;
 use Tests\TestCase;
 use App\Mail\SendPasswordUpdateAlert;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Attributes\Test;
 
 class SendPasswordUpdateAlertTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
-    /** @test */
+    #[Test]
     public function mail_can_be_built()
     {
         $timestamp = now();
@@ -26,7 +27,7 @@ class SendPasswordUpdateAlertTest extends TestCase
         $this->assertEquals($userAgent, $mail->user_agent);
     }
 
-    /** @test */
+    #[Test]
     public function mail_has_correct_subject()
     {
         $mail = new SendPasswordUpdateAlert(now(), '192.168.1.1', 'Test User Agent');
@@ -34,7 +35,7 @@ class SendPasswordUpdateAlertTest extends TestCase
         $this->assertEquals('Password Update Alert', $mail->build()->subject);
     }
 
-    /** @test */
+    #[Test]
     public function mail_contains_required_information()
     {
         $timestamp = now();
@@ -49,7 +50,7 @@ class SendPasswordUpdateAlertTest extends TestCase
         $this->assertStringContainsString($userAgent, $rendered);
     }
 
-    /** @test */
+    #[Test]
     public function mail_can_be_sent_to_user()
     {
         $user = User::factory()->create(['email' => 'user@example.com']);

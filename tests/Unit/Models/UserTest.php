@@ -7,15 +7,16 @@ use App\Models\User;
 use App\Models\Lembaga;
 use App\Models\Skpd;
 use App\Models\Role;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use PHPUnit\Framework\Attributes\Test;
 use Spatie\Permission\Models\Permission;
 
 class UserTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
-    /** @test */
+    #[Test]
     public function it_has_correct_fillable_attributes()
     {
         $expectedFillable = [
@@ -31,7 +32,7 @@ class UserTest extends TestCase
         $this->assertModelHasFillable(User::class, $expectedFillable);
     }
 
-    /** @test */
+    #[Test]
     public function it_hides_sensitive_attributes()
     {
         $user = User::factory()->create();
@@ -41,7 +42,7 @@ class UserTest extends TestCase
         $this->assertArrayNotHasKey('remember_token', $userArray);
     }
 
-    /** @test */
+    #[Test]
     public function it_casts_password_to_hashed_value()
     {
         $user = User::factory()->make();
@@ -51,7 +52,7 @@ class UserTest extends TestCase
         $this->assertEquals('datetime', $casts['email_verified_at']);
     }
 
-    /** @test */
+    #[Test]
     public function it_belongs_to_role()
     {
         $role = Role::factory()->create();
@@ -61,7 +62,7 @@ class UserTest extends TestCase
         $this->assertEquals($role->id, $user->has_role->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_belongs_to_skpd()
     {
         $skpd = Skpd::factory()->create();
@@ -71,7 +72,7 @@ class UserTest extends TestCase
         $this->assertEquals($skpd->id, $user->skpd->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_belongs_to_lembaga()
     {
         $lembaga = Lembaga::factory()->create();
@@ -81,7 +82,7 @@ class UserTest extends TestCase
         $this->assertEquals($lembaga->id, $user->lembaga->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_created_with_factory()
     {
         $user = User::factory()->create();
@@ -93,7 +94,7 @@ class UserTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_created_as_admin()
     {
         $user = User::factory()->admin()->create();
@@ -102,7 +103,7 @@ class UserTest extends TestCase
         $this->assertEquals('admin@example.com', $user->email);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_created_as_lembaga_user()
     {
         $user = User::factory()->lembaga()->create();
@@ -112,7 +113,7 @@ class UserTest extends TestCase
         $this->assertNotNull($user->id_lembaga);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_created_as_skpd_user()
     {
         $user = User::factory()->skpd()->create();
@@ -122,7 +123,7 @@ class UserTest extends TestCase
         $this->assertNotNull($user->id_skpd);
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_spatie_permission_traits()
     {
         $user = User::factory()->create();
@@ -133,7 +134,7 @@ class UserTest extends TestCase
         $this->assertTrue(method_exists($user, 'hasPermissionTo'));
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_soft_deletes()
     {
         $user = User::factory()->create();
@@ -145,7 +146,7 @@ class UserTest extends TestCase
         $this->assertNotNull($user->fresh()->deleted_at);
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_blameable_trait()
     {
         $creator = User::factory()->create();
@@ -157,7 +158,7 @@ class UserTest extends TestCase
         // Note: Blameable trait should set created_by to current user
     }
 
-    /** @test */
+    #[Test]
     public function email_should_be_unique()
     {
         $email = 'test@example.com';
@@ -167,7 +168,7 @@ class UserTest extends TestCase
         User::factory()->create(['email' => $email]);
     }
 
-    /** @test */
+    #[Test]
     public function it_requires_name_and_email()
     {
         $this->expectException(\Illuminate\Database\QueryException::class);

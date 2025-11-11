@@ -36,7 +36,7 @@ class AuthController extends Controller
             return redirect()->route('dashboard');
         }
 
-        return redirect()->route('login')->with('danger', 'Login gagal, Email atau password yang dimasukkan munkin salah');
+        return redirect()->route('login')->withErrors(['email' => 'Email atau password yang anda masukan salah'])->onlyInput('email');
     }
 
     public function forgot_password(){

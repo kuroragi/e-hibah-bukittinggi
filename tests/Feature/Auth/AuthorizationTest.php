@@ -5,13 +5,14 @@ namespace Tests\Feature\Auth;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Role;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\Framework\Attributes\Test;
 use Spatie\Permission\Models\Permission;
 
 class AuthorizationTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     protected $adminRole;
     protected $skpdRole;
@@ -59,7 +60,7 @@ class AuthorizationTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function admin_can_access_all_permohonan_functions()
     {
         $admin = User::factory()->create();
@@ -72,7 +73,7 @@ class AuthorizationTest extends TestCase
         $this->assertFalse($admin->hasPermissionTo('create permohonan'));
     }
 
-    /** @test */
+    #[Test]
     public function skpd_user_can_view_and_approve_permohonan()
     {
         $skpdUser = User::factory()->create();
@@ -85,7 +86,7 @@ class AuthorizationTest extends TestCase
         $this->assertFalse($skpdUser->hasPermissionTo('delete permohonan'));
     }
 
-    /** @test */
+    #[Test]
     public function lembaga_user_can_create_and_edit_permohonan()
     {
         $lembagaUser = User::factory()->create();
@@ -98,7 +99,7 @@ class AuthorizationTest extends TestCase
         $this->assertFalse($lembagaUser->hasPermissionTo('approve permohonan'));
     }
 
-    /** @test */
+    #[Test]
     public function user_has_correct_role()
     {
         $adminUser = User::factory()->create();
@@ -123,7 +124,7 @@ class AuthorizationTest extends TestCase
         $this->assertFalse($lembagaUser->hasRole('skpd'));
     }
 
-    /** @test */
+    #[Test]
     public function user_can_be_assigned_multiple_roles()
     {
         $user = User::factory()->create();
@@ -134,7 +135,7 @@ class AuthorizationTest extends TestCase
         $this->assertFalse($user->hasRole('lembaga'));
     }
 
-    /** @test */
+    #[Test]
     public function user_can_be_given_direct_permissions()
     {
         $user = User::factory()->create();
@@ -144,7 +145,7 @@ class AuthorizationTest extends TestCase
         $this->assertFalse($user->hasPermissionTo('delete permohonan'));
     }
 
-    /** @test */
+    #[Test]
     public function role_permissions_can_be_revoked()
     {
         $role = Role::create(['name' => 'test-role', 'guard_name' => 'web']);
@@ -161,7 +162,7 @@ class AuthorizationTest extends TestCase
         $this->assertFalse($user->hasPermissionTo('view permohonan'));
     }
 
-    /** @test */
+    #[Test]
     public function user_direct_permissions_can_be_revoked()
     {
         $user = User::factory()->create();
@@ -174,7 +175,7 @@ class AuthorizationTest extends TestCase
         $this->assertFalse($user->hasPermissionTo('create permohonan'));
     }
 
-    /** @test */
+    #[Test]
     public function user_permissions_include_role_and_direct_permissions()
     {
         $user = User::factory()->create();
@@ -186,7 +187,7 @@ class AuthorizationTest extends TestCase
         $this->assertFalse($user->hasPermissionTo('approve permohonan')); // Neither
     }
 
-    /** @test */
+    #[Test]
     public function middleware_can_check_permissions()
     {
         // Create test route with permission middleware
@@ -208,7 +209,7 @@ class AuthorizationTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function middleware_can_check_roles()
     {
         // Create test route with role middleware
@@ -230,7 +231,7 @@ class AuthorizationTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function super_admin_has_all_permissions()
     {
         $superAdminRole = Role::create(['name' => 'super-admin', 'guard_name' => 'web']);

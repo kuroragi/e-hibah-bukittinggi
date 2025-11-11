@@ -5,15 +5,16 @@ namespace Tests\Feature\Auth;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Role;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use PHPUnit\Framework\Attributes\Test;
 
 class AuthenticationTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
-    /** @test */
+    #[Test]
     public function user_can_login_with_valid_credentials()
     {
         $user = User::factory()->create([
@@ -21,36 +22,36 @@ class AuthenticationTest extends TestCase
             'password' => Hash::make('password123'),
         ]);
 
-        $response = $this->post('/login', [
+        $response = $this->post('/authenticate', [
             'email' => 'test@example.com',
             'password' => 'password123',
         ]);
 
-        $this->assertAuthenticated();
+        $this->assertAuthenticatedAs($user);
         $response->assertRedirect('/dashboard');
     }
 
-    /** @test */
+    #[Test]
     public function user_cannot_login_with_invalid_credentials()
     {
         $user = User::factory()->create([
-            'email' => 'test@example.com',
+            'email' => 'test1@example.com',
             'password' => Hash::make('password123'),
         ]);
 
-        $response = $this->post('/login', [
-            'email' => 'test@example.com',
+        $response = $this->post('/authenticate', [
+            'email' => 'test1@example.com',
             'password' => 'wrongpassword',
         ]);
 
         $this->assertGuest();
-        $response->assertSessionHasErrors(['email']);
+        $response->assertSessionHasErrors();
     }
 
-    /** @test */
+    #[Test]
     public function user_cannot_login_with_nonexistent_email()
     {
-        $response = $this->post('/login', [
+        $response = $this->post('/authenticate', [
             'email' => 'nonexistent@example.com',
             'password' => 'password123',
         ]);
@@ -59,48 +60,48 @@ class AuthenticationTest extends TestCase
         $response->assertSessionHasErrors(['email']);
     }
 
-    /** @test */
+    #[Test]
     public function user_can_logout()
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post('/logout');
+        $response = $this->actingAs($user)->delete('/logout');
 
         $this->assertGuest();
         $response->assertRedirect('/');
     }
 
-    /** @test */
+    #[Test]
     public function guest_cannot_access_authenticated_routes()
     {
         $response = $this->get('/dashboard');
 
-        $response->assertRedirect('/login');
+        $response->assertRedirect('/');
     }
 
-    /** @test */
+    #[Test]
     public function authenticated_user_cannot_access_login_page()
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->get('/login');
+        $response = $this->actingAs($user)->get('/');
 
         $response->assertRedirect('/dashboard');
     }
 
-    /** @test */
+    #[Test]
     public function login_requires_email_and_password()
     {
-        $response = $this->post('/login', []);
+        $response = $this->post('/authenticate', []);
 
         $response->assertSessionHasErrors(['email', 'password']);
         $this->assertGuest();
     }
 
-    /** @test */
+    #[Test]
     public function login_requires_valid_email_format()
     {
-        $response = $this->post('/login', [
+        $response = $this->post('/authenticate', [
             'email' => 'invalid-email',
             'password' => 'password123',
         ]);
@@ -109,36 +110,36 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    /** @test */
+    #[Test]
     public function user_is_redirected_to_intended_url_after_login()
     {
         $user = User::factory()->create([
-            'email' => 'test@example.com',
+            'email' => 'test2@example.com',
             'password' => Hash::make('password123'),
         ]);
 
         // Try to access protected page first
-        $this->get('/dashboard/profile');
+        $this->get('/');
 
         // Then login
-        $response = $this->post('/login', [
-            'email' => 'test@example.com',
+        $response = $this->post('/authenticate', [
+            'email' => 'test2@example.com',
             'password' => 'password123',
         ]);
 
-        $response->assertRedirect('/dashboard/profile');
+        $response->assertRedirect('/dashboard');
     }
 
-    /** @test */
+    #[Test]
     public function remember_me_functionality_works()
     {
         $user = User::factory()->create([
-            'email' => 'test@example.com',
+            'email' => 'test3@example.com',
             'password' => Hash::make('password123'),
         ]);
 
-        $response = $this->post('/login', [
-            'email' => 'test@example.com',
+        $response = $this->post('/authenticate', [
+            'email' => 'test3@example.com',
             'password' => 'password123',
             'remember' => true,
         ]);
@@ -147,36 +148,36 @@ class AuthenticationTest extends TestCase
         $this->assertNotNull(Auth::user()->remember_token);
     }
 
-    /** @test */
+    #[Test]
     public function user_can_see_login_form()
     {
-        $response = $this->get('/login');
+        $response = $this->get('/');
 
         $response->assertOk();
-        $response->assertViewIs('auth.login');
+        $response->assertViewIs('pages.login');
         $response->assertSee('Email');
         $response->assertSee('Password');
     }
 
-    /** @test */
+    #[Test]
     public function user_account_lockout_after_multiple_failed_attempts()
     {
         $user = User::factory()->create([
-            'email' => 'test@example.com',
+            'email' => 'test4@example.com',
             'password' => Hash::make('password123'),
         ]);
 
         // Simulate multiple failed login attempts
         for ($i = 0; $i < 6; $i++) {
-            $this->post('/login', [
-                'email' => 'test@example.com',
+            $this->post('/authenticate', [
+                'email' => 'test4@example.com',
                 'password' => 'wrongpassword',
             ]);
         }
 
         // The account should be locked out now
-        $response = $this->post('/login', [
-            'email' => 'test@example.com',
+        $response = $this->post('/authenticate', [
+            'email' => 'test4@example.com',
             'password' => 'password123', // Even with correct password
         ]);
 

@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Blameable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UrusanSkpd extends BaseModel
 {
-    use SoftDeletes, Blameable;
+    use HasFactory, SoftDeletes, Blameable;
     protected $fillable = [
         'id_skpd',
         'nama_urusan',

@@ -6,12 +6,13 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Lembaga;
 use App\Models\Permohonan;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;
+use PHPUnit\Framework\Attributes\Test;
 
 class PermohonanValidationTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     protected $user;
     protected $lembaga;
@@ -24,7 +25,7 @@ class PermohonanValidationTest extends TestCase
         $this->user = User::factory()->create(['id_lembaga' => $this->lembaga->id]);
     }
 
-    /** @test */
+    #[Test]
     public function permohonan_requires_valid_fields()
     {
         $validationRules = [
@@ -46,7 +47,7 @@ class PermohonanValidationTest extends TestCase
         $this->assertTrue(true); // Validation rules exist
     }
 
-    /** @test */
+    #[Test]
     public function permohonan_validates_year_format()
     {
         $invalidYears = ['23', '202', '20245', 'abcd'];
@@ -65,7 +66,7 @@ class PermohonanValidationTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function permohonan_validates_date_logic()
     {
         // Test that tanggal_proposal cannot be before tanggal_mohon
@@ -79,7 +80,7 @@ class PermohonanValidationTest extends TestCase
         $this->assertEquals('2024-01-10', $permohonan->tanggal_proposal);
     }
 
-    /** @test */
+    #[Test]
     public function permohonan_validates_execution_period()
     {
         // Test that akhir_laksana cannot be before awal_laksana
@@ -93,7 +94,7 @@ class PermohonanValidationTest extends TestCase
         $this->assertEquals('2024-01-31', $permohonan->akhir_laksana);
     }
 
-    /** @test */
+    #[Test]
     public function permohonan_validates_string_lengths()
     {
         $longString = str_repeat('a', 256);
@@ -108,7 +109,7 @@ class PermohonanValidationTest extends TestCase
         $this->assertGreaterThan(50, strlen($permohonan->no_proposal));
     }
 
-    /** @test */
+    #[Test]
     public function permohonan_validates_file_uploads()
     {
         // Test file validation rules
@@ -125,7 +126,7 @@ class PermohonanValidationTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function permohonan_validates_relationships()
     {
         // Test that permohonan belongs to valid lembaga, skpd, urusan
@@ -141,7 +142,7 @@ class PermohonanValidationTest extends TestCase
         $this->assertEquals(999999, $permohonan->urusan);
     }
 
-    /** @test */
+    #[Test]
     public function permohonan_validates_required_text_fields()
     {
         $textFields = [
@@ -160,7 +161,7 @@ class PermohonanValidationTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function permohonan_allows_optional_fields()
     {
         $optionalFields = [
@@ -178,7 +179,7 @@ class PermohonanValidationTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function permohonan_validates_status_transitions()
     {
         // Test valid status values

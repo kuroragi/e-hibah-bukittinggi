@@ -1,4 +1,4 @@
-                                                                                                                                                                                                                                                                                                <?php
+<?php
 
 namespace Tests\Feature\Livewire\Permohonan;
 
@@ -9,14 +9,15 @@ use App\Models\Lembaga;
 use App\Models\Permohonan;
 use App\Models\Skpd;
 use App\Models\UrusanSkpd;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 
 class CreateOrUpdateTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     protected $user;
     protected $lembaga;
@@ -38,7 +39,7 @@ class CreateOrUpdateTest extends TestCase
         Storage::fake('public');
     }
 
-    /** @test */
+    #[Test]
     public function component_can_render()
     {
         Livewire::actingAs($this->user)
@@ -46,7 +47,7 @@ class CreateOrUpdateTest extends TestCase
             ->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function component_loads_with_correct_initial_data()
     {
         Livewire::actingAs($this->user)
@@ -56,7 +57,7 @@ class CreateOrUpdateTest extends TestCase
             ->assertViewHas('urusans');
     }
 
-    /** @test */
+    #[Test]
     public function component_can_create_new_permohonan()
     {
         $file_mohon = UploadedFile::fake()->create('permohonan.pdf', 1024, 'application/pdf');
@@ -94,7 +95,7 @@ class CreateOrUpdateTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_required_fields()
     {
         Livewire::actingAs($this->user)
@@ -112,7 +113,7 @@ class CreateOrUpdateTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function component_can_update_existing_permohonan()
     {
         $permohonan = Permohonan::factory()->create([
@@ -138,7 +139,7 @@ class CreateOrUpdateTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function component_uploads_files_correctly()
     {
         $file_mohon = UploadedFile::fake()->create('permohonan.pdf', 1024, 'application/pdf');
@@ -173,7 +174,7 @@ class CreateOrUpdateTest extends TestCase
         Storage::disk('public')->assertExists($permohonan->file_proposal);
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_file_types()
     {
         $invalidFile = UploadedFile::fake()->create('invalid.txt', 100, 'text/plain');
@@ -185,7 +186,7 @@ class CreateOrUpdateTest extends TestCase
             ->assertHasErrors(['file_mohon']);
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_date_logic()
     {
         $file_mohon = UploadedFile::fake()->create('permohonan.pdf', 1024, 'application/pdf');
@@ -214,7 +215,7 @@ class CreateOrUpdateTest extends TestCase
             ->assertHasErrors(['tanggal_proposal', 'akhir_laksana']);
     }
 
-    /** @test */
+    #[Test]
     public function component_can_select_skpd_and_load_urusan()
     {
         $urusan1 = UrusanSkpd::factory()->create(['id_skpd' => $this->skpd->id]);
@@ -229,7 +230,7 @@ class CreateOrUpdateTest extends TestCase
             });
     }
 
-    /** @test */
+    #[Test]
     public function component_only_allows_lembaga_owner_to_access()
     {
         $otherUser = User::factory()->create(); // User without lembaga
@@ -239,7 +240,7 @@ class CreateOrUpdateTest extends TestCase
             ->assertForbidden();
     }
 
-    /** @test */
+    #[Test]
     public function component_prevents_unauthorized_permohonan_edit()
     {
         $otherLembaga = Lembaga::factory()->create();
@@ -254,7 +255,7 @@ class CreateOrUpdateTest extends TestCase
             ->assertForbidden();
     }
 
-    /** @test */
+    #[Test]
     public function component_can_cancel_and_redirect()
     {
         Livewire::actingAs($this->user)
@@ -263,7 +264,7 @@ class CreateOrUpdateTest extends TestCase
             ->assertRedirect('/permohonan');
     }
 
-    /** @test */
+    #[Test]
     public function component_validates_file_size_limits()
     {
         $largeFile = UploadedFile::fake()->create('large.pdf', 10240, 'application/pdf'); // 10MB

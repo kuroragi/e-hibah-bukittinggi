@@ -31,7 +31,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('password'),
-            'id_role' => null,
+            'id_role' => 3,
             'id_skpd' => null,
             'id_urusan' => null,
             'id_lembaga' => null,
@@ -59,6 +59,7 @@ class UserFactory extends Factory
             return [
                 'name' => 'Admin User',
                 'email' => 'admin@example.com',
+                'id_role' => '1',
             ];
         });
     }
@@ -73,6 +74,8 @@ class UserFactory extends Factory
                 'name' => 'Lembaga User',
                 'email' => 'lembaga@example.com',
                 'id_lembaga' => \App\Models\Lembaga::factory(),
+                'id_skpd' => \App\Models\Skpd::factory(),
+                'id_urusan' => \App\Models\UrusanSkpd::factory(),
             ];
         });
     }

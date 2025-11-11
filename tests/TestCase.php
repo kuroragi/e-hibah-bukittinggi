@@ -2,22 +2,31 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 
 abstract class TestCase extends BaseTestCase
 {
-    use RefreshDatabase, WithFaker;
+    use DatabaseTransactions, WithFaker;
+    
+    protected static $setupDone = false;
 
     protected function setUp(): void
     {
         parent::setUp();
         
-        // Run migrations in test database
-        $this->artisan('migrate:fresh');
+        // Setup database only once per test run
+        if (!self::$setupDone) {
+            $this->artisan('migrate:fresh --seed');
+            self::$setupDone = true;
+        }
     }
+
+    /**
+     * Create authenticated user with specific role
+     */
 
     /**
      * Create authenticated user with specific role

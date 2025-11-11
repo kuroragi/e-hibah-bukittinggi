@@ -5,11 +5,12 @@ namespace Tests\Feature\Services;
 use Tests\TestCase;
 use App\Services\ActivityLogService;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Attributes\Test;
 
 class ActivityLogServiceTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     protected $user;
 
@@ -20,7 +21,7 @@ class ActivityLogServiceTest extends TestCase
         $this->actingAs($this->user);
     }
 
-    /** @test */
+    #[Test]
     public function service_can_log_activity()
     {
         ActivityLogService::log(
@@ -37,7 +38,7 @@ class ActivityLogServiceTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function service_logs_with_different_levels()
     {
         $levels = ['emergency', 'alert', 'critical', 'error', 'warning', 'notice', 'info', 'debug'];
@@ -57,7 +58,7 @@ class ActivityLogServiceTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function service_can_log_with_subject()
     {
         $subject = User::factory()->create();
@@ -76,7 +77,7 @@ class ActivityLogServiceTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function service_can_log_with_properties()
     {
         $properties = [
@@ -99,7 +100,7 @@ class ActivityLogServiceTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function service_logs_without_authenticated_user()
     {
         $this->app['auth']->logout();
@@ -116,7 +117,7 @@ class ActivityLogServiceTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function service_handles_empty_description()
     {
         ActivityLogService::log('test.empty', 'info', '');
@@ -127,7 +128,7 @@ class ActivityLogServiceTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function service_handles_null_description()
     {
         ActivityLogService::log('test.null', 'info', null);

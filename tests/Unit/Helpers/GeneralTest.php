@@ -5,10 +5,11 @@ namespace Tests\Unit\Helpers;
 use Tests\TestCase;
 use App\Helpers\General;
 use Illuminate\Support\Collection;
+use PHPUnit\Framework\Attributes\Test;
 
 class GeneralTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_formats_date_correctly()
     {
         $date = '2023-12-25';
@@ -17,7 +18,7 @@ class GeneralTest extends TestCase
         $this->assertEquals('25-12-2023', $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_generates_slug_from_string()
     {
         $string = 'Hello World Test 123!@#';
@@ -30,7 +31,7 @@ class GeneralTest extends TestCase
         $this->assertStringNotContainsString('#', $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_generates_password_with_correct_length()
     {
         $password = General::GeneratePassword(12);
@@ -38,7 +39,7 @@ class GeneralTest extends TestCase
         $this->assertEquals(12, strlen($password));
     }
 
-    /** @test */
+    #[Test]
     public function it_generates_password_with_default_length()
     {
         $password = General::GeneratePassword();
@@ -46,7 +47,7 @@ class GeneralTest extends TestCase
         $this->assertEquals(10, strlen($password));
     }
 
-    /** @test */
+    #[Test]
     public function it_generates_password_with_required_character_types()
     {
         $password = General::GeneratePassword(20);
@@ -64,7 +65,7 @@ class GeneralTest extends TestCase
         $this->assertMatchesRegularExpression('/[!@#$%^&*()_=+\[\]{}|;:,.<>?-]/', $password);
     }
 
-    /** @test */
+    #[Test]
     public function it_converts_numbers_to_indonesian_words()
     {
         $testCases = [
@@ -91,7 +92,7 @@ class GeneralTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_negative_numbers_in_terbilang()
     {
         $result = General::Terbilang(-100);
@@ -100,7 +101,7 @@ class GeneralTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_formats_currency_correctly()
     {
         $testCases = [
@@ -116,7 +117,7 @@ class GeneralTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function it_converts_date_to_indonesian_format()
     {
         $date = '2023-12-25'; // Christmas Day 2023 (Monday)
@@ -134,7 +135,7 @@ class GeneralTest extends TestCase
         $this->assertEquals('2023', $result['tahun']);
     }
 
-    /** @test */
+    #[Test]
     public function it_converts_date_to_short_indonesian_format()
     {
         $date = '2023-12-25';
@@ -147,7 +148,7 @@ class GeneralTest extends TestCase
         $this->assertEquals('2023', $result['tahun']);
     }
 
-    /** @test */
+    #[Test]
     public function it_converts_date_to_indonesian_readable_format()
     {
         $date = '2023-12-25';
@@ -156,7 +157,7 @@ class GeneralTest extends TestCase
         $this->assertEquals('25 Desember 2023', $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_converts_date_to_indonesian_terbilang_format()
     {
         $date = '2023-01-05';
@@ -174,7 +175,7 @@ class GeneralTest extends TestCase
         $this->assertStringContainsString('dua ribu', trim($result['tahun']));
     }
 
-    /** @test */
+    #[Test]
     public function it_formats_bidang_list_with_array()
     {
         $items = ['Pendidikan', 'Kesehatan', 'Sosial'];
@@ -183,7 +184,7 @@ class GeneralTest extends TestCase
         $this->assertEquals('Pendidikan, Kesehatan dan Sosial', $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_formats_bidang_list_with_collection()
     {
         $items = collect(['Pendidikan', 'Kesehatan']);
@@ -192,7 +193,7 @@ class GeneralTest extends TestCase
         $this->assertEquals('Pendidikan dan Kesehatan', $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_formats_bidang_list_with_single_item()
     {
         $items = ['Pendidikan'];
@@ -201,7 +202,7 @@ class GeneralTest extends TestCase
         $this->assertEquals('Pendidikan', $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_formats_bidang_list_with_empty_array()
     {
         $items = [];
@@ -210,7 +211,7 @@ class GeneralTest extends TestCase
         $this->assertEquals('-', $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_formats_bidang_list_with_key()
     {
         $items = [
@@ -223,7 +224,7 @@ class GeneralTest extends TestCase
         $this->assertEquals('Pendidikan, Kesehatan dan Sosial', $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_formats_bidang_list_with_custom_separators()
     {
         $items = ['A', 'B', 'C'];
@@ -232,7 +233,7 @@ class GeneralTest extends TestCase
         $this->assertEquals('A | B serta C', $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_filters_empty_values_in_bidang_list()
     {
         $items = ['Pendidikan', '', null, 'Kesehatan', 0, false];
@@ -241,7 +242,7 @@ class GeneralTest extends TestCase
         $this->assertEquals('Pendidikan dan Kesehatan', $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_different_month_translations()
     {
         $testCases = [
@@ -265,7 +266,7 @@ class GeneralTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_different_day_translations()
     {
         $testCases = [

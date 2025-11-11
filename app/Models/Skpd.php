@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Blameable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasPermissions;
 
 class Skpd extends BaseModel
 {
-    use SoftDeletes, Blameable;
+    use HasFactory, SoftDeletes, Blameable;
     
     protected $fillable = [
         'type',

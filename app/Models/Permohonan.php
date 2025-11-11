@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Blameable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Permohonan extends Model
 {
-    use SoftDeletes, Blameable;
+    use HasFactory, SoftDeletes, Blameable;
     protected $fillable = [
         'id_lembaga',
         'no_mohon',

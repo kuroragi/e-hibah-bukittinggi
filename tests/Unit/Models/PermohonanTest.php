@@ -12,16 +12,17 @@ use App\Models\PendukungPermohonan;
 use App\Models\PerbaikanProposal;
 use App\Models\PerbaikanRab;
 use App\Models\Nphd;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use PHPUnit\Framework\Attributes\Test;
 
 class PermohonanTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
-    /** @test */
+    #[Test]
     public function it_has_correct_fillable_attributes()
     {
         $expectedFillable = [
@@ -60,7 +61,7 @@ class PermohonanTest extends TestCase
         $this->assertModelHasFillable(Permohonan::class, $expectedFillable);
     }
 
-    /** @test */
+    #[Test]
     public function it_belongs_to_lembaga()
     {
         $lembaga = Lembaga::factory()->create();
@@ -70,7 +71,7 @@ class PermohonanTest extends TestCase
         $this->assertEquals($lembaga->id, $permohonan->lembaga->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_belongs_to_skpd()
     {
         $skpd = Skpd::factory()->create();
@@ -80,7 +81,7 @@ class PermohonanTest extends TestCase
         $this->assertEquals($skpd->id, $permohonan->skpd->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_belongs_to_urusan_skpd()
     {
         $urusan = UrusanSkpd::factory()->create();
@@ -90,7 +91,7 @@ class PermohonanTest extends TestCase
         $this->assertEquals($urusan->id, $permohonan->urusan_skpd->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_belongs_to_status()
     {
         $status = Status_permohonan::factory()->create();
@@ -100,7 +101,7 @@ class PermohonanTest extends TestCase
         $this->assertEquals($status->id, $permohonan->status->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_has_one_pendukung()
     {
         $permohonan = Permohonan::factory()->create();
@@ -110,7 +111,7 @@ class PermohonanTest extends TestCase
         $this->assertEquals($pendukung->id, $permohonan->pendukung->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_has_many_perbaikan_proposal()
     {
         $permohonan = Permohonan::factory()->create();
@@ -121,7 +122,7 @@ class PermohonanTest extends TestCase
         $this->assertCount(2, $permohonan->perbaikanProposal);
     }
 
-    /** @test */
+    #[Test]
     public function it_has_many_perbaikan_rab()
     {
         $permohonan = Permohonan::factory()->create();
@@ -132,7 +133,7 @@ class PermohonanTest extends TestCase
         $this->assertCount(2, $permohonan->perbaikanRab);
     }
 
-    /** @test */
+    #[Test]
     public function it_has_one_nphd()
     {
         $permohonan = Permohonan::factory()->create();
@@ -142,7 +143,7 @@ class PermohonanTest extends TestCase
         $this->assertEquals($nphd->id, $permohonan->nphd->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_created_with_factory()
     {
         $permohonan = Permohonan::factory()->create();
@@ -154,7 +155,7 @@ class PermohonanTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_created_as_approved()
     {
         $permohonan = Permohonan::factory()->approved()->create();
@@ -164,7 +165,7 @@ class PermohonanTest extends TestCase
         $this->assertNotNull($permohonan->tanggal_rekomendasi);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_created_as_rejected()
     {
         $permohonan = Permohonan::factory()->rejected()->create();
@@ -174,7 +175,7 @@ class PermohonanTest extends TestCase
         $this->assertNotNull($permohonan->tanggal_rekomendasi);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_created_in_review()
     {
         $permohonan = Permohonan::factory()->inReview()->create();
@@ -183,7 +184,7 @@ class PermohonanTest extends TestCase
         $this->assertEquals('Sedang dalam proses review', $permohonan->catatan_rekomendasi);
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_soft_deletes()
     {
         $permohonan = Permohonan::factory()->create();
@@ -195,7 +196,7 @@ class PermohonanTest extends TestCase
         $this->assertNotNull($permohonan->fresh()->deleted_at);
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_blameable_trait()
     {
         $user = \App\Models\User::factory()->create();
@@ -206,7 +207,7 @@ class PermohonanTest extends TestCase
         $this->assertNotNull($permohonan->created_by);
     }
 
-    /** @test */
+    #[Test]
     public function it_generates_proper_no_mohon_format()
     {
         $permohonan = Permohonan::factory()->create(['tahun_apbd' => 2025]);
@@ -217,7 +218,7 @@ class PermohonanTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function it_generates_proper_no_proposal_format()
     {
         $permohonan = Permohonan::factory()->create(['tahun_apbd' => 2025]);
@@ -228,7 +229,7 @@ class PermohonanTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function it_has_valid_nominal_range()
     {
         $permohonan = Permohonan::factory()->create();
@@ -239,7 +240,7 @@ class PermohonanTest extends TestCase
         $this->assertLessThanOrEqual(500000000, $permohonan->nominal_anggaran);
     }
 
-    /** @test */
+    #[Test]
     public function it_has_logical_date_sequence()
     {
         $permohonan = Permohonan::factory()->create();

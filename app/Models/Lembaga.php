@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Blameable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Lembaga extends BaseModel
 {
-    use SoftDeletes, Blameable;
+    use HasFactory, SoftDeletes, Blameable;
     protected $fillable = [
         'name',
         'acronym',
