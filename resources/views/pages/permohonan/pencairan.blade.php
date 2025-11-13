@@ -159,15 +159,25 @@
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="no_nphd" class="form-label">No. NPHD</label>
-                                            <input type="text" class="form-control" name="no_nphd" id="no_nphd"
-                                                value="{{ old('no_nphd') }}">
+                                            <div class="input-group">
+                                                <span class="input-group-text">No. NPHD
+                                                    {{ $permohonan->skpd?->name }}</span>
+                                                <input type="text" class="form-control" name="no_nphd_skpd"
+                                                    id="no_nphd" value="{{ old('no_nphd') }}">
+                                            </div>
+                                            <div class="input-group">
+                                                <span class="input-group-text">No. NPHD
+                                                    {{ $permohonan->lembaga?->name }}</span>
+                                                <input type="text" class="form-control" name="no_nphd_lembaga"
+                                                    id="no_nphd" value="{{ old('no_nphd') }}">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="tanggal_nphd" class="form-label">Tanggal NPHD</label>
-                                            <input type="date" class="form-control" name="tanggal_nphd" id="tanggal_nphd"
-                                                value="{{ old('tanggal_nphd') }}">
+                                            <input type="date" class="form-control" name="tanggal_nphd"
+                                                id="tanggal_nphd" value="{{ old('tanggal_nphd') }}">
                                         </div>
                                     </div>
                                 </div>
