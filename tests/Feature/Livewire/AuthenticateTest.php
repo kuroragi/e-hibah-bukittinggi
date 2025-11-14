@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 
 class AuthenticateTest extends TestCase
 {

@@ -73,7 +73,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/permohonan/create', CreateOrUpdate::class)->name('permohonan.create');
     Route::get('/permohonan/edit/{id_permohonan}', EditPermohonan::class)->name('permohonan.edit');
     Route::get('/permohonan/show/{id_permohonan}', [PermohonanController::class, 'show'])->name('permohonan.show');
-    Route::get('/permhonan/isi_pendukung/{id_permohonan}', IsiPendukung::class)->name('permohonan.isi_pendukung');
+    Route::get('/permohonan/isi_pendukung/{id_permohonan}', IsiPendukung::class)->name('permohonan.isi_pendukung');
     Route::get('/permohonan/isi_rab/{id_permohonan}', IsiRab::class)->name('permohonan.isi_rab');
     Route::get('/permohonan/send/{id_permohonan}', [PermohonanController::class, 'send'])->name('permohonan.send');
     Route::get('/permohonan/review/{id_permohonan}', Review::class)->name('permohonan.review');

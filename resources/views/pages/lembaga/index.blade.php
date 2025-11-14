@@ -49,7 +49,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td></td>
-                                <td>{{ $item->skpd->name }}</td>
+                                <td>{{ $item->skpd?->name }}</td>
                                 <td>
                                     <a href="{{ route('lembaga.show', ['id_lembaga' => $item->id]) }}">
                                         <button class="btn btn-sm btn-info" title="Detail Lembaga"><i

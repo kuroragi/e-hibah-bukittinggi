@@ -143,7 +143,8 @@ class PermohonanController extends Controller
 
     public function uploadNphd(Request $request){
         $validatedData = $request->validate([
-            'no_nphd' => 'required',
+            'no_nphd_skpd' => 'required',
+            'no_nphd_lembaga' => 'required',
             'tanggal_nphd' => 'required',
             'file_nphd' => 'required|mimetypes:application/pdf',
             'nilai_disetujui' => 'required',

@@ -19,7 +19,7 @@ class ActivityLogService
             'user'      =>  [
                 'id'    => $user->id ?? null,
                 'name'  => $user->name ?? $user->username ?? null,
-                'role' => $user->roles->pluck('name')[0] ?? null,
+                'role' => $user->has_role->pluck('name')[0] ?? null,
             ],
             'context'   => ['description' => $description, 'data' => $data],
             'meta'      => [

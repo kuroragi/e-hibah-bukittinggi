@@ -144,8 +144,6 @@ class DummySeeder extends Seeder
                 RabPermohonan::create($item);
             }
 
-            ActivityLogService::log('seed.dummy', 'warning', 'seeder dummy data', json_encode([]));
-
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();

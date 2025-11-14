@@ -24,6 +24,7 @@ class LembagaController extends Controller
         }else if(!Auth::user()->hasRole('Admin Lembaga')){
             $lembaga = Lembaga::with(['skpd'])->where('id_skpd', Auth::user()->id_skpd)->orderBy('created_at')->get();
         }
+        
         return view('pages.lembaga.index', [
             'lembaga' => $lembaga
         ]);

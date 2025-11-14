@@ -158,18 +158,18 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3">
-                                            <label for="no_nphd" class="form-label">No. NPHD</label>
+                                            <label for="no_nphd_skpd" class="form-label">No. NPHD</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">No. NPHD
                                                     {{ $permohonan->skpd?->name }}</span>
                                                 <input type="text" class="form-control" name="no_nphd_skpd"
-                                                    id="no_nphd" value="{{ old('no_nphd') }}">
+                                                    id="no_nphd_skpd" value="{{ old('no_nphd_skpd') }}">
                                             </div>
                                             <div class="input-group">
                                                 <span class="input-group-text">No. NPHD
                                                     {{ $permohonan->lembaga?->name }}</span>
                                                 <input type="text" class="form-control" name="no_nphd_lembaga"
-                                                    id="no_nphd" value="{{ old('no_nphd') }}">
+                                                    id="no_nphd_lembaga" value="{{ old('no_nphd_lembaga') }}">
                                             </div>
                                         </div>
                                     </div>
