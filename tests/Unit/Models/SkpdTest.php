@@ -18,8 +18,12 @@ class SkpdTest extends TestCase
     {
         $expectedFillable = [
             'name',
-            'alamat', 
+            'type',
             'deskripsi',
+            'alamat', 
+            'telp',
+            'email',
+            'fax',
         ];
 
         $this->assertModelHasFillable(Skpd::class, $expectedFillable);

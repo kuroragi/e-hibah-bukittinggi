@@ -47,10 +47,13 @@ class UrusanSkpdFactory extends Factory
             'Transmigrasi'
         ];
 
+        $uuid = substr(fake()->uuid(), 0, 8);
+
         return [
             'id_skpd' => Skpd::factory(),
-            'nama_urusan' => fake()->randomElement($urusan),
+            'nama_urusan' => fake()->randomElement($urusan) . ' [' . $uuid . ']',
             'kepala_urusan' => fake()->name(),
+            'kegiatan' => null, // JSON field, can be set via state
         ];
     }
 

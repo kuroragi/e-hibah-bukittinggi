@@ -22,9 +22,10 @@ class StatusPermohonanFactory extends Factory
         ];
 
         $status = fake()->randomElement($statusList);
+        $uuid = substr(fake()->uuid(), 0, 8);
 
         return [
-            'name' => $status['name'],
+            'name' => $status['name'] . ' [' . $uuid . ']',
             'description' => $status['description'],
         ];
     }

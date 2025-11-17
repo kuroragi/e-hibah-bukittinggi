@@ -17,17 +17,19 @@ class PermohonanFactory extends Factory
     {
         $tanggal_mohon = fake()->dateTimeBetween('-1 year', 'now');
         $tahun_apbd = $tanggal_mohon->format('Y');
+        $uuid = fake()->uuid();
+        $timestamp = now()->timestamp . rand(1000, 9999);
         
         return [
             'id_lembaga' => Lembaga::factory(),
-            'no_mohon' => $this->generateNoMohon($tahun_apbd),
+            'no_mohon' => $this->generateNoMohon($tahun_apbd, $timestamp),
             'tanggal_mohon' => $tanggal_mohon,
             'tahun_apbd' => $tahun_apbd,
-            'perihal_mohon' => 'Permohonan Hibah ' . fake()->words(3, true),
-            'file_mohon' => 'permohonan/mohon_' . fake()->uuid() . '.pdf',
-            'no_proposal' => $this->generateNoProposal($tahun_apbd),
+            'perihal_mohon' => 'Permohonan Hibah ' . fake()->words(3, true) . ' - ' . $uuid,
+            'file_mohon' => 'permohonan/mohon_' . $uuid . '.pdf',
+            'no_proposal' => $this->generateNoProposal($tahun_apbd, $timestamp),
             'tanggal_proposal' => fake()->dateTimeBetween($tanggal_mohon, 'now'),
-            'title' => fake()->sentence(6),
+            'title' => fake()->sentence(6) . ' [' . substr($uuid, 0, 8) . ']',
             'urusan' => UrusanSkpd::factory(),
             'id_skpd' => Skpd::factory(),
             'awal_laksana' => fake()->dateTimeBetween('now', '+1 month'),
@@ -35,12 +37,12 @@ class PermohonanFactory extends Factory
             'latar_belakang' => fake()->paragraph(5),
             'maksud_tujuan' => fake()->paragraph(3),
             'keterangan' => fake()->paragraph(2),
-            'file_proposal' => 'proposals/proposal_' . fake()->uuid() . '.pdf',
-            'nominal_rab' => fake()->numberBetween(10000000, 500000000), // 10jt - 500jt
+            'file_proposal' => 'proposals/proposal_' . $uuid . '.pdf',
+            'nominal_rab' => fake()->numberBetween(10000000, 500000000),
             'nominal_anggaran' => fake()->numberBetween(10000000, 500000000),
             'id_status' => Status_permohonan::factory(),
             'status_rekomendasi' => null,
-            'nominal_rekomendasi' => null,
+            'nominal_rekomendasi' => 0,
             'tanggal_rekomendasi' => null,
             'catatan_rekomendasi' => null,
             'file_pemberitahuan' => null,
@@ -48,16 +50,16 @@ class PermohonanFactory extends Factory
         ];
     }
 
-    private function generateNoMohon($tahun): string
+    private function generateNoMohon($tahun, $timestamp = null): string
     {
-        $urut = fake()->numberBetween(1, 999);
-        return sprintf('%03d/HIBAH/LEMBAGA/%s', $urut, $tahun);
+        $urut = $timestamp ?? fake()->unique()->numberBetween(1, 999999);
+        return sprintf('%06d/HIBAH/LEMBAGA/%s', $urut, $tahun);
     }
 
-    private function generateNoProposal($tahun): string
+    private function generateNoProposal($tahun, $timestamp = null): string
     {
-        $urut = fake()->numberBetween(1, 999);
-        return sprintf('%03d/PROPOSAL/%s', $urut, $tahun);
+        $urut = $timestamp ?? fake()->unique()->numberBetween(1, 999999);
+        return sprintf('%06d/PROPOSAL/%s', $urut, $tahun);
     }
 
     /**

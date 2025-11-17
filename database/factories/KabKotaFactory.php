@@ -12,9 +12,11 @@ class KabKotaFactory extends Factory
 
     public function definition(): array
     {
+        $uuid = substr(fake()->uuid(), 0, 8);
+        
         return [
             'id_propinsi' => Propinsi::factory(),
-            'name' => 'Kota Bukittinggi',
+            'name' => 'Kota Bukittinggi [' . $uuid . ']',
         ];
     }
 }

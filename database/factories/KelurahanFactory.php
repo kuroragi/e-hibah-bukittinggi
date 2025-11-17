@@ -31,9 +31,11 @@ class KelurahanFactory extends Factory
             'Tarok Dipo',
         ];
 
+        $uuid = substr(fake()->uuid(), 0, 8);
+
         return [
             'id_kecamatan' => Kecamatan::factory(),
-            'name' => fake()->randomElement($kelurahanNames),
+            'name' => fake()->randomElement($kelurahanNames) . ' [' . $uuid . ']',
         ];
     }
 }

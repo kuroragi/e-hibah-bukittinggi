@@ -24,10 +24,16 @@ class SkpdFactory extends Factory
             'Dinas Perindustrian dan Perdagangan'
         ];
 
+        $uuid = substr(fake()->uuid(), 0, 8);
+        
         return [
-            'name' => fake()->randomElement($skpdNames),
-            'alamat' => fake()->address(),
+            'type' => fake()->randomElement(['dinas', 'badan']),
+            'name' => fake()->randomElement($skpdNames) . ' [' . $uuid . ']',
             'deskripsi' => fake()->paragraph(2),
+            'alamat' => fake()->address(),
+            'telp' => fake()->numerify('0###-########'),
+            'email' => fake()->unique()->safeEmail(),
+            'fax' => fake()->numerify('0###-########'),
         ];
     }
 

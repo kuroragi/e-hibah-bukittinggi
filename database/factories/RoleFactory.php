@@ -19,9 +19,10 @@ class RoleFactory extends Factory
         ];
 
         $role = fake()->randomElement($roles);
+        $uuid = substr(fake()->uuid(), 0, 8);
 
         return [
-            'name' => $role['name'],
+            'name' => $role['name'] . '-' . $uuid,
             'guard_name' => $role['guard_name'],
         ];
     }

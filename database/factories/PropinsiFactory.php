@@ -11,8 +11,10 @@ class PropinsiFactory extends Factory
 
     public function definition(): array
     {
+        $uuid = substr(fake()->uuid(), 0, 8);
+        
         return [
-            'name' => 'Sumatera Barat',
+            'name' => 'Sumatera Barat [' . $uuid . ']',
         ];
     }
 }

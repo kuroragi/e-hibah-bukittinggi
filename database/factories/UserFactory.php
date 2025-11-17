@@ -31,7 +31,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('password'),
-            'id_role' => 3,
+            'id_role' => 3, // Default role ID
             'id_skpd' => null,
             'id_urusan' => null,
             'id_lembaga' => null,

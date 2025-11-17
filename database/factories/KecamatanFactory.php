@@ -18,9 +18,11 @@ class KecamatanFactory extends Factory
             'Mandiangin Koto Selayan',
         ];
 
+        $uuid = substr(fake()->uuid(), 0, 8);
+
         return [
             'id_kabkota' => KabKota::factory(),
-            'name' => fake()->randomElement($kecamatanNames),
+            'name' => fake()->randomElement($kecamatanNames) . ' [' . $uuid . ']',
         ];
     }
 }
