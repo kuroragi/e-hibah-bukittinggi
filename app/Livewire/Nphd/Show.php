@@ -79,7 +79,7 @@ class Show extends Component
         }
         
         
-        if(!Storage::disk('public')->exists($dir.'/'.$filename)){
+        if(!Storage::disk('public')->exists($dir.'/'.$filename.$ext)){
             $pdf = Pdf::loadView('pdf.permohonan_nphd', ['data' => $this->permohonan])
                 ->setPaper('A4', 'portrait');
 
@@ -94,14 +94,14 @@ class Show extends Component
             }
 
             // Simpan PDF langsung ke disk 'public'
-            Storage::disk('public')->put("{$dir}/{$filename}", $pdf->output());
+            Storage::disk('public')->put("{$dir}/{$filename}.{$ext}", $pdf->output());
 
             $this->permohonan->update([
-                'file_permintaan_nphd' => $dir.'/'.$filename
+                'file_permintaan_nphd' => $dir.'/'.$filename.$ext
             ]);
         }
 
-        $url = asset("storage/{$dir}/{$filename}");
+        $url = asset("storage/{$dir}/{$filename}.{$ext}");
 
         $this->dispatch('pdf-ready', [
             'url' => $url

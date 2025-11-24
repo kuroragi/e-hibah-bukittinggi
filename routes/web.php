@@ -92,7 +92,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/nphd/show/{id_permohonan}', \App\Livewire\Nphd\Show::class)->name('nphd.show');
     Route::get('/nphd/review/{id_permohonan}', \App\Livewire\Nphd\Review::class)->name('nphd.review');
 
-    Route::get('/pencairan', [PermohonanController::class, 'pencairan'])->name('pencairan');
+    // Pencairan Routes (Enhanced)
+    Route::get('/pencairan', \App\Livewire\Pencairan\IndexPencairan::class)->name('pencairan');
+    Route::get('/pencairan/ajukan/{id_permohonan}', \App\Livewire\Pencairan\AjukanPencairan::class)->name('pencairan.ajukan');
+    Route::get('/pencairan/show/{id_pencairan}', [PermohonanController::class, 'showPencairan'])->name('pencairan.show');
+    Route::get('/pencairan/verifikasi', \App\Livewire\Pencairan\IndexPencairan::class)->name('pencairan.verifikasi');
+    Route::get('/pencairan/verifikasi/{id_pencairan}', \App\Livewire\Pencairan\VerifikasiPencairan::class)->name('pencairan.verifikasi.detail');
+    Route::get('/pencairan/approval', \App\Livewire\Pencairan\IndexPencairan::class)->name('pencairan.approval');
+    Route::get('/pencairan/approval/{id_pencairan}', \App\Livewire\Pencairan\ApprovalPencairan::class)->name('pencairan.approval.detail');
     Route::post('/pencairan/upload_nphd', [PermohonanController::class, 'uploadNphd'])->name('pencairan.upload_nphd');
     Route::get('/pencairan/data_pendukung/{id_permohonan}', [PermohonanController::class, 'cekPendukung'])->name('pencairan.data_pendukung');
 

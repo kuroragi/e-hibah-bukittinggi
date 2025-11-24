@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Nphd;
+use App\Models\Pencairan;
 use App\Models\PerbaikanRab;
 use App\Models\Permohonan;
 use App\Models\RabPermohonan;
@@ -194,6 +195,27 @@ class PermohonanController extends Controller
         $permohonan = Permohonan::with(['lembaga', 'skpd', 'status', 'pendukung', 'nphd'])->where('id', $id_permohonan)->first();
         return view('pages.permohonan.cek_pencairan', [
             'permohonan' => $permohonan,
+        ]);
+    }
+
+    public function showPencairan($id_pencairan){
+        $pencairan = Pencairan::with([
+            'permohonan.lembaga.bank',
+            'permohonan.skpd',
+            'verifier',
+            'approver'
+        ])->findOrFail($id_pencairan);
+
+        // Check authorization
+        $user = Auth::user();
+        if ($user->hasRole('Admin Lembaga')) {
+            if ($pencairan->permohonan->id_lembaga != $user->id_lembaga) {
+                abort(403, 'Unauthorized access');
+            }
+        }
+
+        return view('livewire.pencairan.show-pencairan', [
+            'pencairan' => $pencairan,
         ]);
     }
 }
