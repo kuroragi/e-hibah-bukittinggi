@@ -23,7 +23,8 @@
             <!-- Filters -->
             <div class="row mb-3">
                 <div class="col-md-3">
-                    <input wire:model.live="search" type="text" class="form-control" placeholder="Cari lembaga atau perihal...">
+                    <input wire:model.live="search" type="text" class="form-control"
+                        placeholder="Cari lembaga atau perihal...">
                 </div>
                 <div class="col-md-2">
                     <select wire:model.live="statusFilter" class="form-select">
@@ -46,13 +47,13 @@
                 <div class="col-md-2">
                     <select wire:model.live="tahunFilter" class="form-select">
                         <option value="">Semua Tahun</option>
-                        @foreach($tahunList as $tahun)
+                        @foreach ($tahunList as $tahun)
                             <option value="{{ $tahun }}">{{ $tahun }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-md-3 text-end">
-                    @if(auth()->user()->hasRole('Admin Lembaga'))
+                    @if (auth()->user()->hasRole('Admin Lembaga'))
                         <a href="{{ route('permohonan') }}" class="btn btn-primary">
                             <i class="bi bi-plus-circle"></i> Ajukan Pencairan
                         </a>
@@ -66,7 +67,7 @@
                     <thead class="table-light">
                         <tr>
                             <th width="5%">No</th>
-                            @if(!auth()->user()->hasRole('Admin Lembaga'))
+                            @if (!auth()->user()->hasRole('Admin Lembaga'))
                                 <th>Lembaga</th>
                             @endif
                             <th>Perihal Permohonan</th>
@@ -81,7 +82,7 @@
                         @forelse($pencairans as $key => $pencairan)
                             <tr>
                                 <td>{{ $pencairans->firstItem() + $key }}</td>
-                                @if(!auth()->user()->hasRole('Admin Lembaga'))
+                                @if (!auth()->user()->hasRole('Admin Lembaga'))
                                     <td>{{ $pencairan->permohonan->lembaga->name ?? '-' }}</td>
                                 @endif
                                 <td>{{ $pencairan->permohonan->perihal_mohon ?? '-' }}</td>
@@ -97,13 +98,13 @@
                                 </td>
                                 <td>
                                     @php
-                                        $badgeClass = match($pencairan->status) {
+                                        $badgeClass = match ($pencairan->status) {
                                             'diajukan' => 'bg-warning',
                                             'diverifikasi' => 'bg-info',
                                             'disetujui' => 'bg-primary',
                                             'ditolak' => 'bg-danger',
                                             'dicairkan' => 'bg-success',
-                                            default => 'bg-secondary'
+                                            default => 'bg-secondary',
                                         };
                                     @endphp
                                     <span class="badge {{ $badgeClass }}">
@@ -112,24 +113,24 @@
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <a href="{{ route('pencairan.show', $pencairan->id) }}" 
-                                           class="btn btn-sm btn-info" title="Lihat Detail">
+                                        <a href="{{ route('pencairan.show', $pencairan->id) }}"
+                                            class="btn btn-sm btn-info" title="Lihat Detail">
                                             <i class="bi bi-eye"></i>
                                         </a>
 
-                                        @if(auth()->user()->hasRole('Reviewer') || auth()->user()->hasRole('Admin SKPD'))
-                                            @if($pencairan->status == 'diajukan')
-                                                <a href="{{ route('pencairan.verifikasi.detail', $pencairan->id) }}" 
-                                                   class="btn btn-sm btn-warning" title="Verifikasi">
+                                        @if (auth()->user()->hasRole('Reviewer') || auth()->user()->hasRole('Admin SKPD'))
+                                            @if ($pencairan->status == 'diajukan')
+                                                <a href="{{ route('pencairan.verifikasi.detail', $pencairan->id) }}"
+                                                    class="btn btn-sm btn-warning" title="Verifikasi">
                                                     <i class="bi bi-check-circle"></i>
                                                 </a>
                                             @endif
                                         @endif
 
-                                        @if(auth()->user()->hasRole('Admin SKPD') || auth()->user()->hasRole('Super Admin'))
-                                            @if($pencairan->status == 'diverifikasi')
-                                                <a href="{{ route('pencairan.approval.detail', $pencairan->id) }}" 
-                                                   class="btn btn-sm btn-primary" title="Approval">
+                                        @if (auth()->user()->hasRole('Admin SKPD') || auth()->user()->hasRole('Super Admin'))
+                                            @if ($pencairan->status == 'diverifikasi')
+                                                <a href="{{ route('pencairan.approval.detail', $pencairan->id) }}"
+                                                    class="btn btn-sm btn-primary" title="Approval">
                                                     <i class="bi bi-check2-all"></i>
                                                 </a>
                                             @endif
@@ -157,11 +158,11 @@
     </div>
 
     @push('scripts')
-    <script>
-        // Auto refresh every 30 seconds
-        setInterval(() => {
-            @this.call('$refresh');
-        }, 30000);
-    </script>
+        <script>
+            // Auto refresh every 30 seconds
+            setInterval(() => {
+                @this.call('$refresh');
+            }, 30000);
+        </script>
     @endpush
 </div>

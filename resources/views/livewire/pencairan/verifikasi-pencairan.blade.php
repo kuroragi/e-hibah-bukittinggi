@@ -32,7 +32,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <small class="text-muted">Ketua Lembaga:</small>
-                                    <p class="mb-2"><strong>{{ $pencairan->permohonan->lembaga->ketua ?? '-' }}</strong></p>
+                                    <p class="mb-2">
+                                        <strong>{{ $pencairan->permohonan->lembaga->ketua ?? '-' }}</strong></p>
                                 </div>
                                 <div class="col-md-6">
                                     <small class="text-muted">Email:</small>
@@ -59,7 +60,9 @@
                                 </div>
                                 <div class="col-md-6">
                                     <small class="text-muted">Total Anggaran:</small>
-                                    <p class="mb-2"><strong>Rp {{ number_format($pencairan->permohonan->jumlah_mohon, 0, ',', '.') }}</strong></p>
+                                    <p class="mb-2"><strong>Rp
+                                            {{ number_format($pencairan->permohonan->jumlah_mohon, 0, ',', '.') }}</strong>
+                                    </p>
                                 </div>
                                 <div class="col-md-6">
                                     <small class="text-muted">Tahun Anggaran:</small>
@@ -84,7 +87,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <small class="text-muted">Tanggal Pengajuan:</small>
-                                    <p class="mb-2"><strong>{{ $pencairan->tanggal_pencairan->format('d M Y') }}</strong></p>
+                                    <p class="mb-2">
+                                        <strong>{{ $pencairan->tanggal_pencairan->format('d M Y') }}</strong></p>
                                 </div>
                                 <div class="col-md-4">
                                     <small class="text-muted">Status Saat Ini:</small>
@@ -94,9 +98,10 @@
                                 </div>
                                 <div class="col-md-12">
                                     <small class="text-muted">Jumlah Pencairan:</small>
-                                    <h4 class="text-primary mb-2">Rp {{ number_format($pencairan->jumlah_pencairan, 0, ',', '.') }}</h4>
+                                    <h4 class="text-primary mb-2">Rp
+                                        {{ number_format($pencairan->jumlah_pencairan, 0, ',', '.') }}</h4>
                                 </div>
-                                @if($pencairan->keterangan)
+                                @if ($pencairan->keterangan)
                                     <div class="col-md-12">
                                         <small class="text-muted">Keterangan:</small>
                                         <p class="mb-0">{{ $pencairan->keterangan }}</p>
@@ -113,9 +118,9 @@
                         </div>
                         <div class="card-body">
                             <div class="list-group">
-                                @if($pencairan->file_lpj)
-                                    <a href="{{ Storage::url($pencairan->file_lpj) }}" target="_blank" 
-                                       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                @if ($pencairan->file_lpj)
+                                    <a href="{{ Storage::url($pencairan->file_lpj) }}" target="_blank"
+                                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                         <div>
                                             <i class="bi bi-file-pdf text-danger"></i>
                                             <strong>Laporan Pertanggungjawaban (LPJ)</strong>
@@ -123,9 +128,9 @@
                                         <i class="bi bi-download"></i>
                                     </a>
                                 @endif
-                                @if($pencairan->file_realisasi)
-                                    <a href="{{ Storage::url($pencairan->file_realisasi) }}" target="_blank" 
-                                       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                @if ($pencairan->file_realisasi)
+                                    <a href="{{ Storage::url($pencairan->file_realisasi) }}" target="_blank"
+                                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                         <div>
                                             <i class="bi bi-file-pdf text-danger"></i>
                                             <strong>Laporan Realisasi Kegiatan</strong>
@@ -133,9 +138,9 @@
                                         <i class="bi bi-download"></i>
                                     </a>
                                 @endif
-                                @if($pencairan->file_dokumentasi)
-                                    <a href="{{ Storage::url($pencairan->file_dokumentasi) }}" target="_blank" 
-                                       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                @if ($pencairan->file_dokumentasi)
+                                    <a href="{{ Storage::url($pencairan->file_dokumentasi) }}" target="_blank"
+                                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                         <div>
                                             <i class="bi bi-file-earmark-zip text-info"></i>
                                             <strong>Dokumentasi Kegiatan</strong>
@@ -143,9 +148,9 @@
                                         <i class="bi bi-download"></i>
                                     </a>
                                 @endif
-                                @if($pencairan->file_kwitansi)
-                                    <a href="{{ Storage::url($pencairan->file_kwitansi) }}" target="_blank" 
-                                       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                @if ($pencairan->file_kwitansi)
+                                    <a href="{{ Storage::url($pencairan->file_kwitansi) }}" target="_blank"
+                                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                         <div>
                                             <i class="bi bi-file-pdf text-danger"></i>
                                             <strong>Kwitansi/Bukti Pengeluaran</strong>
@@ -166,21 +171,23 @@
                             <div class="card-body">
                                 <!-- Keputusan -->
                                 <div class="mb-3">
-                                    <label class="form-label">Keputusan Verifikasi <span class="text-danger">*</span></label>
+                                    <label class="form-label">Keputusan Verifikasi <span
+                                            class="text-danger">*</span></label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" wire:model="keputusan" 
-                                               value="diverifikasi" id="verifikasi-terima">
+                                        <input class="form-check-input" type="radio" wire:model="keputusan"
+                                            value="diverifikasi" id="verifikasi-terima">
                                         <label class="form-check-label" for="verifikasi-terima">
                                             <strong class="text-success">Terima & Lanjutkan ke Approval</strong>
                                             <br><small class="text-muted">Dokumen lengkap dan sesuai</small>
                                         </label>
                                     </div>
                                     <div class="form-check mt-2">
-                                        <input class="form-check-input" type="radio" wire:model="keputusan" 
-                                               value="ditolak" id="verifikasi-tolak">
+                                        <input class="form-check-input" type="radio" wire:model="keputusan"
+                                            value="ditolak" id="verifikasi-tolak">
                                         <label class="form-check-label" for="verifikasi-tolak">
                                             <strong class="text-danger">Tolak Pengajuan</strong>
-                                            <br><small class="text-muted">Dokumen tidak lengkap atau tidak sesuai</small>
+                                            <br><small class="text-muted">Dokumen tidak lengkap atau tidak
+                                                sesuai</small>
                                         </label>
                                     </div>
                                     @error('keputusan')
@@ -190,17 +197,17 @@
 
                                 <!-- Catatan -->
                                 <div class="mb-3">
-                                    <label class="form-label">Catatan Verifikasi <span class="text-danger">*</span></label>
-                                    <textarea wire:model="catatan" rows="4" 
-                                              class="form-control @error('catatan') is-invalid @enderror"
-                                              placeholder="Tulis catatan hasil verifikasi..."></textarea>
+                                    <label class="form-label">Catatan Verifikasi <span
+                                            class="text-danger">*</span></label>
+                                    <textarea wire:model="catatan" rows="4" class="form-control @error('catatan') is-invalid @enderror"
+                                        placeholder="Tulis catatan hasil verifikasi..."></textarea>
                                     @error('catatan')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                     <small class="text-muted">Berikan catatan yang jelas dan detail</small>
                                 </div>
 
-                                @if(session()->has('error'))
+                                @if (session()->has('error'))
                                     <div class="alert alert-danger" role="alert">
                                         {{ session('error') }}
                                     </div>
@@ -213,9 +220,8 @@
                             <a href="{{ route('pencairan') }}" class="btn btn-secondary">
                                 <i class="bi bi-arrow-left"></i> Kembali
                             </a>
-                            <button type="submit" class="btn btn-warning" 
-                                    wire:loading.attr="disabled"
-                                    wire:target="verify">
+                            <button type="submit" class="btn btn-warning" wire:loading.attr="disabled"
+                                wire:target="verify">
                                 <span wire:loading.remove wire:target="verify">
                                     <i class="bi bi-check-circle"></i> Simpan Verifikasi
                                 </span>
@@ -244,12 +250,13 @@
                                 <small>{{ $pencairan->created_at->format('d M Y H:i') }}</small>
                             </div>
                         </div>
-                        <div class="timeline-item {{ in_array($pencairan->status, ['diverifikasi', 'disetujui', 'dicairkan']) ? 'completed' : ($pencairan->status == 'ditolak' ? 'rejected' : '') }}">
+                        <div
+                            class="timeline-item {{ in_array($pencairan->status, ['diverifikasi', 'disetujui', 'dicairkan']) ? 'completed' : ($pencairan->status == 'ditolak' ? 'rejected' : '') }}">
                             <div class="timeline-marker"></div>
                             <div class="timeline-content">
                                 <h6>Diverifikasi</h6>
                                 <small>
-                                    @if($pencairan->verified_at)
+                                    @if ($pencairan->verified_at)
                                         {{ $pencairan->verified_at->format('d M Y H:i') }}
                                     @else
                                         Menunggu verifikasi
@@ -257,12 +264,13 @@
                                 </small>
                             </div>
                         </div>
-                        <div class="timeline-item {{ in_array($pencairan->status, ['disetujui', 'dicairkan']) ? 'completed' : '' }}">
+                        <div
+                            class="timeline-item {{ in_array($pencairan->status, ['disetujui', 'dicairkan']) ? 'completed' : '' }}">
                             <div class="timeline-marker"></div>
                             <div class="timeline-content">
                                 <h6>Disetujui</h6>
                                 <small>
-                                    @if($pencairan->approved_at)
+                                    @if ($pencairan->approved_at)
                                         {{ $pencairan->approved_at->format('d M Y H:i') }}
                                     @else
                                         Menunggu approval
@@ -301,50 +309,58 @@
     </div>
 
     @push('styles')
-    <style>
-        .timeline {
-            position: relative;
-            padding-left: 30px;
-        }
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 8px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: #ddd;
-        }
-        .timeline-item {
-            position: relative;
-            padding-bottom: 20px;
-        }
-        .timeline-marker {
-            position: absolute;
-            left: -26px;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: #ddd;
-            border: 3px solid #fff;
-        }
-        .timeline-item.active .timeline-marker {
-            background: #ffc107;
-        }
-        .timeline-item.completed .timeline-marker {
-            background: #28a745;
-        }
-        .timeline-item.rejected .timeline-marker {
-            background: #dc3545;
-        }
-        .timeline-content h6 {
-            margin-bottom: 2px;
-            font-size: 0.9rem;
-        }
-        .timeline-content small {
-            color: #6c757d;
-            font-size: 0.8rem;
-        }
-    </style>
+        <style>
+            .timeline {
+                position: relative;
+                padding-left: 30px;
+            }
+
+            .timeline::before {
+                content: '';
+                position: absolute;
+                left: 8px;
+                top: 0;
+                bottom: 0;
+                width: 2px;
+                background: #ddd;
+            }
+
+            .timeline-item {
+                position: relative;
+                padding-bottom: 20px;
+            }
+
+            .timeline-marker {
+                position: absolute;
+                left: -26px;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                background: #ddd;
+                border: 3px solid #fff;
+            }
+
+            .timeline-item.active .timeline-marker {
+                background: #ffc107;
+            }
+
+            .timeline-item.completed .timeline-marker {
+                background: #28a745;
+            }
+
+            .timeline-item.rejected .timeline-marker {
+                background: #dc3545;
+            }
+
+            .timeline-content h6 {
+                margin-bottom: 2px;
+                font-size: 0.9rem;
+            }
+
+            .timeline-content small {
+                color: #6c757d;
+                font-size: 0.8rem;
+            }
+        </style>
     @endpush
 </div>

@@ -117,6 +117,31 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
+                        <div class="col-12">
+                            <p>Data yang harus diinput untuk NPHD</p>
+                            <ul>
+                                <li><i
+                                        class="bi @if ($permohonan) bi-check text-success @else bi-x text-danger @endif"></i>
+                                    Data Permohonan dari Lembaga</li>
+                                <li><i
+                                        class="bi @if ($nominal_anggaran) bi-check text-success @else bi-x text-danger @endif"></i>
+                                    Nominal anggaran yang direkomendasi</li>
+                                <li><i
+                                        class="bi @if ($kegiatan_urusan) bi-check text-success @else bi-x text-danger @endif"></i>
+                                    Data Kegiatan dari SKPD</li>
+                                <li><i
+                                        class="bi @if ($kegiatan_urusan[0]['sub_kegiatan']) bi-check text-success @else bi-x text-danger @endif"></i>
+                                    Data Sub-kegiatan dari SKPD</li>
+                                <li><i
+                                        class="bi @if ($saksi_skpd) bi-check text-success @else bi-x text-danger @endif"></i>
+                                    Saksi-saksi dari SKPD</li>
+                                <li><i
+                                        class="bi @if ($saksi_lembaga) bi-check text-success @else bi-x text-danger @endif"></i>
+                                    Saksi-saksi dari Lembaga</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col">
                             <div class="mb-3">
                                 <label for="nomor_nphd_skpd" class="form-label"></label>

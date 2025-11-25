@@ -75,7 +75,7 @@ class Show extends Component
         $ext = '.pdf';
         
         if($this->permohonan->file_permintaan_nphd && Storage::disk('public')->exists($dir.'/'.$filename.$ext)){
-            Storage::disk('public')->delete($this->permohonan->file_permintaan_nphd);
+            Storage::disk('public')->delete($dir.'/'.$filename.$ext);
         }
         
         

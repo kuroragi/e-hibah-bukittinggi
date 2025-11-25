@@ -34,12 +34,13 @@ class DetailSkpd extends Component
 
     public $urusans = [];
 
-    public $perhatian_nphd;
+    public $perhatian_nphd = [];
     public $rekening_anggaran;
 
     public function mount($id_skpd = null){
         $this->skpd = Skpd::findOrFail($id_skpd);
         $this->detail_skpd = SkpdDetail::where('id_skpd', $id_skpd)->first();
+        $this->detail_skpd ? '' : $this->detail_skpd = SkpdDetail::create(['id_skpd' => $this->skpd->id]);
         if($this->detail_skpd){
             $this->nama_pimpinan = $this->detail_skpd->nama_pimpinan;
             $this->jabatan_pimpinan = $this->detail_skpd->jabatan_pimpinan;
@@ -50,12 +51,6 @@ class DetailSkpd extends Component
             $this->email_pimpinan = $this->detail_skpd->email_pimpinan;
 
             $this->nama_sekretaris = $this->detail_skpd->nama_sekretaris;
-            // $this->jabatan_sekretaris = $this->detail_skpd->jabatan_sekretaris;
-            // $this->nip_sekretaris = $this->detail_skpd->nip_sekretaris;
-            // $this->golongan_sekretaris = $this->detail_skpd->golongan_sekretaris;
-            // $this->alamat_sekretaris = $this->detail_skpd->alamat_sekretaris;
-            // $this->hp_sekretaris = $this->detail_skpd->hp_sekretaris;
-            // $this->email_sekretaris = $this->detail_skpd->email_sekretaris;
 
             $urusans = $this->skpd->has_urusan()->get();
             foreach ($urusans as $key => $urusan) {
@@ -65,20 +60,28 @@ class DetailSkpd extends Component
                     'kepala_urusan' => $urusan->kepala_urusan,
                     'kegiatan' => $urusan->kegiatan ? 
                             json_decode($urusan->kegiatan) : 
-                            [0 => ['nama_kegiatan' => '', 'sub_kegiatan' => [0 => ['nama_sub_kegiatan' => '', 'rekening_anggaran' => [0 => ['rekening' => '']]]]]]
+                            [0 => ['nama_kegiatan' => '', 'sub_kegiatan' => [
+                                0 => ['nama_sub_kegiatan' => '', 'rekening_anggaran' => [
+                                    0 => ['rekening' => '']
+                                    ]]
+                                ]]
+                            ]
                     // 'kegiatan' => $urusan->kegiatan,
                     // 'sub_kegiatan' => $urusan->sub_kegiatan,
                     // 'rekening_anggaran' => $urusan->sub_kegiatan ? json_decode($urusan->sub_kegiatan) : [0 => ['rekening' => '']],
                 ];
                 // if($urusan->rekening_anggaran == null || $urusan->rekening_anggaran == ''){
-                //     $this->urusans[$key]['rekening_anggaran'][] = ['rekening' => ''];
-                // }else{
-                //     $this->urusans[$key]['rekening_anggaran'][] = json_decode($urusan->rekening_anggaran);
-                // }
-            }
+                    //     $this->urusans[$key]['rekening_anggaran'][] = ['rekening' => ''];
+                    // }else{
+                        //     $this->urusans[$key]['rekening_anggaran'][] = json_decode($urusan->rekening_anggaran);
+                        // }
+                    }
+                    // dd($this->urusans);
 
-            $this->perhatian_nphd = $this->detail_skpd->perhatian_nphd ? json_decode($this->detail_skpd->perhatian_nphd, true) : [0 => ['uraian' => '', 'urusan' => 0]];
+            $this->perhatian_nphd = $this->detail_skpd?->perhatian_nphd ? json_decode($this->detail_skpd->perhatian_nphd, true) : [0 => ['uraian' => '', 'urusan' => 0]];
         }
+
+        // dd($this->urusans[0]['kegiatan'][0]);
     }
 
     #[Title('Detail SKPD')]

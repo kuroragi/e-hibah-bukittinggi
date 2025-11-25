@@ -6,7 +6,8 @@
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
                     <li class="breadcrumb-item"><a href="{{ route('permohonan') }}">Permohonan</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('permohonan.show', $permohonan->id) }}">Detail</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('permohonan.show', $permohonan->id) }}">Detail</a>
+                    </li>
                     <li class="breadcrumb-item active" aria-current="page">Ajukan Pencairan</li>
                 </ol>
             </nav>
@@ -36,15 +37,18 @@
                                 </div>
                                 <div class="col-md-6 mt-2">
                                     <small class="text-muted">Total Anggaran:</small>
-                                    <p class="mb-0"><strong>Rp {{ number_format($permohonan->jumlah_mohon, 0, ',', '.') }}</strong></p>
+                                    <p class="mb-0"><strong>Rp
+                                            {{ number_format($permohonan->jumlah_mohon, 0, ',', '.') }}</strong></p>
                                 </div>
                                 <div class="col-md-6 mt-2">
                                     <small class="text-muted">Sudah Dicairkan:</small>
-                                    <p class="mb-0"><strong>Rp {{ number_format($totalDicairkan, 0, ',', '.') }}</strong></p>
+                                    <p class="mb-0"><strong>Rp
+                                            {{ number_format($totalDicairkan, 0, ',', '.') }}</strong></p>
                                 </div>
                                 <div class="col-md-12 mt-2">
                                     <small class="text-muted">Sisa Dana:</small>
-                                    <p class="mb-0 text-success"><strong>Rp {{ number_format($sisaDana, 0, ',', '.') }}</strong></p>
+                                    <p class="mb-0 text-success"><strong>Rp
+                                            {{ number_format($sisaDana, 0, ',', '.') }}</strong></p>
                                 </div>
                             </div>
                         </div>
@@ -52,7 +56,8 @@
                         <!-- Tahap Pencairan -->
                         <div class="mb-3">
                             <label class="form-label">Tahap Pencairan <span class="text-danger">*</span></label>
-                            <select wire:model="tahap_pencairan" class="form-select @error('tahap_pencairan') is-invalid @enderror">
+                            <select wire:model="tahap_pencairan"
+                                class="form-select @error('tahap_pencairan') is-invalid @enderror">
                                 <option value="">-- Pilih Tahap --</option>
                                 <option value="1">Tahap 1 (Down Payment)</option>
                                 <option value="2">Tahap 2 (Progress Payment)</option>
@@ -67,8 +72,8 @@
                         <!-- Tanggal Pencairan -->
                         <div class="mb-3">
                             <label class="form-label">Tanggal Pencairan <span class="text-danger">*</span></label>
-                            <input type="date" wire:model="tanggal_pencairan" 
-                                   class="form-control @error('tanggal_pencairan') is-invalid @enderror">
+                            <input type="date" wire:model="tanggal_pencairan"
+                                class="form-control @error('tanggal_pencairan') is-invalid @enderror">
                             @error('tanggal_pencairan')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -79,11 +84,10 @@
                             <label class="form-label">Jumlah Pencairan <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-text">Rp</span>
-                                <input type="text" wire:model="jumlah_pencairan" 
-                                       class="form-control @error('jumlah_pencairan') is-invalid @enderror"
-                                       placeholder="Masukkan jumlah pencairan"
-                                       x-data
-                                       x-on:input="$el.value = $el.value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.')">
+                                <input type="text" wire:model="jumlah_pencairan"
+                                    class="form-control @error('jumlah_pencairan') is-invalid @enderror"
+                                    placeholder="Masukkan jumlah pencairan" x-data
+                                    x-on:input="$el.value = $el.value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.')">
                                 @error('jumlah_pencairan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -94,9 +98,8 @@
                         <!-- Keterangan -->
                         <div class="mb-3">
                             <label class="form-label">Keterangan</label>
-                            <textarea wire:model="keterangan" rows="3" 
-                                      class="form-control @error('keterangan') is-invalid @enderror"
-                                      placeholder="Keterangan tambahan (opsional)"></textarea>
+                            <textarea wire:model="keterangan" rows="3" class="form-control @error('keterangan') is-invalid @enderror"
+                                placeholder="Keterangan tambahan (opsional)"></textarea>
                             @error('keterangan')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -110,10 +113,10 @@
                             <div class="card-body">
                                 <!-- File LPJ -->
                                 <div class="mb-3">
-                                    <label class="form-label">Laporan Pertanggungjawaban (LPJ) <span class="text-danger">*</span></label>
-                                    <input type="file" wire:model="file_lpj" 
-                                           class="form-control @error('file_lpj') is-invalid @enderror"
-                                           accept=".pdf">
+                                    <label class="form-label">Laporan Pertanggungjawaban (LPJ) <span
+                                            class="text-danger">*</span></label>
+                                    <input type="file" wire:model="file_lpj"
+                                        class="form-control @error('file_lpj') is-invalid @enderror" accept=".pdf">
                                     @error('file_lpj')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -125,46 +128,52 @@
 
                                 <!-- File Realisasi -->
                                 <div class="mb-3">
-                                    <label class="form-label">Laporan Realisasi Kegiatan <span class="text-danger">*</span></label>
-                                    <input type="file" wire:model="file_realisasi" 
-                                           class="form-control @error('file_realisasi') is-invalid @enderror"
-                                           accept=".pdf">
+                                    <label class="form-label">Laporan Realisasi Kegiatan <span
+                                            class="text-danger">*</span></label>
+                                    <input type="file" wire:model="file_realisasi"
+                                        class="form-control @error('file_realisasi') is-invalid @enderror"
+                                        accept=".pdf">
                                     @error('file_realisasi')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                     <small class="text-muted">Format: PDF, Max: 2MB</small>
                                     <div wire:loading wire:target="file_realisasi" class="text-primary mt-1">
-                                        <i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Uploading...
+                                        <i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i>
+                                        Uploading...
                                     </div>
                                 </div>
 
                                 <!-- File Dokumentasi -->
                                 <div class="mb-3">
-                                    <label class="form-label">Dokumentasi Kegiatan <span class="text-danger">*</span></label>
-                                    <input type="file" wire:model="file_dokumentasi" 
-                                           class="form-control @error('file_dokumentasi') is-invalid @enderror"
-                                           accept=".pdf,.zip,.rar">
+                                    <label class="form-label">Dokumentasi Kegiatan <span
+                                            class="text-danger">*</span></label>
+                                    <input type="file" wire:model="file_dokumentasi"
+                                        class="form-control @error('file_dokumentasi') is-invalid @enderror"
+                                        accept=".pdf,.zip,.rar">
                                     @error('file_dokumentasi')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                     <small class="text-muted">Format: PDF/ZIP/RAR, Max: 5MB</small>
                                     <div wire:loading wire:target="file_dokumentasi" class="text-primary mt-1">
-                                        <i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Uploading...
+                                        <i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i>
+                                        Uploading...
                                     </div>
                                 </div>
 
                                 <!-- File Kwitansi -->
                                 <div class="mb-3">
-                                    <label class="form-label">Kwitansi/Bukti Pengeluaran <span class="text-danger">*</span></label>
-                                    <input type="file" wire:model="file_kwitansi" 
-                                           class="form-control @error('file_kwitansi') is-invalid @enderror"
-                                           accept=".pdf">
+                                    <label class="form-label">Kwitansi/Bukti Pengeluaran <span
+                                            class="text-danger">*</span></label>
+                                    <input type="file" wire:model="file_kwitansi"
+                                        class="form-control @error('file_kwitansi') is-invalid @enderror"
+                                        accept=".pdf">
                                     @error('file_kwitansi')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                     <small class="text-muted">Format: PDF, Max: 2MB</small>
                                     <div wire:loading wire:target="file_kwitansi" class="text-primary mt-1">
-                                        <i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Uploading...
+                                        <i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i>
+                                        Uploading...
                                     </div>
                                 </div>
                             </div>
@@ -175,9 +184,8 @@
                             <a href="{{ route('permohonan.show', $permohonan->id) }}" class="btn btn-secondary">
                                 <i class="bi bi-arrow-left"></i> Kembali
                             </a>
-                            <button type="submit" class="btn btn-primary" 
-                                    wire:loading.attr="disabled"
-                                    wire:target="submit">
+                            <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
+                                wire:target="submit">
                                 <span wire:loading.remove wire:target="submit">
                                     <i class="bi bi-send"></i> Ajukan Pencairan
                                 </span>
@@ -209,13 +217,13 @@
                             </div>
                             <div>
                                 @php
-                                    $badgeClass = match($p->status) {
+                                    $badgeClass = match ($p->status) {
                                         'diajukan' => 'bg-warning',
                                         'diverifikasi' => 'bg-info',
                                         'disetujui' => 'bg-primary',
                                         'ditolak' => 'bg-danger',
                                         'dicairkan' => 'bg-success',
-                                        default => 'bg-secondary'
+                                        default => 'bg-secondary',
                                     };
                                 @endphp
                                 <span class="badge {{ $badgeClass }}">{{ ucfirst($p->status) }}</span>
@@ -246,6 +254,6 @@
     </div>
 
     @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     @endpush
 </div>

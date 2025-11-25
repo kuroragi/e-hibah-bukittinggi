@@ -25,6 +25,7 @@ class Nphd extends Component
     public function mount($id_lembaga){
         $this->lembaga = Lembaga::findOrFail($id_lembaga);
         $this->nphd = $this->lembaga->nphdLembaga;
+        $this->nphd ? '' : $this->nphd = NphdLembaga::create(['id_lembaga' => $this->lembaga->id]);
         if($this->nphd){
             $this->nomor_pengukuhan = $this->nphd->nomor_pengukuhan;
             $this->tanggal_pengukuhan = $this->nphd->tanggal_pengukuhan;
@@ -77,10 +78,12 @@ class Nphd extends Component
             'masa_bakti.required' => 'Masa Bakti wajib diisi',
             'deskripsi.required' => 'Deskripsi wajib diisi',]);
         $validatedData['uraian'] = json_encode($this->uraian);
+
         DB::beginTransaction();
         try{
             $nphdConf = tap($this->nphd)->update($validatedData);
-            ActivityLogService::log('lembaga.update-konfigurasi-nphd', 'warning', 'pembaruan data Konfigurasi NPHD '.$this->lembaga->name, json_encode($validatedData));
+            
+            ActivityLogService::log('lembaga.update-konfigurasi-nphd', 'warning', 'pembaruan data Konfigurasi NPHD '.$this->lembaga->name, json_encode($nphdConf->toArray()));
             DB::commit();
 
             session()->flash('success', 'Konfigurasi NPHD berhasil diperbarui.');

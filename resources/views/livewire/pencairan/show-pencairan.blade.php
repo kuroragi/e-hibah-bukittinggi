@@ -26,13 +26,13 @@
                         </div>
                         <div>
                             @php
-                                $badgeClass = match($pencairan->status) {
+                                $badgeClass = match ($pencairan->status) {
                                     'diajukan' => 'bg-warning',
                                     'diverifikasi' => 'bg-info',
                                     'disetujui' => 'bg-primary',
                                     'ditolak' => 'bg-danger',
                                     'dicairkan' => 'bg-success',
-                                    default => 'bg-secondary'
+                                    default => 'bg-secondary',
                                 };
                             @endphp
                             <span class="badge {{ $badgeClass }} fs-6">{{ ucfirst($pencairan->status) }}</span>
@@ -93,7 +93,8 @@
                         </div>
                         <div class="col-md-4">
                             <small class="text-muted">Total Anggaran:</small>
-                            <p class="mb-2"><strong>Rp {{ number_format($pencairan->permohonan->jumlah_mohon, 0, ',', '.') }}</strong></p>
+                            <p class="mb-2"><strong>Rp
+                                    {{ number_format($pencairan->permohonan->jumlah_mohon, 0, ',', '.') }}</strong></p>
                         </div>
                         <div class="col-md-4">
                             <small class="text-muted">No. Permohonan:</small>
@@ -126,9 +127,10 @@
                         </div>
                         <div class="col-md-12 mt-2">
                             <small class="text-muted">Jumlah Pencairan:</small>
-                            <h3 class="text-primary mb-2">Rp {{ number_format($pencairan->jumlah_pencairan, 0, ',', '.') }}</h3>
+                            <h3 class="text-primary mb-2">Rp {{ number_format($pencairan->jumlah_pencairan, 0, ',', '.') }}
+                            </h3>
                         </div>
-                        @if($pencairan->keterangan)
+                        @if ($pencairan->keterangan)
                             <div class="col-md-12">
                                 <small class="text-muted">Keterangan:</small>
                                 <p class="mb-0">{{ $pencairan->keterangan }}</p>
@@ -139,7 +141,7 @@
             </div>
 
             <!-- Informasi Rekening -->
-            @if($pencairan->status == 'disetujui' || $pencairan->status == 'dicairkan')
+            @if ($pencairan->status == 'disetujui' || $pencairan->status == 'dicairkan')
                 <div class="card mb-3 border-primary">
                     <div class="card-header bg-primary text-white">
                         <h6 class="mb-0"><i class="bi bi-bank"></i> Informasi Rekening Penerima</h6>
@@ -148,15 +150,18 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <small class="text-muted">Nama Bank:</small>
-                                <p class="mb-2"><strong>{{ $pencairan->permohonan->lembaga->bank->name ?? '-' }}</strong></p>
+                                <p class="mb-2"><strong>{{ $pencairan->permohonan->lembaga->bank->name ?? '-' }}</strong>
+                                </p>
                             </div>
                             <div class="col-md-6">
                                 <small class="text-muted">No. Rekening:</small>
-                                <p class="mb-2"><strong>{{ $pencairan->permohonan->lembaga->rekening ?? '-' }}</strong></p>
+                                <p class="mb-2"><strong>{{ $pencairan->permohonan->lembaga->rekening ?? '-' }}</strong>
+                                </p>
                             </div>
                             <div class="col-md-6">
                                 <small class="text-muted">Atas Nama:</small>
-                                <p class="mb-2"><strong>{{ $pencairan->permohonan->lembaga->name_rekening ?? '-' }}</strong></p>
+                                <p class="mb-2">
+                                    <strong>{{ $pencairan->permohonan->lembaga->name_rekening ?? '-' }}</strong></p>
                             </div>
                         </div>
                     </div>
@@ -170,9 +175,9 @@
                 </div>
                 <div class="card-body">
                     <div class="list-group">
-                        @if($pencairan->file_lpj)
-                            <a href="{{ Storage::url($pencairan->file_lpj) }}" target="_blank" 
-                               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        @if ($pencairan->file_lpj)
+                            <a href="{{ Storage::url($pencairan->file_lpj) }}" target="_blank"
+                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 <div>
                                     <i class="bi bi-file-pdf text-danger fs-4"></i>
                                     <strong class="ms-2">Laporan Pertanggungjawaban (LPJ)</strong>
@@ -182,9 +187,9 @@
                                 </span>
                             </a>
                         @endif
-                        @if($pencairan->file_realisasi)
-                            <a href="{{ Storage::url($pencairan->file_realisasi) }}" target="_blank" 
-                               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        @if ($pencairan->file_realisasi)
+                            <a href="{{ Storage::url($pencairan->file_realisasi) }}" target="_blank"
+                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 <div>
                                     <i class="bi bi-file-pdf text-danger fs-4"></i>
                                     <strong class="ms-2">Laporan Realisasi Kegiatan</strong>
@@ -194,9 +199,9 @@
                                 </span>
                             </a>
                         @endif
-                        @if($pencairan->file_dokumentasi)
-                            <a href="{{ Storage::url($pencairan->file_dokumentasi) }}" target="_blank" 
-                               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        @if ($pencairan->file_dokumentasi)
+                            <a href="{{ Storage::url($pencairan->file_dokumentasi) }}" target="_blank"
+                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 <div>
                                     <i class="bi bi-file-earmark-zip text-info fs-4"></i>
                                     <strong class="ms-2">Dokumentasi Kegiatan</strong>
@@ -206,9 +211,9 @@
                                 </span>
                             </a>
                         @endif
-                        @if($pencairan->file_kwitansi)
-                            <a href="{{ Storage::url($pencairan->file_kwitansi) }}" target="_blank" 
-                               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        @if ($pencairan->file_kwitansi)
+                            <a href="{{ Storage::url($pencairan->file_kwitansi) }}" target="_blank"
+                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 <div>
                                     <i class="bi bi-file-pdf text-danger fs-4"></i>
                                     <strong class="ms-2">Kwitansi/Bukti Pengeluaran</strong>
@@ -223,9 +228,10 @@
             </div>
 
             <!-- Hasil Verifikasi -->
-            @if($pencairan->verified_at)
+            @if ($pencairan->verified_at)
                 <div class="card mb-3 {{ $pencairan->status == 'ditolak' ? 'border-danger' : 'border-success' }}">
-                    <div class="card-header {{ $pencairan->status == 'ditolak' ? 'bg-danger' : 'bg-success' }} text-white">
+                    <div
+                        class="card-header {{ $pencairan->status == 'ditolak' ? 'bg-danger' : 'bg-success' }} text-white">
                         <h6 class="mb-0"><i class="bi bi-check-circle"></i> Hasil Verifikasi</h6>
                     </div>
                     <div class="card-body">
@@ -238,7 +244,7 @@
                                 <small class="text-muted">Tanggal Verifikasi:</small>
                                 <p class="mb-2"><strong>{{ $pencairan->verified_at->format('d F Y H:i') }}</strong></p>
                             </div>
-                            @if($pencairan->catatan_verifikasi)
+                            @if ($pencairan->catatan_verifikasi)
                                 <div class="col-md-12">
                                     <small class="text-muted">Catatan Verifikasi:</small>
                                     <div class="alert alert-light mt-2">
@@ -252,9 +258,10 @@
             @endif
 
             <!-- Hasil Approval -->
-            @if($pencairan->approved_at)
+            @if ($pencairan->approved_at)
                 <div class="card mb-3 {{ $pencairan->status == 'ditolak' ? 'border-danger' : 'border-primary' }}">
-                    <div class="card-header {{ $pencairan->status == 'ditolak' ? 'bg-danger' : 'bg-primary' }} text-white">
+                    <div
+                        class="card-header {{ $pencairan->status == 'ditolak' ? 'bg-danger' : 'bg-primary' }} text-white">
                         <h6 class="mb-0"><i class="bi bi-check2-all"></i> Hasil Approval</h6>
                     </div>
                     <div class="card-body">
@@ -267,7 +274,7 @@
                                 <small class="text-muted">Tanggal Approval:</small>
                                 <p class="mb-2"><strong>{{ $pencairan->approved_at->format('d F Y H:i') }}</strong></p>
                             </div>
-                            @if($pencairan->catatan_approval)
+                            @if ($pencairan->catatan_approval)
                                 <div class="col-md-12">
                                     <small class="text-muted">Catatan Approval:</small>
                                     <div class="alert alert-light mt-2">
@@ -303,12 +310,13 @@
                                 <small>{{ $pencairan->created_at->format('d M Y H:i') }}</small>
                             </div>
                         </div>
-                        <div class="timeline-item {{ in_array($pencairan->status, ['diverifikasi', 'disetujui', 'dicairkan']) ? 'completed' : ($pencairan->status == 'ditolak' && $pencairan->verified_at ? 'rejected' : '') }}">
+                        <div
+                            class="timeline-item {{ in_array($pencairan->status, ['diverifikasi', 'disetujui', 'dicairkan']) ? 'completed' : ($pencairan->status == 'ditolak' && $pencairan->verified_at ? 'rejected' : '') }}">
                             <div class="timeline-marker"></div>
                             <div class="timeline-content">
                                 <h6>Diverifikasi</h6>
                                 <small>
-                                    @if($pencairan->verified_at)
+                                    @if ($pencairan->verified_at)
                                         {{ $pencairan->verified_at->format('d M Y H:i') }}
                                     @else
                                         Menunggu verifikasi
@@ -316,12 +324,13 @@
                                 </small>
                             </div>
                         </div>
-                        <div class="timeline-item {{ in_array($pencairan->status, ['disetujui', 'dicairkan']) ? 'completed' : ($pencairan->status == 'ditolak' && $pencairan->approved_at ? 'rejected' : '') }}">
+                        <div
+                            class="timeline-item {{ in_array($pencairan->status, ['disetujui', 'dicairkan']) ? 'completed' : ($pencairan->status == 'ditolak' && $pencairan->approved_at ? 'rejected' : '') }}">
                             <div class="timeline-marker"></div>
                             <div class="timeline-content">
                                 <h6>Disetujui</h6>
                                 <small>
-                                    @if($pencairan->approved_at)
+                                    @if ($pencairan->approved_at)
                                         {{ $pencairan->approved_at->format('d M Y H:i') }}
                                     @else
                                         Menunggu approval
@@ -334,7 +343,7 @@
                             <div class="timeline-content">
                                 <h6>Dicairkan</h6>
                                 <small>
-                                    @if($pencairan->status == 'dicairkan')
+                                    @if ($pencairan->status == 'dicairkan')
                                         Dana telah dicairkan
                                     @else
                                         Menunggu pencairan
@@ -353,11 +362,12 @@
                 </div>
                 <div class="card-body">
                     @forelse($pencairan->permohonan->pencairans()->orderBy('tahap_pencairan')->get() as $p)
-                        <div class="d-flex align-items-center mb-3 pb-3 border-bottom {{ $p->id == $pencairan->id ? 'bg-light p-2 rounded' : '' }}">
+                        <div
+                            class="d-flex align-items-center mb-3 pb-3 border-bottom {{ $p->id == $pencairan->id ? 'bg-light p-2 rounded' : '' }}">
                             <div class="flex-grow-1">
                                 <div class="d-flex align-items-center">
                                     <h6 class="mb-1">Tahap {{ $p->tahap_pencairan }}</h6>
-                                    @if($p->id == $pencairan->id)
+                                    @if ($p->id == $pencairan->id)
                                         <span class="badge bg-info ms-2">Current</span>
                                     @endif
                                 </div>
@@ -368,13 +378,13 @@
                             </div>
                             <div>
                                 @php
-                                    $badgeClass = match($p->status) {
+                                    $badgeClass = match ($p->status) {
                                         'diajukan' => 'bg-warning',
                                         'diverifikasi' => 'bg-info',
                                         'disetujui' => 'bg-primary',
                                         'ditolak' => 'bg-danger',
                                         'dicairkan' => 'bg-success',
-                                        default => 'bg-secondary'
+                                        default => 'bg-secondary',
                                     };
                                 @endphp
                                 <span class="badge {{ $badgeClass }}">{{ ucfirst($p->status) }}</span>
@@ -393,11 +403,17 @@
                 </div>
                 <div class="card-body">
                     @php
-                        $totalDicairkan = $pencairan->permohonan->pencairans()->where('status', 'dicairkan')->sum('jumlah_pencairan');
-                        $totalDisetujui = $pencairan->permohonan->pencairans()->where('status', 'disetujui')->sum('jumlah_pencairan');
+                        $totalDicairkan = $pencairan->permohonan
+                            ->pencairans()
+                            ->where('status', 'dicairkan')
+                            ->sum('jumlah_pencairan');
+                        $totalDisetujui = $pencairan->permohonan
+                            ->pencairans()
+                            ->where('status', 'disetujui')
+                            ->sum('jumlah_pencairan');
                         $sisaDana = $pencairan->permohonan->jumlah_mohon - $totalDicairkan - $totalDisetujui;
                     @endphp
-                    
+
                     <div class="mb-2">
                         <div class="d-flex justify-content-between">
                             <small class="text-muted">Total Anggaran:</small>
@@ -429,47 +445,54 @@
     </div>
 
     @push('styles')
-    <style>
-        .timeline {
-            position: relative;
-            padding-left: 30px;
-        }
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 8px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: #ddd;
-        }
-        .timeline-item {
-            position: relative;
-            padding-bottom: 20px;
-        }
-        .timeline-marker {
-            position: absolute;
-            left: -26px;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: #ddd;
-            border: 3px solid #fff;
-        }
-        .timeline-item.completed .timeline-marker {
-            background: #28a745;
-        }
-        .timeline-item.rejected .timeline-marker {
-            background: #dc3545;
-        }
-        .timeline-content h6 {
-            margin-bottom: 2px;
-            font-size: 0.9rem;
-        }
-        .timeline-content small {
-            color: #6c757d;
-            font-size: 0.8rem;
-        }
-    </style>
+        <style>
+            .timeline {
+                position: relative;
+                padding-left: 30px;
+            }
+
+            .timeline::before {
+                content: '';
+                position: absolute;
+                left: 8px;
+                top: 0;
+                bottom: 0;
+                width: 2px;
+                background: #ddd;
+            }
+
+            .timeline-item {
+                position: relative;
+                padding-bottom: 20px;
+            }
+
+            .timeline-marker {
+                position: absolute;
+                left: -26px;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                background: #ddd;
+                border: 3px solid #fff;
+            }
+
+            .timeline-item.completed .timeline-marker {
+                background: #28a745;
+            }
+
+            .timeline-item.rejected .timeline-marker {
+                background: #dc3545;
+            }
+
+            .timeline-content h6 {
+                margin-bottom: 2px;
+                font-size: 0.9rem;
+            }
+
+            .timeline-content small {
+                color: #6c757d;
+                font-size: 0.8rem;
+            }
+        </style>
     @endpush
 @endsection

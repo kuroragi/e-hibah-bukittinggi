@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Skpd as ModelsSkpd;
+use App\Models\SkpdDetail;
 use App\Models\UrusanSkpd;
 use App\Services\ActivityLogService;
 use App\Services\UserLogService;

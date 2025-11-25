@@ -23,7 +23,11 @@ class Review extends Component
     public $nominal_anggaran;
     public $total_kegiatan = 0;
     public $kegiatans;
+    public $kegiatan_urusan = [];
     public $kegiatan_rab = [];
+
+    public $saksi_skpd;
+    public $saksi_lembaga;
 
     public $nomor_nphd_skpd;
     public $nomor_nphd_lembaga;
@@ -39,20 +43,26 @@ class Review extends Component
         if(!$this->kegiatans->count() > 0){
             $this->kegiatans = RabPermohonan::where('id_permohonan', $this->permohonan->id)->get();
         }
-            if($this->kegiatans){
-                $grand = 0;
-                foreach ($this->kegiatans as $k1 => $item) {
-                    $grand += $item->subtotal;
-                }
-                $this->total_kegiatan = $grand;
-            }
+
+        if($this->kegiatans){
+            $grand = 0;
             foreach ($this->kegiatans as $k1 => $item) {
-                $this->kegiatan_rab[$k1] = [
-                    'id_kegiatan' => $item->id,
-                    'nama_kegiatan' => $item->nama_kegiatan,
-                    'total_kegiatan' => 0
-                ];
+                $grand += $item->subtotal;
             }
+            $this->total_kegiatan = $grand;
+        }
+        foreach ($this->kegiatans as $k1 => $item) {
+            $this->kegiatan_rab[$k1] = [
+                'id_kegiatan' => $item->id,
+                'nama_kegiatan' => $item->nama_kegiatan,
+                'total_kegiatan' => 0
+            ];
+        }
+
+        $this->kegiatan_urusan = json_decode($this->permohonan->lembaga?->urusan?->kegiatan, true);
+
+        $this->saksi_skpd = $this->permohonan->skpd?->detail?->nama_sekretaris && $this->permohonan->lembaga?->urusan?->kepala_urusan;
+        $this->saksi_lembaga = $this->permohonan->lembaga?->pengurus[1]?->name && $this->permohonan->lembaga?->pengurus[2]?->name;
     }
 
     protected $step_rules = [
@@ -99,7 +109,7 @@ class Review extends Component
                 'waktu' => $waktu_sekarang, 
                 'nomor_skpd' => $this->nomor_nphd_skpd, 
                 'nomor_lembaga' => $this->nomor_nphd_lembaga,
-                'kegiatan_urusan' => json_decode($this->permohonan->lembaga?->urusan?->kegiatan, true)
+                'kegiatan_urusan' => $this->kegiatan_urusan
                 ])->setPaper([0, 0, 210, 330], 'portrait');
 
             // Pastikan folder ada (di disk 'public' = storage/app/public)
