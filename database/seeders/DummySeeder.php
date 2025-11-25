@@ -28,27 +28,6 @@ class DummySeeder extends Seeder
                 'password' => bcrypt('@zaq123qwerty'),
                 'id_role' => 5,
             ])->assignRole('Admin Lembaga');
-            
-            $user_reviewer = User::create([
-                'name' => 'Reviewer Olahraga',
-                'email' => 'reolga@example.com',
-                'password' => bcrypt('@zaq123qwerty'),
-                'id_role' => 4,
-            ])->assignRole('Reviewer');
-
-            $skpd = Skpd::create([
-                'name' => 'Dinas Pemuda dan Olahraga'
-            ]);
-
-            $skpd->has_urusan()->create([
-                'id_skpd' => $skpd->id,
-                'nama_urusan' => 'Kepemudaan'
-            ]);
-
-            $urusan_olahraga = $skpd->has_urusan()->create([
-                'id_skpd' => $skpd->id,
-                'nama_urusan' => 'Olahraga'
-            ]);
 
             $lembaga = Lembaga::create([
                 'name' => 'Komite Olahraga Nasional Indonesia',
@@ -85,8 +64,8 @@ class DummySeeder extends Seeder
             ]);
 
             $user_koni->update([
-                'id_skpd' => $skpd->id,
-                'id_urusan' => $urusan_olahraga->id,
+                'id_skpd' => 1,
+                'id_urusan' => 1,
                 'id_lembaga' => $lembaga->id,
             ]);
 

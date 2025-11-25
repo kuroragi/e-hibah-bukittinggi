@@ -48,9 +48,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/permission', Permission::class)->name('permission');
     Route::get('/role', Role::class)->name('role');
     Route::get('/skpd', SKPD::class)->name('skpd');
-    // Route::get('/skpd/detail/{id_skpd}', function(){
-    //     dd(request()->id_skpd);
-    // })->name('skpd.detail');
     Route::get('/skpd/detail/{id_skpd}', DetailSkpd::class)->name('skpd.detail');
     Route::get('/user', User::class)->name('user.index');
     Route::get('/user/change_password', ChangePassword::class)->name('user.change_password');
@@ -106,58 +103,58 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-Route::get('/testing-pdf', function(){
-    $permohonan = Permohonan::first();
-    $data = Permohonan::with(['lembaga' => function($query){
-        $query->with(['skpd.detail', 'urusan', 'pengurus', 'nphdLembaga']);
-    }])->where('id', $permohonan->id)->first();
-    $nominal_anggaran = $data->nominal_anggaran;
-    $pimpinan_lembaga = $data->lembaga?->pengurus->first();
-    $kegiatan_rab = [];
-    $kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', 3)->get();
-            if($kegiatans){
-                $grand = 0;
-                foreach ($kegiatans as $k1 => $item) {
-                    foreach ($item->rincian as $k2 => $child) {
-                        $grand += $child->subtotal;
-                    }
-                }
-                $total_kegiatan = $grand;
-            }
-            foreach ($kegiatans as $k1 => $item) {
-                $kegiatan_rab[$k1] = [
-                    'id_kegiatan' => $item->id,
-                    'nama_kegiatan' => $item->nama_kegiatan,
-                    'total_kegiatan' => 0
-                ];
-                foreach($item->rincian as $k2 => $child){
-                    $kegiatan_rab[$k1]['rincian'][$k2] = [
-                        'id_rincian' => $child->id,
-                        'kegiatan' => $child->keterangan,
-                        'volume' => $child->volume,
-                        'satuan' => $child->id_satuan,
-                        'harga_satuan' => $child->harga,
-                        'subtotal' => $child->subtotal,
-                    ];
-                }
-            }
-    $nomor_skpd = '400.4.8.2/02.DISPORA/2025';
-    $nomor_lembaga = '004/PE/KONI-BKT/III/2025';
-    $waktu = General::getIndoTerbilangDate(now());
-    $waktu['tanggal_penuh'] = now();
-    $kegiatan_urusan = json_decode($data->lembaga?->urusan?->kegiatan, true);
-    return view('pdf.nphd', [
-        'data' => $data,
-        'pimpinan_lembaga' => $pimpinan_lembaga,
-        'kegiatans' => $kegiatans,
-        'nominal_rab' => 5000000,
-        'nominal_anggaran' => $nominal_anggaran,
-        'nomor_skpd' => $nomor_skpd,
-        'nomor_lembaga' => $nomor_lembaga,
-        'waktu' => $waktu,
-        'kegiatan_urusan' => $kegiatan_urusan,
-    ]);
-});
+// Route::get('/testing-pdf', function(){
+//     $permohonan = Permohonan::first();
+//     $data = Permohonan::with(['lembaga' => function($query){
+//         $query->with(['skpd.detail', 'urusan', 'pengurus', 'nphdLembaga']);
+//     }])->where('id', $permohonan->id)->first();
+//     $nominal_anggaran = $data->nominal_anggaran;
+//     $pimpinan_lembaga = $data->lembaga?->pengurus->first();
+//     $kegiatan_rab = [];
+//     $kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', 3)->get();
+//             if($kegiatans){
+//                 $grand = 0;
+//                 foreach ($kegiatans as $k1 => $item) {
+//                     foreach ($item->rincian as $k2 => $child) {
+//                         $grand += $child->subtotal;
+//                     }
+//                 }
+//                 $total_kegiatan = $grand;
+//             }
+//             foreach ($kegiatans as $k1 => $item) {
+//                 $kegiatan_rab[$k1] = [
+//                     'id_kegiatan' => $item->id,
+//                     'nama_kegiatan' => $item->nama_kegiatan,
+//                     'total_kegiatan' => 0
+//                 ];
+//                 foreach($item->rincian as $k2 => $child){
+//                     $kegiatan_rab[$k1]['rincian'][$k2] = [
+//                         'id_rincian' => $child->id,
+//                         'kegiatan' => $child->keterangan,
+//                         'volume' => $child->volume,
+//                         'satuan' => $child->id_satuan,
+//                         'harga_satuan' => $child->harga,
+//                         'subtotal' => $child->subtotal,
+//                     ];
+//                 }
+//             }
+//     $nomor_skpd = '400.4.8.2/02.DISPORA/2025';
+//     $nomor_lembaga = '004/PE/KONI-BKT/III/2025';
+//     $waktu = General::getIndoTerbilangDate(now());
+//     $waktu['tanggal_penuh'] = now();
+//     $kegiatan_urusan = json_decode($data->lembaga?->urusan?->kegiatan, true);
+//     return view('pdf.nphd', [
+//         'data' => $data,
+//         'pimpinan_lembaga' => $pimpinan_lembaga,
+//         'kegiatans' => $kegiatans,
+//         'nominal_rab' => 5000000,
+//         'nominal_anggaran' => $nominal_anggaran,
+//         'nomor_skpd' => $nomor_skpd,
+//         'nomor_lembaga' => $nomor_lembaga,
+//         'waktu' => $waktu,
+//         'kegiatan_urusan' => $kegiatan_urusan,
+//     ]);
+// });
 
 // Route::get('/testing', function () {
 //     $user = auth()->user();
