@@ -45,7 +45,7 @@ class DummySeeder extends Seeder
                 'file_akta_kumham' => 'data_lembaga/lembaga_2_akta_kumham.pdf',
                 'no_domisili' => '131',
                 'date_domisili' => '2025/2/6',
-                'file_domisili' => 'data_lembaga/lembaga_2_domisili.pdf',
+                'file_domisili' => 'data_lembaga/lembaga_2_file_domisili.pdf',
                 'no_operasional' => '141',
                 'date_operasional' => '2025/2/6',
                 'file_operasional' => 'data_lembaga/lembaga_2_operasional.pdf',
@@ -75,7 +75,7 @@ class DummySeeder extends Seeder
                 'no_mohon' => '161/KONI/II/2026',
                 'tanggal_mohon' => '2025/2/6',
                 'perihal_mohon' => 'permintaan dana kegiatan olahraga',
-                'file_mohon' => 'permojonan/surat_permohonan_21820254.pdf',
+                'file_mohon' => 'dukung_permohonan/surat_permohonan_21920251.pdf',
                 'no_proposal' => '161/KONI/II/2026',
                 'tanggal_proposal' => '2025/2/6',
                 'title' => 'Permintaan Dana Kegiatan Olahraga Tahun 2026',
@@ -83,7 +83,7 @@ class DummySeeder extends Seeder
                 'id_skpd' => 1,
                 'awal_laksana' => '2026/1/2',
                 'akhir_laksana' => '2026/12/31',
-                'file_proposal' => 'permohonan/proposal_permohonan_21820254.pdf',
+                'file_proposal' => 'permohonan/proposal_permohonan_21920251.pdf',
                 'latar_belakang' => 'latar belakangan kegiatan olahraga',
                 'maksud_tujuan' => 'maksud dan tujuan kegiatan olahraga',
                 'keterangan' => 'Keterangan kegiatan olahraga',
@@ -97,13 +97,13 @@ class DummySeeder extends Seeder
 
             $create_pendukung_permohonan = PendukungPermohonan::create([
                 'id_permohonan' => $permohonan->id,
-                'file_pernyataan_tanggung_jawab' => 'permohonan/tanggung_jawab_21820254.pdf',
-                'struktur_pengurus' => 'permohonan/pengurus_21820254.pdf',
-                'file_rab' => 'permohonan/rab_21820254.pdf',
-                'saldo_akhir_rek' => 'permohonan/saldo_akhir_21820254.pdf',
+                'file_pernyataan_tanggung_jawab' => 'dukung_permohonan/tanggung_jawab_21920251.pdf',
+                'struktur_pengurus' => 'dukung_permohonan/pengurus_21920251.pdf',
+                'file_rab' => 'dukung_permohonan/rab_21920251.pdf',
+                'saldo_akhir_rek' => 'dukung_permohonan/saldo_akhir_21920251.pdf',
                 'no_tidak_tumpang_tindih' => '171',
                 'tanggal_tidak_tumpang_tindih' => '2025/2/6',
-                'file_tidak_tumpang_tindih' => 'permohonan/tidak_tumpang_tindih_21820254.pdf',
+                'file_tidak_tumpang_tindih' => 'dukung_permohonan/tidak_tumpang_tindih_21920251.pdf',
             ]);
 
             $data_kegiatan_rab = [

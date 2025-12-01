@@ -45,7 +45,7 @@ class PermohonanController extends Controller
         $permohonan = Permohonan::with(['lembaga', 'skpd', 'status', 'pendukung', 'perbaikanProposal.perbaikan_rab'])->where('id', $id_permohonan)->first();
         $kegiatans = PerbaikanRab::where('id_permohonan', $id_permohonan)->latest()->get();
         if(!$kegiatans->count() > 0){
-            $kegiatans = RabPermohonan::with(['rincian.satuan'])->where('id_permohonan', $id_permohonan)->get();
+            $kegiatans = RabPermohonan::where('id_permohonan', $id_permohonan)->get();
         }
         $skpds = Skpd::all();
         $urusans = UrusanSkpd::where('id_skpd', $permohonan->id_skpd)->get();
