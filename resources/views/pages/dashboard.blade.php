@@ -43,11 +43,6 @@
                                     <i class="bi bi-person"></i>
                                 </div>
                             </div>
-                            {{-- <div class="border-top my-2"></div>
-                            <small class="mb-0"><span class="text-success">+2.5 <i class="bi bi-arrow-up"></i></span>
-                                Compared
-                                to
-                                last month</small> --}}
                         </div>
                     </div>
                 </div>
@@ -63,11 +58,6 @@
                                     <i class="bi bi-buildings"></i>
                                 </div>
                             </div>
-                            {{-- <div class="border-top my-2"></div>
-                            <small class="mb-0"><span class="text-success">+3.6 <i class="bi bi-arrow-up"></i></span>
-                                Compared
-                                to
-                                last month</small> --}}
                         </div>
                     </div>
                 </div>
@@ -84,10 +74,6 @@
                                 <i class="bi bi-patch-check"></i>
                             </div>
                         </div>
-                        {{-- <div class="border-top my-2"></div>
-                            <small class="mb-0"><span class="text-danger">-1.8 <i class="bi bi-arrow-down"></i></span>
-                                Compared to
-                                last month</small> --}}
                     </div>
                 </div>
             </div>
@@ -104,17 +90,16 @@
                                 Rp.
                             </div>
                         </div>
-                        {{-- <div class="border-top my-2"></div>
-                            <small class="mb-0"><span class="text-danger">-1.8 <i class="bi bi-arrow-down"></i></span>
-                                Compared to
-                                last month</small> --}}
                     </div>
                 </div>
             </div>
         </div>
         <!--end row-->
 
-        <div class="row">
+
+
+        <div class="row my-4">
+
             <div class="col-12 col-lg-12 col-xl-6 d-flex">
                 <div class="card radius-10 w-100">
                     <div class="card-body">
@@ -212,6 +197,181 @@
                 </div>
             </div>
         </div>
+
+        <!-- Pencairan Dana Hibah Statistics -->
+        <div class="row my-4">
+            <div class="col-12">
+                <h5 class="mb-3">Statistik Pencairan Dana Hibah</h5>
+            </div>
+        </div>
+
+        <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-2 row-cols-xxl-4">
+            <div class="col">
+                <div class="card radius-10 bg-light-info">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <p class="mb-1 text-secondary">Total Pencairan</p>
+                                <h4 class="mb-0 text-info">{{ $pencairanStats['total'] }}</h4>
+                            </div>
+                            <div class="ms-auto fs-2 text-info">
+                                <i class="bi bi-cash-stack"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card radius-10 bg-light-success">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <p class="mb-1 text-secondary">Dana Dicairkan</p>
+                                <h5 class="mb-0 text-success">Rp.
+                                    {{ number_format($pencairanStats['totalDana'], 0, ',', '.') }}</h5>
+                            </div>
+                            <div class="ms-auto fs-2 text-success">
+                                <i class="bi bi-check-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card radius-10 bg-light-warning">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <p class="mb-1 text-secondary">Menunggu Proses</p>
+                                <h4 class="mb-0 text-warning">{{ $pencairanStats['pending'] }}</h4>
+                            </div>
+                            <div class="ms-auto fs-2 text-warning">
+                                <i class="bi bi-hourglass-split"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card radius-10 bg-light-danger">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="">
+                                <p class="mb-1 text-secondary">Ditolak</p>
+                                <h4 class="mb-0 text-danger">{{ $pencairanStats['ditolak'] }}</h4>
+                            </div>
+                            <div class="ms-auto fs-2 text-danger">
+                                <i class="bi bi-x-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detail Pencairan Status -->
+        <div class="row my-4">
+            <div class="col-12 col-lg-8">
+                <div class="card radius-10">
+                    <div class="card-body">
+                        <h6 class="mb-3">Status Pencairan Terperinci</h6>
+                        <div class="row row-cols-2 row-cols-md-5 g-2">
+                            <div class="col">
+                                <div class="card radius-10 mb-0 border shadow-none text-center">
+                                    <div class="card-body py-2">
+                                        <div class="widget-icon mx-auto mb-2 bg-warning text-dark"
+                                            style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                                            <i class="bi bi-arrow-up-circle"></i>
+                                        </div>
+                                        <h5 class="mb-1">{{ $pencairanStats['diajukan'] }}</h5>
+                                        <p class="mb-0 small">Diajukan</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card radius-10 mb-0 border shadow-none text-center">
+                                    <div class="card-body py-2">
+                                        <div class="widget-icon mx-auto mb-2 bg-info text-white"
+                                            style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                                            <i class="bi bi-search"></i>
+                                        </div>
+                                        <h5 class="mb-1">{{ $pencairanStats['diverifikasi'] }}</h5>
+                                        <p class="mb-0 small">Diverifikasi</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card radius-10 mb-0 border shadow-none text-center">
+                                    <div class="card-body py-2">
+                                        <div class="widget-icon mx-auto mb-2 bg-primary text-white"
+                                            style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                                            <i class="bi bi-check-lg"></i>
+                                        </div>
+                                        <h5 class="mb-1">{{ $pencairanStats['disetujui'] }}</h5>
+                                        <p class="mb-0 small">Disetujui</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card radius-10 mb-0 border shadow-none text-center">
+                                    <div class="card-body py-2">
+                                        <div class="widget-icon mx-auto mb-2 bg-success text-white"
+                                            style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                                            <i class="bi bi-check-all"></i>
+                                        </div>
+                                        <h5 class="mb-1">{{ $pencairanStats['dicairkan'] }}</h5>
+                                        <p class="mb-0 small">Dicairkan</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card radius-10 mb-0 border shadow-none text-center">
+                                    <div class="card-body py-2">
+                                        <div class="widget-icon mx-auto mb-2 bg-danger text-white"
+                                            style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                                            <i class="bi bi-x-lg"></i>
+                                        </div>
+                                        <h5 class="mb-1">{{ $pencairanStats['ditolak'] }}</h5>
+                                        <p class="mb-0 small">Ditolak</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4">
+                <div class="card radius-10">
+                    <div class="card-body">
+                        <h6 class="mb-3">Quick Actions</h6>
+                        <div class="d-grid gap-2">
+                            @if (auth()->user()->hasPermissionTo('create pencairan') || auth()->user()->hasRole('Admin Lembaga'))
+                                <a href="{{ route('permohonan') }}" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-plus-circle"></i> Ajukan Pencairan
+                                </a>
+                            @endif
+                            @if (auth()->user()->hasPermissionTo('verify pencairan') || auth()->user()->hasRole('Reviewer'))
+                                <a href="{{ route('pencairan') }}" class="btn btn-sm btn-warning">
+                                    <i class="bi bi-search"></i> Verifikasi Pencairan
+                                </a>
+                            @endif
+                            @if (auth()->user()->hasPermissionTo('approve pencairan') || auth()->user()->hasRole('Admin SKPD'))
+                                <a href="{{ route('pencairan') }}" class="btn btn-sm btn-info">
+                                    <i class="bi bi-check2-all"></i> Approval Pencairan
+                                </a>
+                            @endif
+                            <a href="{{ route('pencairan') }}" class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-eye"></i> Lihat Semua Pencairan
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--end row-->
+
+    </div>
     </div>
     <!--end row-->
 
@@ -229,6 +389,180 @@
                     <h3>
                         {{ session('no_access') ?? 'Kamu tidak memiliki hak akses ke halaman Tersebut.' }}
                     </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row Keempat: Widget Tambahan -->
+    <div class="row">
+        <!-- Recent Activity Widget -->
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0 font-weight-bold text-primary">
+                        <i class="fas fa-clock me-2"></i>Aktivitas Terbaru
+                    </h6>
+                    <span class="badge bg-primary">{{ count($recentActivity) }}</span>
+                </div>
+                <div class="card-body p-0">
+                    @if (count($recentActivity) > 0)
+                        <div class="list-group list-group-flush">
+                            @foreach ($recentActivity as $activity)
+                                <div
+                                    class="list-group-item d-flex justify-content-between align-items-start border-0 py-3">
+                                    <div class="ms-2 me-auto">
+                                        <div class="d-flex align-items-center mb-1">
+                                            <span class="badge bg-{{ $activity['color'] }} me-2">
+                                                <i class="{{ $activity['icon'] }}"></i>
+                                            </span>
+                                            <strong class="text-gray-800">{{ $activity['lembaga'] }}</strong>
+                                        </div>
+                                        <small class="text-muted">{{ $activity['action'] }}</small>
+                                        <div class="d-flex justify-content-between align-items-center mt-1">
+                                            <span class="text-success fw-bold">
+                                                Rp {{ number_format($activity['amount'], 0, ',', '.') }}
+                                            </span>
+                                            <small class="text-muted">{{ $activity['time']->diffForHumans() }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-4">
+                            <i class="fas fa-inbox text-muted fa-3x mb-3"></i>
+                            <p class="text-muted mb-0">Belum ada aktivitas terbaru</p>
+                        </div>
+                    @endif
+                </div>
+                <div class="card-footer text-center py-2">
+                    <small class="text-muted">Update terakhir: {{ now()->format('d/m/Y H:i:s') }}</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Lembaga Widget -->
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0 font-weight-bold text-success">
+                        <i class="fas fa-trophy me-2"></i>Top Lembaga
+                    </h6>
+                    <span class="badge bg-success">{{ count($topLembaga) }}</span>
+                </div>
+                <div class="card-body p-0">
+                    @if (count($topLembaga) > 0)
+                        <div class="list-group list-group-flush">
+                            @foreach ($topLembaga as $index => $lembaga)
+                                <div
+                                    class="list-group-item d-flex justify-content-between align-items-center border-0 py-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="position-relative me-3">
+                                            @if ($index == 0)
+                                                <span class="badge bg-warning rounded-circle"
+                                                    style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+                                                    <i class="fas fa-crown text-white"></i>
+                                                </span>
+                                            @elseif($index == 1)
+                                                <span class="badge bg-secondary rounded-circle"
+                                                    style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+                                                    2
+                                                </span>
+                                            @elseif($index == 2)
+                                                <span class="badge bg-dark rounded-circle"
+                                                    style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+                                                    3
+                                                </span>
+                                            @else
+                                                <span class="badge bg-light text-dark rounded-circle"
+                                                    style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border: 1px solid #dee2e6;">
+                                                    {{ $index + 1 }}
+                                                </span>
+                                            @endif
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold text-gray-800">{{ $lembaga['name'] }}</div>
+                                            <small class="text-muted">{{ $lembaga['total_permohonan'] }}
+                                                permohonan</small>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="text-success fw-bold">
+                                            Rp {{ number_format($lembaga['total_anggaran'], 0, ',', '.') }}
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-4">
+                            <i class="fas fa-building text-muted fa-3x mb-3"></i>
+                            <p class="text-muted mb-0">Belum ada data lembaga</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row Kelima: Budget Progress -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0 font-weight-bold text-info">
+                        <i class="fas fa-chart-pie me-2"></i>Progress Anggaran {{ $budgetProgress['year'] }}
+                    </h6>
+                    <span class="badge bg-info">{{ $budgetProgress['percentage'] }}%</span>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Progress Bar -->
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Realisasi Anggaran</span>
+                                    <span class="fw-bold">{{ $budgetProgress['percentage'] }}%</span>
+                                </div>
+                                <div class="progress" style="height: 10px;">
+                                    <div class="progress-bar bg-gradient-info" role="progressbar"
+                                        style="width: {{ $budgetProgress['percentage'] }}%"
+                                        aria-valuenow="{{ $budgetProgress['percentage'] }}" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Budget Summary -->
+                        <div class="col-md-4">
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <div class="border-end">
+                                        <div class="text-muted small">Total Anggaran</div>
+                                        <div class="fw-bold text-primary">
+                                            Rp {{ number_format($budgetProgress['total_anggaran'], 0, ',', '.') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="border-end">
+                                        <div class="text-muted small">Realisasi</div>
+                                        <div class="fw-bold text-success">
+                                            Rp {{ number_format($budgetProgress['total_realisasi'], 0, ',', '.') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="text-muted small">Sisa Anggaran</div>
+                                    <div class="fw-bold text-warning">
+                                        Rp {{ number_format($budgetProgress['sisa_anggaran'], 0, ',', '.') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
