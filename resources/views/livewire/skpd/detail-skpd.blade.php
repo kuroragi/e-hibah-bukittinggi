@@ -258,18 +258,18 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @foreach ($kegiatan->sub_kegiatan as $k3 => $sub_kegiatan)
+                                    @foreach ($kegiatan['sub_kegiatan'] as $k3 => $sub_kegiatan)
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="mb-3">
                                                     <label
-                                                        for="sub_kegiatan_{{ $kegiatan->nama_kegiatan }}_ke_{{ $k3 + 1 }}"
+                                                        for="sub_kegiatan_{{ $kegiatan['nama_kegiatan'] }}_ke_{{ $k3 + 1 }}"
                                                         class="form-label">Nama Subkegiatan</label>
                                                     <div class="input-group">
                                                         <input
                                                             wire:model='urusans.{{ $k1 }}.kegiatan.{{ $k2 }}.sub_kegiatan.{{ $k3 }}.nama_sub_kegiatan'
                                                             type="text"
-                                                            id="sub_kegiatan_{{ $kegiatan->nama_kegiatan }}_ke_{{ $k3 + 1 }}"
+                                                            id="sub_kegiatan_{{ $kegiatan['nama_kegiatan'] }}_ke_{{ $k3 + 1 }}"
                                                             class="form-control">
                                                         <button
                                                             wire:click='tambahRekening({{ $k1 }}, {{ $k2 }}, {{ $k3 }})'
@@ -282,11 +282,11 @@
                                                 <div class="mb-3">
                                                     <div>
                                                         <label
-                                                            for="rekening_anggaran_{{ $sub_kegiatan->nama_sub_kegiatan }}"
+                                                            for="rekening_anggaran_{{ $sub_kegiatan['nama_sub_kegiatan'] }}"
                                                             class="form-label">Rekening Anggaran</label>
 
                                                     </div>
-                                                    @foreach ($sub_kegiatan->rekening_anggaran as $k4 => $rekening)
+                                                    @foreach ($sub_kegiatan['rekening_anggaran'] as $k4 => $rekening)
                                                         <div class="input-group mb-3">
                                                             <input
                                                                 wire:model='urusans.{{ $k1 }}.kegiatan.{{ $k2 }}.sub_kegiatan.{{ $k3 }}.rekening_anggaran.{{ $k4 }}.rekening'

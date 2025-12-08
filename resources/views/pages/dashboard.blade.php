@@ -345,17 +345,17 @@
                     <div class="card-body">
                         <h6 class="mb-3">Quick Actions</h6>
                         <div class="d-grid gap-2">
-                            @if (auth()->user()->hasPermissionTo('create pencairan') || auth()->user()->hasRole('Admin Lembaga'))
+                            @if (auth()->user()->hasPermissionTo('Create Pencairan') || auth()->user()->hasRole('Admin Lembaga'))
                                 <a href="{{ route('permohonan') }}" class="btn btn-sm btn-primary">
                                     <i class="bi bi-plus-circle"></i> Ajukan Pencairan
                                 </a>
                             @endif
-                            @if (auth()->user()->hasPermissionTo('verify pencairan') || auth()->user()->hasRole('Reviewer'))
+                            @if (auth()->user()->hasPermissionTo('Verify Pencairan') || auth()->user()->hasRole('Reviewer'))
                                 <a href="{{ route('pencairan') }}" class="btn btn-sm btn-warning">
                                     <i class="bi bi-search"></i> Verifikasi Pencairan
                                 </a>
                             @endif
-                            @if (auth()->user()->hasPermissionTo('approve pencairan') || auth()->user()->hasRole('Admin SKPD'))
+                            @if (auth()->user()->hasPermissionTo('Approve Pencairan') || auth()->user()->hasRole('Admin SKPD'))
                                 <a href="{{ route('pencairan') }}" class="btn btn-sm btn-info">
                                     <i class="bi bi-check2-all"></i> Approval Pencairan
                                 </a>

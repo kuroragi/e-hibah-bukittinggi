@@ -71,6 +71,16 @@ return new class extends Migration
             ['name' => 'Revised Permohonan', 'guard_name' => 'web'],
             ['name' => 'Review Perbaikan Permohonan', 'guard_name' => 'web'],
             ['name' => 'Confirm Perbaikan Permohonan', 'guard_name' => 'web'],
+
+            // Pencairan
+            ['name' => 'View Any Pencairan', 'guard_name' => 'web'],
+            ['name' => 'View Pencairan', 'guard_name' => 'web'],
+            ['name' => 'Create Pencairan', 'guard_name' => 'web'],
+            ['name' => 'Verify Pencairan', 'guard_name' => 'web'],
+            ['name' => 'Approve Pencairan', 'guard_name' => 'web'],
+            ['name' => 'Update Pencairan', 'guard_name' => 'web'],
+            ['name' => 'Delete Pencairan', 'guard_name' => 'web'],
+            ['name' => 'Restore Pencairan', 'guard_name' => 'web'],
             
             //NPHD
             ['name' => 'View Any Nphd', 'guard_name' => 'web'],

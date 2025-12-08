@@ -52,30 +52,73 @@ class DetailSkpd extends Component
 
             $this->nama_sekretaris = $this->detail_skpd->nama_sekretaris;
 
+            // Ambil data urusan dari SKPD
             $urusans = $this->skpd->has_urusan()->get();
-            foreach ($urusans as $key => $urusan) {
-                $this->urusans[] = [
-                    'id' => $urusan->id,
-                    'nama_urusan' => $urusan->nama_urusan,
-                    'kepala_urusan' => $urusan->kepala_urusan,
-                    'kegiatan' => $urusan->kegiatan ? 
-                            json_decode($urusan->kegiatan) : 
-                            [0 => ['nama_kegiatan' => '', 'sub_kegiatan' => [
-                                0 => ['nama_sub_kegiatan' => '', 'rekening_anggaran' => [
-                                    0 => ['rekening' => '']
-                                    ]]
-                                ]]
-                            ]
-                    // 'kegiatan' => $urusan->kegiatan,
-                    // 'sub_kegiatan' => $urusan->sub_kegiatan,
-                    // 'rekening_anggaran' => $urusan->sub_kegiatan ? json_decode($urusan->sub_kegiatan) : [0 => ['rekening' => '']],
-                ];
-                // if($urusan->rekening_anggaran == null || $urusan->rekening_anggaran == ''){
-                    //     $this->urusans[$key]['rekening_anggaran'][] = ['rekening' => ''];
-                    // }else{
-                        //     $this->urusans[$key]['rekening_anggaran'][] = json_decode($urusan->rekening_anggaran);
-                        // }
+            
+            // Helper method untuk struktur default menggunakan JSON decode
+            $defaultStructureJson = '{
+                "nama_kegiatan": "",
+                "sub_kegiatan": [
+                    {
+                        "nama_sub_kegiatan": "",
+                        "rekening_anggaran": [
+                            {
+                                "rekening": ""
+                            }
+                        ]
                     }
+                ]
+            }';
+            $getDefaultStructure = function() use ($defaultStructureJson) {
+                return json_decode($defaultStructureJson, true);
+            };
+            
+            if ($urusans->isNotEmpty()) {
+                foreach ($urusans as $urusan) {
+                    // Decode kegiatan JSON dan pastikan selalu array
+                    $kegiatan = $urusan->kegiatan ? json_decode($urusan->kegiatan, true) : [$getDefaultStructure()];
+                    
+                    // Pastikan kegiatan adalah array dan memiliki struktur yang benar
+                    if (!is_array($kegiatan)) {
+                        $kegiatan = [$getDefaultStructure()];
+                    }
+                    
+                    // Validasi dan normalisasi struktur kegiatan
+                    foreach ($kegiatan as $key => $item) {
+                        if (!isset($item['sub_kegiatan']) || !is_array($item['sub_kegiatan'])) {
+                            $kegiatan[$key]['sub_kegiatan'] = [
+                                [
+                                    'nama_sub_kegiatan' => '', 
+                                    'rekening_anggaran' => [['rekening' => '']]
+                                ]
+                            ];
+                        }
+                        
+                        // Validasi sub_kegiatan
+                        foreach ($kegiatan[$key]['sub_kegiatan'] as $subKey => $subItem) {
+                            if (!isset($subItem['rekening_anggaran']) || !is_array($subItem['rekening_anggaran'])) {
+                                $kegiatan[$key]['sub_kegiatan'][$subKey]['rekening_anggaran'] = [['rekening' => '']];
+                            }
+                        }
+                    }
+                    
+                    $this->urusans[] = [
+                        'id' => $urusan->id,
+                        'nama_urusan' => $urusan->nama_urusan,
+                        'kepala_urusan' => $urusan->kepala_urusan,
+                        'kegiatan' => $kegiatan
+                    ];
+                }
+            } else {
+                // Jika tidak ada urusan, buat struktur default
+                $this->urusans[] = [
+                    'id' => 0,
+                    'nama_urusan' => '',
+                    'kepala_urusan' => '',
+                    'kegiatan' => [$getDefaultStructure()]
+                ];
+            }
+
                     // dd($this->urusans);
 
             $this->perhatian_nphd = $this->detail_skpd?->perhatian_nphd ? json_decode($this->detail_skpd->perhatian_nphd, true) : [0 => ['uraian' => '', 'urusan' => 0]];
