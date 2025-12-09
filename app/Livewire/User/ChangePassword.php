@@ -76,17 +76,18 @@ class ChangePassword extends Component
             'password.regex' => 'Password harus mengandung huruf besar, huruf kecil, angka, dan simbol.',
         ]);
 
+        
         if (!Hash::check($this->current_password, Auth::user()->password)) {
             return session()->flash('error', 'Password lama salah.');
         }
 
         DB::beginTransaction();
         try {
-            auth()->user()->update([
+            Auth::user()->update([
                 'password' => Hash::make($this->password),
             ]);
                 
-            ActivityLogService::log('user.update-password', 'warning', Auth()::user()->name.' melakukan perubahan password');
+            ActivityLogService::log('user.update-password', 'warning', Auth::user()->name.' melakukan perubahan password');
 
             Mail::to(Auth::user()->email)->queue(new SendPasswordUpdateAlert(now(), request()->ip(), request()->userAgent()));
 
@@ -95,6 +96,8 @@ class ChangePassword extends Component
             session()->flash('success', 'Password berhasil diperbarui.');
             $this->reset(['current_password', 'password', 'password_confirmation']);
         } catch (\Throwable $th) {
+            
+            dd($th->getMessage());
             DB::rollBack();
             session()->flash('error', 'Password berhasil diperbarui.\nError: '.$th->getMessage());
             

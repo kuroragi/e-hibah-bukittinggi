@@ -171,9 +171,9 @@ Route::middleware(['auth'])->group(function () {
 //     ];
 // })->middleware('auth');
 
-// Route::get('/test-email', function () {
-//     \Illuminate\Support\Facades\Mail::raw('Test email SMTP Gmail', function ($message) {
-//         $message->to('s.uum1612@gmail.com')->subject('SMTP Gmail Test');
-//     });
-//     return 'Email terkirim!';
-// });
+Route::get('/test-email', function () {
+    \Illuminate\Support\Facades\Mail::raw('Test email SMTP Gmail', function ($message) {
+        $message->to('uum1612@gmail.com')->subject('SMTP Gmail Test');
+    });
+    return 'Email terkirim!';
+});
