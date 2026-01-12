@@ -257,4 +257,7 @@ class DetailSkpd extends Component
             session()->flash('error', 'Terjadi kesalahan saat menyimpan data yang menjadi perhatian dalam NPHD: ' . $th->getMessage());
         }
     }
+    public function previewPerhatian() {
+        
+    }
 }

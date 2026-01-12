@@ -172,6 +172,7 @@ class CreateOrUpdate extends Component
             DB::commit();
             return redirect()->route('permohonan.isi_pendukung', ['id_permohonan' => $permohonan->id])->with('success', 'Berhasil menambahkan permohonan hibah, lanjutkan dengan Isi Data Pendukung');
         } catch (\Throwable $th) {
+            dd($th->getMessage());
             DB::rollBack();
 
             if(Storage::disk('public')->exists($mohon_path)){

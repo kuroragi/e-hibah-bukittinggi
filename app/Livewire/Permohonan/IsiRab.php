@@ -225,7 +225,7 @@ class IsiRab extends Component
             'id_status' => $this->id_status_didraft,
         ]);
 
-        ActivityLogService::log('permohonan.save-rab', 'info', 'Save RAB '.$this->permohonan->perihal_mohon, json_encode($this->rab->toArray()));
+        ActivityLogService::log('permohonan.save-rab', 'info', 'Save RAB '.$this->permohonan->perihal_mohon, json_encode($this->kegiatan_rab));
 
         return redirect()->route('permohonan');
     }

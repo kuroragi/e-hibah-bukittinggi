@@ -15,6 +15,21 @@
                 </ol>
             </nav>
         </div>
+
+        <div class="ms-auto">
+            <nav class="nav-breadcrumb-dot">
+                <a href="{{ route('lembaga.update.profile', ['id_lembaga' => $id_lembaga]) }}">Edit Lembaga</a>
+                <span class="dot"></span>
+
+                <a href="{{ route('lembaga.update.pendukung', ['id_lembaga' => $id_lembaga]) }}">Edit Pendukung</a>
+                <span class="dot"></span>
+
+                <a href="{{ route('lembaga.update.pengurus', ['id_lembaga' => $id_lembaga]) }}">Edit Pengurus</a>
+                <span class="dot"></span>
+
+                <a href="{{ route('lembaga.update.nphd', ['id_lembaga' => $id_lembaga]) }}">Edit Data NPHD</a>
+            </nav>
+        </div>
     </div>
 
     @include('components.partials._page_notification')
@@ -54,8 +69,8 @@
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">No. Telp/HP <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" wire:model='pengurus.0.no_hp' value="{{ old('no_hp') }}"
-                        required>
+                    <input type="text" class="form-control" wire:model='pengurus.0.no_hp'
+                        value="{{ old('no_hp') }}" required>
                     @error('no_hp')
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                     @enderror
@@ -115,8 +130,8 @@
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label class="form-label">NIK <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" wire:model='pengurus.1.nik' value="{{ old('nik') }}"
-                        required>
+                    <input type="text" class="form-control" wire:model='pengurus.1.nik'
+                        value="{{ old('nik') }}" required>
                     @error('nik')
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                     @enderror

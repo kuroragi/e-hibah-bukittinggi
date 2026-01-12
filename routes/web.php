@@ -47,8 +47,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [MainController::class, 'dasboard'])->name('dashboard');
     Route::get('/permission', Permission::class)->name('permission');
     Route::get('/role', Role::class)->name('role');
+
     Route::get('/skpd', SKPD::class)->name('skpd');
     Route::get('/skpd/detail/{id_skpd}', DetailSkpd::class)->name('skpd.detail');
+
     Route::get('/user', User::class)->name('user.index');
     Route::get('/user/change_password', ChangePassword::class)->name('user.change_password');
     Route::get('/user-create', [UserController::class, 'create'])->name('user.create');
@@ -56,8 +58,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pertanyaan', PertanyaanKelengkapan::class)->name('pertanyaan');
     Route::get('/user_guide', UserGuide::class)->name('user_guide');
     Route::get('/user_log', ActivityLog::class)->name('user.log');
+
     Route::get('/lembaga', [LembagaController::class, 'index'])->name('lembaga');
-    // Route::get('/lembaga/create', [LembagaController::class, 'create'])->name('lembaga.create');
     Route::get('/lembaga/create', App\Livewire\Lembaga\Create::class)->name('lembaga.create');
     Route::get('/lembaga/admin/{id_lembaga}', [LembagaController::class, 'admin'])->name('lembaga.admin');
     Route::post('/lembaga/store', [LembagaController::class, 'store'])->name('lembaga.store');
@@ -66,6 +68,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/lembaga/update/pengurus/{id_lembaga}', Pengurus::class)->name('lembaga.update.pengurus');
     Route::get('/lembaga/update/nphd/{id_lembaga}', Nphd::class)->name('lembaga.update.nphd');
     Route::get('/lembaga/show/{id_lembaga}', [LembagaController::class, 'show'])->name('lembaga.show');
+    
     Route::get('/permohonan', [PermohonanController::class, 'index'])->name('permohonan');
     Route::get('/permohonan/create', CreateOrUpdate::class)->name('permohonan.create');
     Route::get('/permohonan/edit/{id_permohonan}', EditPermohonan::class)->name('permohonan.edit');

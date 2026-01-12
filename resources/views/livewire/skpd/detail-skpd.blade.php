@@ -200,10 +200,24 @@
                                             class="btn btn-sm btn-danger ms-auto">Hapus Uraian -
                                             {{ $loop->iteration }}</button>
                                     </div>
-                                    <textarea wire:model='perhatian_nphd.{{ $key }}.uraian' id="perhatian_nphd_{{ $loop->iteration }}"
-                                        class="form-control" rows="3"></textarea>
+                                    <div class="input-group">
+                                        <textarea wire:model='perhatian_nphd.{{ $key }}.uraian' id="perhatian_nphd_{{ $loop->iteration }}"
+                                            class="form-control" rows="3"></textarea>
+                                        <select wire:model='perhatian_nphd.{{ $key }}.urusan'
+                                            class="form-select" id="perhatian_nphd_{{ $loop->iteration }}_urusan">
+                                            <option value="0">Semua Urusan</option>
+                                            @foreach ($urusans as $key2 => $urusan)
+                                                <option value="{{ $urusan['id'] }}">{{ $urusan['nama_urusan'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                             @endforeach
+                            <button wire:click='previewPerhatian' class="btn btn-info me-3" data-bs-toggle="modal"
+                                data-bs-target="#preview-modal"><i class="bi bi-eye"></i>
+                                Preview Klausul
+                                Perhatian</button>
                             <button wire:click='tambahPerhatian' class="btn btn-primary">Tambah Uraian</button>
                         </div>
                     </div>
@@ -216,6 +230,49 @@
                         <div class="col-12">
                             <button wire:click='updatePerhatian' class="btn btn-primary w-100">Simpan Perubahan
                                 Data</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div wire:ignore.self class="modal fade" id="preview-modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content p-3">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="rabModalLabel">Tampilan Klausul Yang menjadi Perhatian</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <!-- Table Input -->
+                        <div class="document-preview p-4 shadow-sm">
+                            <p class="no-indent mb-3">PIHAK PERTAMA dan PIHAK KEDUA dengan mendasarkan dan
+                                memperhatikan hal sebagai
+                                berikut:
+                            </p>
+                            <ol class="mb-3">
+                                @foreach ($perhatian_nphd as $key => $item)
+                                    <li>
+                                        {{ $item['uraian'] }} @if (!$item['urusan'] == 0)
+                                            <strong>- khusus untuk urusan
+                                                {{ collect($urusans)->where('id', $item['urusan'])->first()['nama_urusan'] ?? '-' }}</strong>
+                                        @endif
+                                    </li>
+                                @endforeach
+                                <li><i>dilanjutkan dengan klausul dari lembaga penerima hibah</i> <span
+                                        class="text-danger">*</span></li>
+                            </ol>
+                        </div>
+
+                        <!-- Tombol Simpan Perubahan -->
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                aria-label="Close">Tutup</button>
                         </div>
                     </div>
                 </div>
@@ -314,3 +371,20 @@
             </div>
         </div>
     </div>
+</div>
+@push('style')
+    <style>
+        .document-preview {
+            background: white;
+            max-width: 800px;
+            margin: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 40px 60px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            font-family: "Times New Roman", serif;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+    </style>
+@endpush

@@ -15,6 +15,20 @@
                 </ol>
             </nav>
         </div>
+        <div class="ms-auto">
+            <nav class="nav-breadcrumb-dot">
+                <a href="{{ route('lembaga.update.profile', ['id_lembaga' => $id_lembaga]) }}">Edit Lembaga</a>
+                <span class="dot"></span>
+
+                <a href="{{ route('lembaga.update.pendukung', ['id_lembaga' => $id_lembaga]) }}">Edit Pendukung</a>
+                <span class="dot"></span>
+
+                <a href="{{ route('lembaga.update.pengurus', ['id_lembaga' => $id_lembaga]) }}">Edit Pengurus</a>
+                <span class="dot"></span>
+
+                <a href="{{ route('lembaga.update.nphd', ['id_lembaga' => $id_lembaga]) }}">Edit Data NPHD</a>
+            </nav>
+        </div>
     </div>
 
     @include('components.partials._page_notification')

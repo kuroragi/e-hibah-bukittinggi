@@ -23,9 +23,38 @@
 <link href="/assets/css/header-colors.css" rel="stylesheet" />
 
 <style>
-    .wide-popover {
-        max-width: 600px;
-        ;
+    /* Wrapper utama */
+    .nav-breadcrumb-dot {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    /* Link */
+    .nav-breadcrumb-dot a {
+        color: #0d6efd;
+        text-decoration: none;
+    }
+
+    /* Hover link */
+    .nav-breadcrumb-dot a:hover {
+        text-decoration: underline;
+    }
+
+    /* Dot sebagai separator */
+    .nav-breadcrumb-dot .dot {
+        width: 5px;
+        height: 5px;
+        background-color: #6c757d;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    /* Hilangkan dot terakhir (yang paling kanan) */
+    .nav-breadcrumb-dot a:last-of-type+.dot {
+        display: none;
     }
 </style>
 
