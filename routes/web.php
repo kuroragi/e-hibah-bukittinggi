@@ -176,7 +176,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/test-email', function () {
     \Illuminate\Support\Facades\Mail::raw('Test email SMTP Gmail', function ($message) {
-        $message->to('uum1612@gmail.com')->subject('SMTP Gmail Test');
+        $message->to('uum1612@gmail.com')->subject('SMTP Gmail Test '.date('d-m-Y H:i:s'));
     });
     return 'Email terkirim!';
 });
