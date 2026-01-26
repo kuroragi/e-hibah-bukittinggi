@@ -17,12 +17,24 @@
 
     <div class="row">
         <div class="col-12 col-lg-12 col-xl-12 d-flex">
-            <div class="card radius-10 w-100">
-                <div class="card-header">
+            <div class="card radius-10 w-100 bg-gradient"
+                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div class="card-header border-0">
                     <div class="row g-3 align-items-center">
                         <div class="col">
-                            <h5 class="mb-0">Selamat Datang <span
-                                    class="text-primary">{{ ucwords(auth()->user()->name) }}</span></h5>
+                            <h4 class="mb-1 text-white"><i class="bi bi-emoji-smile"></i> Selamat Datang, <span
+                                    class="fw-bold">{{ ucwords(auth()->user()->name) }}</span></h4>
+                            <p class="mb-0 text-white-50"><i class="bi bi-shield-check"></i>
+                                {{ auth()->user()->getRoleNames()->first() ?? 'User' }} | <i
+                                    class="bi bi-calendar-event"></i> {{ now()->isoFormat('dddd, D MMMM YYYY') }}</p>
+                        </div>
+                        <div class="col-auto">
+                            @if (auth()->user()->lembaga)
+                                <div class="text-white text-end">
+                                    <small class="d-block text-white-50">Lembaga</small>
+                                    <strong>{{ auth()->user()->lembaga->nama_lembaga ?? '-' }}</strong>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -32,62 +44,104 @@
         <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-2 row-cols-xxl-4">
             @if (auth()->user()->hasRole('Super Admin'))
                 <div class="col">
-                    <div class="card radius-10">
+                    <div class="card radius-10 border-0 shadow-sm">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <div class="">
-                                    <p class="mb-1">Perngguna</p>
-                                    <h4 class="mb-0 text-primary">{{ $user->count() }}</h4>
+                                <div class="flex-grow-1">
+                                    <p class="mb-1 text-secondary"><i class="bi bi-people-fill"></i> Total Pengguna</p>
+                                    <h4 class="mb-0 text-primary fw-bold">{{ $user->count() }}</h4>
+                                    <small class="text-muted">Pengguna Terdaftar</small>
                                 </div>
-                                <div class="ms-auto fs-2 text-primary">
-                                    <i class="bi bi-person"></i>
+                                <div class="ms-auto">
+                                    <div class="widget-icon bg-primary text-white rounded-circle"
+                                        style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="bi bi-person fs-4"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card radius-10">
+                    <div class="card radius-10 border-0 shadow-sm">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <div class="">
-                                    <p class="mb-1">Lembaga</p>
-                                    <h4 class="mb-0 text-success">{{ $lembaga->count() }}</h4>
+                                <div class="flex-grow-1">
+                                    <p class="mb-1 text-secondary"><i class="bi bi-building"></i> Total Lembaga</p>
+                                    <h4 class="mb-0 text-success fw-bold">{{ $lembaga->count() }}</h4>
+                                    <small class="text-muted">Lembaga Aktif</small>
                                 </div>
-                                <div class="ms-auto fs-2 text-success">
-                                    <i class="bi bi-buildings"></i>
+                                <div class="ms-auto">
+                                    <div class="widget-icon bg-success text-white rounded-circle"
+                                        style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="bi bi-buildings fs-4"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             @endif
+
+            @if (auth()->user()->hasRole('Admin Lembaga'))
+                <div class="col">
+                    <div class="card radius-10 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <p class="mb-1 text-secondary"><i class="bi bi-file-earmark-text"></i> Permohonan Saya
+                                    </p>
+                                    <h4 class="mb-0 text-info fw-bold">
+                                        {{ $permohonan->where('id_lembaga', auth()->user()->id_lembaga)->count() }}</h4>
+                                    <small class="text-muted">Total Diajukan</small>
+                                </div>
+                                <div class="ms-auto">
+                                    <div class="widget-icon bg-info text-white rounded-circle"
+                                        style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="bi bi-files fs-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <div class="col">
-                <div class="card radius-10">
+                <div class="card radius-10 border-0 shadow-sm">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div class="">
-                                <p class="mb-1">Permohonan Dicairkan</p>
-                                <h4 class="mb-0 text-success">{{ $permohonan->where('id_status', 14)->count() }}</h4>
+                            <div class="flex-grow-1">
+                                <p class="mb-1 text-secondary"><i class="bi bi-check-circle"></i> Hibah Dicairkan</p>
+                                <h4 class="mb-0 text-success fw-bold">{{ $permohonan->where('id_status', 14)->count() }}
+                                </h4>
+                                <small class="text-muted">Permohonan Selesai</small>
                             </div>
-                            <div class="ms-auto fs-2 text-success">
-                                <i class="bi bi-patch-check"></i>
+                            <div class="ms-auto">
+                                <div class="widget-icon bg-success text-white rounded-circle"
+                                    style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="bi bi-patch-check fs-4"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col">
-                <div class="card radius-10">
+                <div class="card radius-10 border-0 shadow-sm">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div class="">
-                                <p class="mb-1">Total Pencairan</p>
-                                <h4 class="mb-0 text-pink">Rp.
-                                    {{ number_format($permohonan->sum('nominal_anggaran'), 0, ',', '.') }}</h4>
+                            <div class="flex-grow-1">
+                                <p class="mb-1 text-secondary"><i class="bi bi-cash-coin"></i> Total Dana Hibah</p>
+                                <h5 class="mb-0 text-warning fw-bold">Rp
+                                    {{ number_format($permohonan->sum('nominal_anggaran') / 1000000, 1) }}M</h5>
+                                <small class="text-muted">Tahun {{ date('Y') }}</small>
                             </div>
-                            <div class="ms-auto fs-2 text-pink">
-                                Rp.
+                            <div class="ms-auto">
+                                <div class="widget-icon bg-warning text-white rounded-circle"
+                                    style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="bi bi-wallet2 fs-4"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -101,7 +155,11 @@
         <div class="row my-4">
 
             <div class="col-12 col-lg-12 col-xl-6 d-flex">
-                <div class="card radius-10 w-100">
+                <div class="card radius-10 w-100 shadow-sm">
+                    <div class="card-header bg-white border-bottom">
+                        <h6 class="mb-0 text-dark"><i class="bi bi-graph-up"></i> Status Permohonan Hibah</h6>
+                        <small class="text-muted">Ringkasan berdasarkan tahapan proses</small>
+                    </div>
                     <div class="card-body">
                         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-xl-3 row-cols-xxl-3 g-3">
                             <div class="col">
@@ -179,15 +237,15 @@
                 </div>
             </div>
             <div class="col-12 col-lg-12 col-xl-6 d-flex">
-                <div class="card radius-10 w-100">
-                    <div class="card-header bg-transparent">
+                <div class="card radius-10 w-100 shadow-sm">
+                    <div class="card-header bg-white border-bottom">
                         <div class="row g-3 align-items-center">
                             <div class="col">
-                                <h5 class="mb-0">Pencairan</h5> <small>Dalam Juta Rupiah*</small>
+                                <h6 class="mb-0 text-dark"><i class="bi bi-graph-up-arrow"></i> Trend Pencairan Dana</h6>
+                                <small class="text-muted">Dalam Juta Rupiah - Tahun {{ date('Y') }}</small>
                             </div>
-                            <div class="col">
-                                <div class="d-flex align-items-center justify-content-end gap-3 cursor-pointer">
-                                </div>
+                            <div class="col-auto">
+                                <span class="badge bg-success">{{ $pencairan->sum() / 1000 }}M Total</span>
                             </div>
                         </div>
                     </div>
@@ -201,67 +259,97 @@
         <!-- Pencairan Dana Hibah Statistics -->
         <div class="row my-4">
             <div class="col-12">
-                <h5 class="mb-3">Statistik Pencairan Dana Hibah</h5>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h5 class="mb-0"><i class="bi bi-bar-chart-fill text-primary"></i> Statistik Pencairan Dana
+                            Hibah</h5>
+                        <small class="text-muted">Ringkasan status dan realisasi pencairan</small>
+                    </div>
+                    <div>
+                        <span class="badge bg-light text-dark border"><i class="bi bi-calendar3"></i> Tahun
+                            {{ date('Y') }}</span>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-2 row-cols-xxl-4">
             <div class="col">
-                <div class="card radius-10 bg-light-info">
+                <div class="card radius-10 border-0 shadow-sm" style="border-left: 4px solid #0dcaf0 !important;">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div class="">
-                                <p class="mb-1 text-secondary">Total Pencairan</p>
-                                <h4 class="mb-0 text-info">{{ $pencairanStats['total'] }}</h4>
+                            <div class="flex-grow-1">
+                                <p class="mb-1 text-secondary fw-semibold"><i class="bi bi-list-check"></i> Total
+                                    Pencairan</p>
+                                <h4 class="mb-0 text-info fw-bold">{{ $pencairanStats['total'] }}</h4>
+                                <small class="text-muted">Pengajuan Pencairan</small>
                             </div>
-                            <div class="ms-auto fs-2 text-info">
-                                <i class="bi bi-cash-stack"></i>
+                            <div class="ms-auto">
+                                <div class="widget-icon bg-info bg-opacity-10 text-info rounded-circle"
+                                    style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="bi bi-cash-stack fs-4"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col">
-                <div class="card radius-10 bg-light-success">
+                <div class="card radius-10 border-0 shadow-sm" style="border-left: 4px solid #198754 !important;">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div class="">
-                                <p class="mb-1 text-secondary">Dana Dicairkan</p>
-                                <h5 class="mb-0 text-success">Rp.
-                                    {{ number_format($pencairanStats['totalDana'], 0, ',', '.') }}</h5>
+                            <div class="flex-grow-1">
+                                <p class="mb-1 text-secondary fw-semibold"><i class="bi bi-currency-dollar"></i> Dana
+                                    Dicairkan</p>
+                                <h6 class="mb-0 text-success fw-bold">Rp
+                                    {{ number_format($pencairanStats['totalDana'], 0, ',', '.') }}</h6>
+                                <small class="text-muted">Realisasi Dana</small>
                             </div>
-                            <div class="ms-auto fs-2 text-success">
-                                <i class="bi bi-check-circle"></i>
+                            <div class="ms-auto">
+                                <div class="widget-icon bg-success bg-opacity-10 text-success rounded-circle"
+                                    style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="bi bi-check-circle fs-4"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col">
-                <div class="card radius-10 bg-light-warning">
+                <div class="card radius-10 border-0 shadow-sm" style="border-left: 4px solid #ffc107 !important;">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div class="">
-                                <p class="mb-1 text-secondary">Menunggu Proses</p>
-                                <h4 class="mb-0 text-warning">{{ $pencairanStats['pending'] }}</h4>
+                            <div class="flex-grow-1">
+                                <p class="mb-1 text-secondary fw-semibold"><i class="bi bi-clock-history"></i> Menunggu
+                                    Proses</p>
+                                <h4 class="mb-0 text-warning fw-bold">{{ $pencairanStats['pending'] }}</h4>
+                                <small class="text-muted">Perlu Tindakan</small>
                             </div>
-                            <div class="ms-auto fs-2 text-warning">
-                                <i class="bi bi-hourglass-split"></i>
+                            <div class="ms-auto">
+                                <div class="widget-icon bg-warning bg-opacity-10 text-warning rounded-circle"
+                                    style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="bi bi-hourglass-split fs-4"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col">
-                <div class="card radius-10 bg-light-danger">
+                <div class="card radius-10 border-0 shadow-sm" style="border-left: 4px solid #dc3545 !important;">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
-                            <div class="">
-                                <p class="mb-1 text-secondary">Ditolak</p>
-                                <h4 class="mb-0 text-danger">{{ $pencairanStats['ditolak'] }}</h4>
+                            <div class="flex-grow-1">
+                                <p class="mb-1 text-secondary fw-semibold"><i class="bi bi-exclamation-triangle"></i>
+                                    Ditolak</p>
+                                <h4 class="mb-0 text-danger fw-bold">{{ $pencairanStats['ditolak'] }}</h4>
+                                <small class="text-muted">Perlu Revisi</small>
                             </div>
-                            <div class="ms-auto fs-2 text-danger">
-                                <i class="bi bi-x-circle"></i>
+                            <div class="ms-auto">
+                                <div class="widget-icon bg-danger bg-opacity-10 text-danger rounded-circle"
+                                    style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="bi bi-x-circle fs-4"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -272,9 +360,12 @@
         <!-- Detail Pencairan Status -->
         <div class="row my-4">
             <div class="col-12 col-lg-8">
-                <div class="card radius-10">
+                <div class="card radius-10 shadow-sm">
+                    <div class="card-header bg-white border-bottom">
+                        <h6 class="mb-0 text-dark"><i class="bi bi-diagram-3"></i> Tahapan Proses Pencairan</h6>
+                        <small class="text-muted">Alur proses dari pengajuan hingga pencairan</small>
+                    </div>
                     <div class="card-body">
-                        <h6 class="mb-3">Status Pencairan Terperinci</h6>
                         <div class="row row-cols-2 row-cols-md-5 g-2">
                             <div class="col">
                                 <div class="card radius-10 mb-0 border shadow-none text-center">
@@ -341,28 +432,41 @@
                 </div>
             </div>
             <div class="col-12 col-lg-4">
-                <div class="card radius-10">
+                <div class="card radius-10 shadow-sm">
+                    <div class="card-header bg-white border-bottom">
+                        <h6 class="mb-0 text-dark"><i class="bi bi-lightning-charge"></i> Aksi Cepat</h6>
+                        <small class="text-muted">Pintasan menu utama</small>
+                    </div>
                     <div class="card-body">
-                        <h6 class="mb-3">Quick Actions</h6>
                         <div class="d-grid gap-2">
                             @if (auth()->user()->hasPermissionTo('Create Pencairan') || auth()->user()->hasRole('Admin Lembaga'))
-                                <a href="{{ route('permohonan') }}" class="btn btn-sm btn-primary">
-                                    <i class="bi bi-plus-circle"></i> Ajukan Pencairan
+                                <a href="{{ route('permohonan') }}"
+                                    class="btn btn-primary d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-plus-circle me-2"></i> Buat Permohonan Baru
                                 </a>
                             @endif
                             @if (auth()->user()->hasPermissionTo('Verify Pencairan') || auth()->user()->hasRole('Reviewer'))
-                                <a href="{{ route('pencairan') }}" class="btn btn-sm btn-warning">
-                                    <i class="bi bi-search"></i> Verifikasi Pencairan
+                                <a href="{{ route('pencairan') }}"
+                                    class="btn btn-warning d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-clipboard-check me-2"></i> Verifikasi Pencairan
                                 </a>
                             @endif
                             @if (auth()->user()->hasPermissionTo('Approve Pencairan') || auth()->user()->hasRole('Admin SKPD'))
-                                <a href="{{ route('pencairan') }}" class="btn btn-sm btn-info">
-                                    <i class="bi bi-check2-all"></i> Approval Pencairan
+                                <a href="{{ route('pencairan') }}"
+                                    class="btn btn-info d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-check-circle me-2"></i> Setujui Pencairan
                                 </a>
                             @endif
-                            <a href="{{ route('pencairan') }}" class="btn btn-sm btn-outline-secondary">
-                                <i class="bi bi-eye"></i> Lihat Semua Pencairan
+                            <a href="{{ route('pencairan') }}"
+                                class="btn btn-outline-primary d-flex align-items-center justify-content-center">
+                                <i class="bi bi-list-ul me-2"></i> Daftar Semua Pencairan
                             </a>
+                            @if (auth()->user()->hasRole('Admin Lembaga'))
+                                <a href="{{ route('permohonan') }}"
+                                    class="btn btn-outline-success d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-file-earmark-text me-2"></i> Permohonan Saya
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -371,7 +475,6 @@
 
         <!--end row-->
 
-    </div>
     </div>
     <!--end row-->
 
@@ -395,15 +498,18 @@
     </div>
 
     <!-- Row Keempat: Widget Tambahan -->
-    <div class="row">
+    <div class="row mt-4">
         <!-- Recent Activity Widget -->
         <div class="col-md-6">
-            <div class="card shadow-sm h-100">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 font-weight-bold text-primary">
-                        <i class="fas fa-clock me-2"></i>Aktivitas Terbaru
-                    </h6>
-                    <span class="badge bg-primary">{{ count($recentActivity) }}</span>
+            <div class="card shadow-sm h-100 border-0">
+                <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0 text-dark">
+                            <i class="bi bi-activity text-primary"></i> Aktivitas Terbaru
+                        </h6>
+                        <small class="text-muted">Update terakhir dari sistem</small>
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{ count($recentActivity) }}</span>
                 </div>
                 <div class="card-body p-0">
                     @if (count($recentActivity) > 0)
@@ -444,12 +550,15 @@
 
         <!-- Top Lembaga Widget -->
         <div class="col-md-6">
-            <div class="card shadow-sm h-100">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 font-weight-bold text-success">
-                        <i class="fas fa-trophy me-2"></i>Top Lembaga
-                    </h6>
-                    <span class="badge bg-success">{{ count($topLembaga) }}</span>
+            <div class="card shadow-sm h-100 border-0">
+                <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0 text-dark">
+                            <i class="bi bi-award text-success"></i> Lembaga Teratas
+                        </h6>
+                        <small class="text-muted">Berdasarkan total pencairan {{ date('Y') }}</small>
+                    </div>
+                    <span class="badge bg-success rounded-pill">Top {{ count($topLembaga) }}</span>
                 </div>
                 <div class="card-body p-0">
                     @if (count($topLembaga) > 0)
@@ -509,12 +618,18 @@
     <!-- Row Kelima: Budget Progress -->
     <div class="row mt-4">
         <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 font-weight-bold text-info">
-                        <i class="fas fa-chart-pie me-2"></i>Progress Anggaran {{ $budgetProgress['year'] }}
-                    </h6>
-                    <span class="badge bg-info">{{ $budgetProgress['percentage'] }}%</span>
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0 text-dark">
+                            <i class="bi bi-pie-chart text-info"></i> Realisasi Anggaran Hibah
+                            {{ $budgetProgress['year'] }}
+                        </h6>
+                        <small class="text-muted">Monitoring penggunaan anggaran tahunan</small>
+                    </div>
+                    <span
+                        class="badge bg-info bg-opacity-10 text-info rounded-pill fs-6">{{ $budgetProgress['percentage'] }}%
+                        Terealisasi</span>
                 </div>
                 <div class="card-body">
                     <div class="row">
