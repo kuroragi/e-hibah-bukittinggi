@@ -41,7 +41,7 @@ class PermohonanFactory extends Factory
             'nominal_rab' => fake()->numberBetween(10000000, 500000000),
             'nominal_anggaran' => fake()->numberBetween(10000000, 500000000),
             'id_status' => Status_permohonan::factory(),
-            'status_rekomendasi' => null,
+            'status_rekomendasi' => 0, // 0: Belum ada rekomendasi
             'nominal_rekomendasi' => 0,
             'tanggal_rekomendasi' => null,
             'catatan_rekomendasi' => null,
