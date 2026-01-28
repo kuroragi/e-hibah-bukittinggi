@@ -73,6 +73,8 @@ class Show extends Component
         $dir = 'draft_permintaan_nphd';
         $filename = 'permintaan_nphd_'.$this->permohonan->id.$this->permohonan->tahun_apbd;
         $ext = '.pdf';
+
+        $pimpinan_lembaga = $this->permohonan->lembaga?->pengurus->where('jabatan', 'Pimpinan')->first();
         
         if($this->permohonan->file_permintaan_nphd && Storage::disk('public')->exists($dir.'/'.$filename.$ext)){
             Storage::disk('public')->delete($dir.'/'.$filename.$ext);
@@ -80,7 +82,7 @@ class Show extends Component
         
         
         if(!Storage::disk('public')->exists($dir.'/'.$filename.$ext)){
-            $pdf = Pdf::loadView('pdf.permohonan_nphd', ['data' => $this->permohonan])
+            $pdf = Pdf::loadView('pdf.permohonan_nphd', ['data' => $this->permohonan, 'nominal_anggaran' => $this->nominal_anggaran, 'pimpinan_lembaga' => $pimpinan_lembaga])
                 ->setPaper('A4', 'portrait');
 
             // Pastikan folder ada (di disk 'public' = storage/app/public)
